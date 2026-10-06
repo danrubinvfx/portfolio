@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dan Rubin | Compositing Supervisor and Artist, Mentor &amp; Educator</title>
+  <meta name="description" content="Official portfolio of Dan Rubin — Vancouver-based VFX Compositing Supervisor and Artist, Mentor &amp; Educator. Over 25 years in visual effects across Feature Films, Animated Features, and Episodic productions. Dual US &amp; Canadian Citizen. 2x Sports Emmy Winner.">
+  <meta name="author" content="Dan Rubin">
+
+  <!-- Open Graph / Meta -->
+  <meta property="og:title" content="Dan Rubin | Compositing Supervisor and Artist, Mentor &amp; Educator">
+  <meta property="og:description" content="25+ years leading visual effects compositing for Hollywood features and high-end streaming. Dual US &amp; Canadian Citizen based in Vancouver, BC.">
+  <meta property="og:type" content="website">
+
+  <!-- Typography: Arial Bold native font stack for 0ms loading (no FOIT/CLS), Inter for crisp body -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: { extend: {
+        fontFamily: {
+          sans: ['Arial', '"Helvetica Neue"', 'Helvetica', 'Inter', 'sans-serif'],
+          mono: ['Space Mono', 'monospace']
+        }
+      }}
+    }
+  </script>
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- Custom Stylesheet -->
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="print-hide">
+
+<!-- ==========================================================================
+     DIGITAL BUSINESS CARD HEADER & BRAND IDENTITY
+     Clean layout with no cluttered middle navigation bar.
+     Direct contact info chips + High-utility action pills.
+========================================================================== -->
+<header id="site-header" class="site-header" role="banner">
+  <div class="header-inner">
+
+    <!-- Left: Brand Identity & Direct Contact Info Chips -->
+    <div class="header-brand-block">
+      <a href="#hero" class="brand-link" title="Dan Rubin — Portfolio Home">
+        <div class="brand-avatar">DR</div>
+        <div>
+          <div class="brand-name">Dan Rubin</div>
+          <div class="brand-title">Compositing Supervisor and Artist &bull; Mentor &amp; Educator</div>
+        </div>
+      </a>
+
+      <!-- Recruiter-Priority Contact Info Chips -->
+      <div class="header-contact-chips">
+        <a href="mailto:danielrubin76@gmail.com" class="contact-chip" title="Email Dan Rubin">
+          <i data-lucide="mail" style="width:12px;height:12px;"></i>
+          <span>danielrubin76@gmail.com</span>
+        </a>
+        <a href="tel:6043458636" class="contact-chip" title="Call Dan Rubin">
+          <i data-lucide="phone" style="width:12px;height:12px;"></i>
+          <span>(604) 345-8636</span>
+        </a>
+        <span class="contact-chip chip-location" title="Work Authorization & Location">
+          <i data-lucide="map-pin" style="width:12px;height:12px;"></i>
+          <span>Vancouver, BC &bull; Dual US &amp; Canadian Citizen</span>
+        </span>
+      </div>
+
+      <!-- Quick 1-Tap Mobile Actions (Mobile only) -->
+      <div class="header-mobile-actions" aria-label="Quick Mobile Actions">
+        <a href="tel:6043458636" class="mobile-action-btn" title="Call Dan Rubin" aria-label="Call (604) 345-8636">
+          <i data-lucide="phone" style="width:14px;height:14px;"></i>
+        </a>
+        <a href="mailto:danielrubin76@gmail.com" class="mobile-action-btn" title="Email Dan Rubin" aria-label="Email Dan Rubin">
+          <i data-lucide="mail" style="width:14px;height:14px;"></i>
+        </a>
+        <button onclick="openResumeModal()" class="mobile-action-btn mobile-action-resume" title="View Résumé" aria-label="View Résumé">
+          <i data-lucide="file-text" style="width:13px;height:13px;"></i>
+          <span>CV</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Right: High-Utility Action Pills (Strictly NO middle nav bar) -->
+    <div class="header-action-pills">
+      <a href="#artist-reel" class="action-pill pill-artist-reel" title="Jump to 2026 Artist Compositing Reel">
+        <i data-lucide="play-circle" style="width:13px;height:13px;"></i>
+        <span>Artist Reel</span>
+      </a>
+
+      <a href="#supervisory-reels" class="action-pill pill-supervisory" title="Jump to Supervisory Project Breakdowns">
+        <i data-lucide="shield" style="width:13px;height:13px;"></i>
+        <span>Supervisory Breakdowns</span>
+      </a>
+
+      <a href="#featured-stills-carousel" class="action-pill" title="Jump to Shot Gallery">
+        <i data-lucide="sparkles" style="width:13px;height:13px;"></i>
+        <span>Shot Gallery</span>
+      </a>
+
+      <a href="#experience" class="action-pill" title="Jump to Professional Experience">
+        <i data-lucide="briefcase" style="width:13px;height:13px;"></i>
+        <span>Experience</span>
+      </a>
+
+      <button onclick="openResumeModal()" class="action-pill pill-resume" title="View &amp; Print Dan Rubin's Résumé">
+        <i data-lucide="file-text" style="width:13px;height:13px;"></i>
+        <span>Résumé</span>
+      </button>
+
+      <a href="https://www.imdb.com/name/nm1885406/" target="_blank" rel="noopener" class="action-pill" title="Dan Rubin on IMDb">
+        <span class="imdb-text">IMDb</span>
+      </a>
+
+      <a href="https://www.linkedin.com/in/dan-rubin-8371032/" target="_blank" rel="noopener" class="action-pill pill-linkedin" title="LinkedIn: dan-rubin-8371032">
+        <i data-lucide="linkedin" style="width:13px;height:13px;"></i>
+        <span>LinkedIn</span>
+      </a>
+
+      <a href="https://vimeo.com/showcase/11081895" target="_blank" rel="noopener" class="action-pill pill-vimeo" title="Vimeo Showcase (Password: password)">
+        <i data-lucide="video" style="width:13px;height:13px;"></i>
+        <span>Vimeo</span>
+        <span class="vimeo-pw-chip">pw: password</span>
+      </a>
+
+      <a href="#contact" class="action-pill pill-contact" title="Direct Contact & Inquiries">
+        <i data-lucide="send" style="width:13px;height:13px;"></i>
+        <span>Contact</span>
+      </a>
+    </div>
+
+  </div>
+</header>
+
+<main id="main-content">
+
+  <!-- ==========================================================================
+       SECTION 1: ARTIST COMPOSITING REEL (Full-Width Cinema Player)
+       2026 Artist Compositing Reel (videos/2026CompositingReel.mp4)
+       Directly underneath the header; autoplays muted in loop.
+  ========================================================================== -->
+  <section id="artist-reel" class="artist-reel-section" aria-label="2026 Artist Compositing Reel">
+    <div class="artist-reel-title-bar">
+      <div class="section-wrap" style="padding-top:16px;padding-bottom:12px;">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;">
+          <div>
+            <h2 class="section-heading" id="artist-reel-title" style="font-size:24px;margin-bottom:0;">2026 Artist Compositing Reel</h2>
+          </div>
+          <span class="artist-reel-tag">Feature Films &amp; Episodic</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Edge-to-Edge Full-Width Cinema Player -->
+    <div class="artist-player-fullwidth" id="artist-player-container" oncontextmenu="return false;">
+      <video id="artist-showreel-video" controls controlsList="nodownload noplaybackrate nofullscreen" disablePictureInPicture autoplay muted loop playsinline preload="auto" poster="images/stills/AvatarFireandAsh_01.png" oncontextmenu="return false;">
+        <source src="videos/2026CompositingReel.mp4" type="video/mp4">
+        <p style="color:#888;padding:32px;font-family:monospace;font-size:13px;">
+          Your browser cannot play this file inline.
+        </p>
+      </video>
+      <div class="cinema-watermark">&copy; Dan Rubin &bull; Proprietary VFX Material</div>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       HERO OVERVIEW & DIGITAL BUSINESS CARD STATEMENT
+       Placed directly below the Artist Reel.
+  ========================================================================== -->
+  <section id="hero" aria-label="Executive Overview">
+    <!-- Left: Text & Bio -->
+    <div class="hero-left">
+      <div class="section-eyebrow">
+        <i data-lucide="sparkles" style="width:14px;height:14px;"></i>
+        Visual Effects Professional &bull; 25+ Years Experience
+      </div>
+
+      <h1 class="hero-name" id="hero-name">Dan Rubin</h1>
+
+      <div class="hero-title-line">
+        <strong id="hero-title">Compositing Supervisor and Artist</strong>
+        &ensp;&bull;&ensp;
+        <span id="hero-subtitle" style="font-weight:400;">Mentor &amp; Educator</span>
+      </div>
+
+      <p class="hero-bio" id="hero-bio">
+        Vancouver-based Compositing Supervisor currently working at Eyeline VFX, bringing over 25 years of experience across Feature Films, Animated Features, and Episodic projects. Over seven years as a Compositing Supervisor and five additional years in senior and lead roles. Active educator and mentor.
+      </p>
+
+      <div class="hero-badges">
+        <div class="hero-badge">
+          <i data-lucide="map-pin" style="width:13px;height:13px;"></i>
+          Vancouver, BC &mdash; Dual US &amp; Canadian Citizen
+        </div>
+        <div class="hero-badge gold">
+          <i data-lucide="trophy" style="width:13px;height:13px;"></i>
+          2&times; Sports Emmy Winner
+        </div>
+        <div class="hero-badge">
+          <i data-lucide="award" style="width:13px;height:13px;"></i>
+          Gemini Award Nominee
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Right: Stats Panel -->
+    <div class="hero-stats-panel">
+      <div class="stat-item">
+        <div class="stat-value">25<span style="font-size:0.55em;color:var(--text-muted);">+</span></div>
+        <div class="stat-label">Years in Feature &amp; Episodic VFX</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-value">50<span style="font-size:0.55em;color:var(--text-muted);">+</span></div>
+        <div class="stat-label">Theatrical &amp; Streaming Credits</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-value">7<span style="font-size:0.55em;color:var(--text-muted);">+</span></div>
+        <div class="stat-label">Years as Compositing Supervisor</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-value" style="color:var(--accent);">2&times;</div>
+        <div class="stat-label">Emmy Winner &amp; Gemini Nominee</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       SECTION 2: SUPERVISORY VIDEO SHOWCASE (2x2 Grid Pattern)
+       Contra el Huracán, Lift, Kraven the Hunter, American Underdog
+  ========================================================================== -->
+  <section id="supervisory-reels" class="section-divider" aria-label="Supervisory Video Showcase &amp; Project Breakdowns">
+    <div id="showreel" style="position:relative;top:-80px;"></div>
+    <div class="section-wrap">
+      <div class="section-eyebrow">
+        <i data-lucide="shield" style="width:14px;height:14px;"></i>
+        <span>Supervisory Leadership</span>
+      </div>
+      <h2 class="section-heading" style="margin-bottom:24px;">Supervisory Breakdowns</h2>
+
+      <!-- 2x2 Video Grid -->
+      <div class="supervisory-grid-2x2" id="supervisory-grid">
+        <!-- Rendered dynamically via script.js -->
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       SECTION 3: FEATURED STILLS (High-Frequency Grid Pattern)
+       Pure visual frames by default; text appears only on hover.
+  ========================================================================== -->
+  <section id="featured-stills-carousel" class="section-divider" aria-label="Shot Gallery">
+    <div class="section-wrap">
+      <h2 class="section-heading" style="margin-bottom:24px;">Shot Gallery</h2>
+
+      <!-- High-Frequency Stills Grid (4 Columns Desktop, 3 Tablet, 2 Mobile) -->
+      <div class="stills-grid-highfreq" id="stills-grid-container">
+        <!-- 16 Curated Flagship Stills Rendered via script.js -->
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       SECTION 4: CAREER EXPERIENCE TIMELINE
+       25-year industry chronology matching original_resume.txt verbatim.
+       Placed directly below the Featured Stills Carousel.
+  ========================================================================== -->
+  <section id="experience" class="section-divider" aria-label="Professional Experience">
+    <div class="section-wrap">
+
+      <!-- Section Header -->
+      <div class="section-eyebrow">
+        <i data-lucide="briefcase" style="width:14px;height:14px;"></i>
+        25-Year Career History
+      </div>
+      <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:8px;">
+        <div>
+          <h2 class="section-heading">Professional Experience</h2>
+          <p class="section-sub">
+            Eyeline VFX, Wētā FX, Image Engine, FuseFX, Sony Pictures Imageworks, MPC, Digital Domain, Prime Focus World, and more.
+          </p>
+        </div>
+        <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+          <a href="Dan_Rubin_Resume.pdf" download="Dan_Rubin_Resume.pdf" class="btn-primary" style="padding:8px 18px;font-size:12px;display:inline-flex;align-items:center;gap:6px;" title="Download Dan Rubin's Original Résumé PDF (3 Pages Intact)">
+            <i data-lucide="download" style="width:14px;height:14px;"></i>
+            <span>Download Original PDF</span>
+          </a>
+          <button onclick="openResumeModal()" class="btn-outline" style="padding:8px 16px;font-size:12px;display:inline-flex;align-items:center;gap:6px;" title="View Interactive Document &amp; Cover Letter">
+            <i data-lucide="file-text" style="width:14px;height:14px;"></i>
+            <span>View CV Online</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Career Timeline Layout: Left Timeline, Right Sidebar -->
+      <div class="exp-layout">
+        <!-- Chronological Timeline Cards -->
+        <div id="experience-timeline">
+          <!-- Populated dynamically via script.js -->
+        </div>
+
+        <!-- Career Sidebar: Awards, Education, Notables -->
+        <aside class="exp-sidebar" aria-label="Career Highlights and Education">
+          <!-- Awards Card -->
+          <div class="sidebar-card">
+            <div class="sidebar-heading">
+              <i data-lucide="award" style="width:13px;height:13px;"></i>
+              Awards &amp; Honors
+            </div>
+            <div class="award-item win">
+              <div class="award-year">2005 Sports Emmy &bull; Winner</div>
+              <div class="award-title">NFL on Fox: Super Bowl XXXIX</div>
+              <div class="award-cat">Outstanding Graphic Design</div>
+            </div>
+            <div class="award-item win">
+              <div class="award-year">2002 Sports Emmy &bull; Winner</div>
+              <div class="award-title">Inside the NFL</div>
+              <div class="award-cat">Outstanding Studio Show &bull; Weekly</div>
+            </div>
+            <div class="award-item">
+              <div class="award-year">2008 Gemini Award &bull; Nominee</div>
+              <div class="award-title">The Guard</div>
+              <div class="award-cat">Best Visual Effects</div>
+            </div>
+          </div>
+
+          <!-- Education Card -->
+          <div class="sidebar-card">
+            <div class="sidebar-heading">
+              <i data-lucide="graduation-cap" style="width:13px;height:13px;"></i>
+              Education
+            </div>
+            <div style="font-size:15px;font-weight:700;color:var(--text-main);margin-bottom:4px;">
+              School of Visual Arts
+            </div>
+            <div style="font-size:11px;font-family:'Space Mono',monospace;color:var(--text-muted);margin-bottom:6px;">
+              New York City &bull; 1995&ndash;1999
+            </div>
+            <div style="font-size:13px;color:var(--text-body);line-height:1.6;">
+              BFA Computer Art<br>Graduate with Honors
+            </div>
+          </div>
+
+          <!-- Notables Card -->
+          <div class="sidebar-card">
+            <div class="sidebar-heading">
+              <i data-lucide="zap" style="width:13px;height:13px;"></i>
+              Technical Notables
+            </div>
+            <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:10px;">
+              <li style="font-size:13px;color:var(--text-body);line-height:1.6;padding-left:14px;position:relative;">
+                <span style="position:absolute;left:0;color:var(--accent);">&bull;</span>
+                Advanced expertise in Foundry Nuke &amp; deep compositing pipelines.
+              </li>
+              <li style="font-size:13px;color:var(--text-body);line-height:1.6;padding-left:14px;position:relative;">
+                <span style="position:absolute;left:0;color:var(--accent);">&bull;</span>
+                Proprietary 2D Sprite Crowd Tool in Python used on multiple stadium shows (2,000 to 17,000 seats).
+              </li>
+              <li style="font-size:13px;color:var(--text-body);line-height:1.6;padding-left:14px;position:relative;">
+                <span style="position:absolute;left:0;color:var(--accent);">&bull;</span>
+                On-set supervision, camera tracking &amp; data wrangling experience.
+              </li>
+              <li style="font-size:13px;color:var(--text-body);line-height:1.6;padding-left:14px;position:relative;">
+                <span style="position:absolute;left:0;color:var(--accent);">&bull;</span>
+                Dual US &amp; Canadian Citizen based in Vancouver, BC.
+              </li>
+            </ul>
+          </div>
+        </aside>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       SECTION 7: UNAUGMENTED RÉSUMÉ & DIRECT INQUIRIES
+  ========================================================================== -->
+  <section id="contact" class="section-divider" aria-label="Contact Dan Rubin &amp; Direct Inquiries">
+    <div class="section-wrap">
+
+      <div class="section-eyebrow">
+        <i data-lucide="mail" style="width:14px;height:14px;"></i>
+        Get in Touch
+      </div>
+      <h2 class="section-heading">Contact &amp; Inquiries</h2>
+      <p class="section-sub">
+        Available for feature film &amp; episodic compositing supervision and senior artist roles.
+      </p>
+
+      <div class="contact-layout">
+        <!-- Direct Info Cards -->
+        <div class="contact-info-list">
+          <div class="contact-item">
+            <div class="contact-icon"><i data-lucide="mail" style="width:16px;height:16px;"></i></div>
+            <div class="contact-info">
+              <div class="contact-label">Email</div>
+              <div class="contact-value">
+                <a href="mailto:danielrubin76@gmail.com" id="link-email">danielrubin76@gmail.com</a>
+              </div>
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-icon"><i data-lucide="phone" style="width:16px;height:16px;"></i></div>
+            <div class="contact-info">
+              <div class="contact-label">Phone</div>
+              <div class="contact-value">
+                <a href="tel:6043458636">(604) 345-8636</a>
+              </div>
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-icon"><i data-lucide="map-pin" style="width:16px;height:16px;"></i></div>
+            <div class="contact-info">
+              <div class="contact-label">Location &amp; Citizenship</div>
+              <div class="contact-value">Vancouver, BC &bull; Dual US &amp; Canadian Citizen</div>
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-icon"><i data-lucide="linkedin" style="width:16px;height:16px;"></i></div>
+            <div class="contact-info">
+              <div class="contact-label">LinkedIn</div>
+              <div class="contact-value">
+                <a href="https://www.linkedin.com/in/dan-rubin-8371032/" target="_blank" rel="noopener">
+                  linkedin.com/in/dan-rubin-8371032
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Official Résumé Quick Actions -->
+          <div style="margin-top:16px;padding-top:16px;border-top:1px solid var(--border-light);display:flex;gap:10px;flex-wrap:wrap;">
+            <a href="Dan_Rubin_Resume.pdf" download="Dan_Rubin_Resume.pdf" class="btn-primary" style="flex:1;min-width:200px;justify-content:center;display:inline-flex;align-items:center;gap:6px;" title="Download Dan Rubin's Original Résumé PDF (3 Pages Intact)">
+              <i data-lucide="download" style="width:16px;height:16px;"></i>
+              <span>Download Original PDF</span>
+            </a>
+            <a href="Dan_Rubin_Resume.pdf" target="_blank" rel="noopener" class="btn-outline" style="justify-content:center;display:inline-flex;align-items:center;gap:6px;" title="Open Original PDF in New Tab">
+              <i data-lucide="external-link" style="width:16px;height:16px;"></i>
+              <span>Open PDF</span>
+            </a>
+            <button onclick="openResumeModal()" class="btn-outline" style="justify-content:center;display:inline-flex;align-items:center;gap:6px;" title="View Interactive Document">
+              <i data-lucide="file-text" style="width:16px;height:16px;"></i>
+              <span>View Online</span>
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ==========================================================================
+     FOOTER
+========================================================================== -->
+<footer id="site-footer">
+  <div class="footer-inner">
+    <div class="footer-copy">
+      &copy; 2026 Dan Rubin. All rights reserved. Vancouver, BC. Dual US &amp; Canadian Citizen. Compositing Supervisor and Artist.
+    </div>
+    <div class="footer-links">
+      <a href="#hero">Top</a>
+      <a href="#artist-reel">Artist Reel</a>
+      <a href="#supervisory-reels">Supervisory Breakdowns</a>
+      <a href="#featured-stills-carousel">Shot Gallery</a>
+      <a href="#experience">Experience</a>
+      <a href="#contact">Contact</a>
+      <a href="https://www.imdb.com/name/nm1885406/" target="_blank" rel="noopener">IMDb</a>
+      <a href="https://www.linkedin.com/in/dan-rubin-8371032/" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="https://vimeo.com/showcase/11081895" target="_blank" rel="noopener">Vimeo</a>
+      <a href="Dan_Rubin_Resume.pdf" download="Dan_Rubin_Resume.pdf" title="Download Dan Rubin's Original Résumé PDF (3 Pages Intact)">Original PDF Résumé</a>
+    </div>
+  </div>
+</footer>
+
+<!-- ==========================================================================
+     MINIMALIST FLOATING QUICK-CONTACT PILL (Docked Viewport Bottom-Right)
+     Instant phone dialer, email draft, and LinkedIn link.
+     Auto-hides when modals or lightbox are active.
+========================================================================== -->
+<aside id="floating-contact-pill" class="floating-contact-pill" aria-label="Quick Contact Dock">
+  <a href="tel:6043458636" class="floating-pill-item" title="Call Dan Rubin: (604) 345-8636" aria-label="Call (604) 345-8636">
+    <i data-lucide="phone" style="width:14px;height:14px;"></i>
+    <span class="floating-pill-text">(604) 345-8636</span>
+  </a>
+  <span class="floating-pill-divider"></span>
+  <a href="mailto:danielrubin76@gmail.com" class="floating-pill-item" title="Email Dan Rubin: danielrubin76@gmail.com" aria-label="Email Dan Rubin">
+    <i data-lucide="mail" style="width:14px;height:14px;"></i>
+    <span class="floating-pill-text">Email</span>
+  </a>
+  <span class="floating-pill-divider"></span>
+  <a href="https://www.linkedin.com/in/dan-rubin-8371032/" target="_blank" rel="noopener" class="floating-pill-item" title="Dan Rubin on LinkedIn" aria-label="Dan Rubin on LinkedIn">
+    <i data-lucide="linkedin" style="width:14px;height:14px;"></i>
+    <span class="floating-pill-text">LinkedIn</span>
+  </a>
+</aside>
+
+<!-- ==========================================================================
+     THEATER-GRADE LIGHTBOX FULLSCREEN MODAL
+     Pinned Top Exit Bar [✕ BACK TO PORTFOLIO (ESC)]
+     Floating Prev / Next Navigation Controls
+     Image Frame, Technical Caption & Gamified Reaction Chips
+========================================================================== -->
+<div id="lightbox-modal" class="lightbox-modal-backdrop hidden" onclick="handleLightboxBackdropClick(event)" role="dialog" aria-modal="true" aria-label="Fullscreen Still Viewer">
+  <!-- Pinned Top Exit Bar (Always visible regardless of image size or scroll) -->
+  <div class="lightbox-top-bar" onclick="event.stopPropagation()">
+    <div class="lightbox-title-info">
+      <span id="lightbox-title" class="lightbox-title">Production Still</span>
+      <span id="lightbox-counter" class="lightbox-counter"></span>
+    </div>
+    <button class="lightbox-close-floating-btn" onclick="closeLightbox()" title="Close fullscreen and return to portfolio (ESC)">
+      <span class="close-icon">&times;</span>
+      <span class="close-text">BACK TO PORTFOLIO (ESC)</span>
+    </button>
+  </div>
+
+  <!-- Left / Right Navigation Controls -->
+  <button id="lightbox-prev-btn" class="lightbox-nav-btn lightbox-prev" onclick="lightboxPrev(event)" aria-label="Previous still" title="Previous Still (Left Arrow)">&#8249;</button>
+  <button id="lightbox-next-btn" class="lightbox-nav-btn lightbox-next" onclick="lightboxNext(event)" aria-label="Next still" title="Next Still (Right Arrow)">&#8250;</button>
+
+  <!-- Central Image & Caption Stage -->
+  <div class="lightbox-content-box" onclick="event.stopPropagation()">
+    <div class="lightbox-img-wrapper" oncontextmenu="return false;">
+      <img id="lightbox-image" src="images/stills/ContraElHuracan_01.png" alt="Fullscreen Still" class="lightbox-img-frame" draggable="false">
+      <div class="lightbox-shield"></div>
+    </div>
+    <div class="lightbox-caption-card">
+      <div id="lightbox-caption" class="lightbox-caption-text"></div>
+      <div class="lightbox-watermark">&copy; Dan Rubin &bull; Confidential VFX Portfolio &bull; All Rights Reserved</div>
+      <div class="lightbox-caption-hint">Press <kbd>ESC</kbd> or click <strong>Back to Portfolio</strong> to return &bull; Click anywhere on dark background to close</div>
+    </div>
+  </div>
+</div>
+
+<!-- ==========================================================================
+     INTERACTIVE RÉSUMÉ DOCUMENT MODAL (CV, Cover Letter, Verbatim Raw)
+========================================================================== -->
+<div id="resume-modal" class="fixed inset-0 z-[100000] hidden items-center justify-center p-2 sm:p-4 modal-backdrop" style="background:rgba(0,0,0,0.85);z-index:100000;" onclick="closeResumeModal()">
+  <div class="resume-modal-inner w-full max-w-4xl max-h-[92vh] overflow-y-auto p-4 sm:p-8 relative" onclick="event.stopPropagation()">
+    <!-- Header with controls -->
+    <div style="display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border);padding-bottom:16px;margin-bottom:16px;flex-wrap:wrap;gap:12px;">
+      <div>
+        <div class="section-eyebrow" style="margin-bottom:2px;">
+          <i data-lucide="file-check" style="width:13px;height:13px;"></i>
+          Official Document &bull; Original 3 Pages Intact
+        </div>
+        <h3 style="font-size:22px;font-weight:800;color:var(--text-main);margin:0;">Dan Rubin &mdash; Résumé</h3>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+        <a href="Dan_Rubin_Resume.pdf" download="Dan_Rubin_Resume.pdf" class="btn-primary" style="padding:7px 16px;font-size:11px;display:inline-flex;align-items:center;gap:6px;" title="Download Original Intact PDF (3 Pages)">
+          <i data-lucide="download" style="width:14px;height:14px;"></i>
+          <span>Download Original PDF</span>
+        </a>
+        <a href="Dan_Rubin_Resume.pdf" target="_blank" rel="noopener" class="btn-outline" style="padding:7px 14px;font-size:11px;display:inline-flex;align-items:center;gap:6px;" title="Open Original PDF in New Tab">
+          <i data-lucide="external-link" style="width:14px;height:14px;"></i>
+          <span>Open PDF</span>
+        </a>
+        <button onclick="closeResumeModal()" style="background:none;border:none;color:var(--text-muted);cursor:pointer;padding:6px;" aria-label="Close">
+          <i data-lucide="x" style="width:20px;height:20px;"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Document Content Container -->
+    <div id="resume-modal-content">
+      <!-- Populated dynamically via script.js -->
+    </div>
+  </div>
+</div>
+
+<!-- PRINT-ONLY Verbatim Résumé Container (Exact 3-page layout) -->
+<div id="printable-resume-container" class="print-show hidden"></div>
+
+<!-- Toast notification -->
+<div id="toast" style="
+  position:fixed;bottom:24px;right:24px;z-index:200;
+  background:var(--accent);color:#111;
+  font-size:12px;font-family:'Space Mono',monospace;font-weight:700;
+  padding:10px 18px;border-radius:6px;
+  opacity:0;transform:translateY(8px);
+  transition:opacity 0.3s,transform 0.3s;
+  pointer-events:none;
+"></div>
+
+<!-- JavaScript Modules -->
+<script src="data.js"></script>
+<script src="script.js"></script>
+
+</body>
+</html>

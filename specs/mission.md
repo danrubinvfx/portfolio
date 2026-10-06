@@ -1,6 +1,6 @@
 # Project Mission & Constitution: Dan Rubin VFX Portfolio
 
-**Version:** 2.0.0  
+**Version:** 2.1.0  
 **Status:** ACTIVE  
 **Date:** October 2026  
 **Methodology:** Spec-Driven Development (SDD)  
@@ -27,10 +27,10 @@ The site architecture directly serves four distinct visitor personas:
 
 | Priority & Persona | Core Intent & Evaluation Criteria | Key Portfolio Touchpoint |
 | :--- | :--- | :--- |
-| **1. VFX Recruiters & Talent Acquisition (Primary)** | Fast verification of availability, location (`Vancouver, BC`), citizenship (`Dual US & Canadian`), credits, and direct outreach. | **Sticky Header & Hero:** 1-tap contact buttons (Call, Email), unaugmented PDF Résumé modal, direct IMDb, LinkedIn, and password-protected Vimeo showcase. |
+| **1. VFX Recruiters & Talent Acquisition (Primary)** | Fast verification of availability, location (`Vancouver, BC`), citizenship (`Dual US & Canadian`), credits, and direct outreach. | **Sticky Header & Contact:** 1-tap contact buttons (Call, Email), unaugmented PDF Résumé modal, direct IMDb, LinkedIn, and password-protected Vimeo showcase pill. |
 | **2. VFX Supervisors & Heads of Department** | Evaluates department leadership, sequence look-dev, bidding, crew scaling, and client delivery under pressure. | **Supervisory Breakdowns Grid (2×2):** 4-up 2×2 grid showcase featuring *Contra el Huracán*, *Lift*, *Kraven the Hunter*, and *American Underdog*. |
-| **3. Industry Peers & Compositors** | Assesses photoreal plate integration, CG creature comp, deep compositing, stereo 3D, and custom Python tooling. | **2026 Artist Reel & Featured Stills Mosaic:** Edge-to-edge full-width Artist Reel, 16-shot high-frequency grid mosaic with hover-only technical scrim, single-vote emoji reactions, and theater Lightbox. |
-| **4. Educators & Students** | Evaluates curriculum depth, technical pedagogy, and artist mentoring philosophy. | **Teaching & Mentorship Showcase:** Verbatim VFS instruction statement and artist coaching frameworks. |
+| **3. Industry Peers & Compositors** | Assesses photoreal plate integration, CG creature comp, deep compositing, stereo 3D, and custom Python tooling. | **2026 Artist Reel & Shot Gallery:** Edge-to-edge full-width Artist Reel, 16-shot high-frequency grid mosaic with hover-only technical scrim, single-vote emoji reactions, and theater Lightbox. |
+| **4. Educators & Students** | Evaluates curriculum depth, technical pedagogy, and artist mentoring background. | **Professional Experience Sidebar:** Mentorship at VFS and industry awards. |
 
 ---
 
@@ -70,43 +70,37 @@ The visual design is grounded in **Minimalism**—championing content-first rest
 
 ## 4. Architectural Sequence Hierarchy (Flow of Page)
 
-The site sequence enforces a logical narrative from immediate hands-on artistry to executive leadership, portfolio stills, and career history:
+The site sequence enforces a strictly minimalist narrative from immediate hands-on artistry to executive leadership, shot gallery, and career history:
 
 ```mermaid
 flowchart TD
-    H["1. Sticky Header: Brand Avatar, Direct Contact, Swipeable Action Pills"]
+    H["1. Sticky Header: Brand Avatar, Direct Contact, Action Pills (including Vimeo pw: password)"]
     AR["2. 2026 Artist Compositing Reel: Edge-to-Edge Cinema Player (Direct Shot Comp)"]
-    IN["3. Executive Introduction (Hero): Bio, Badges, 2x2 Touch CTAs, Stats Panel"]
+    IN["3. Executive Introduction (Hero): Bio, Citizenship & Emmy Badges, Stats Panel"]
     SR["4. Supervisory Video Showcase: 2x2 Grid Pattern (Contra, Lift, Kraven, AUD)"]
-    KC["5. Featured Stills Mosaic: High-Frequency Grid (Hover-Only Scrim & Reactions)"]
-    EX["6. Professional Experience: 25-Year Chronology, Education, VFS Pedagogy"]
-    PR["7. Credits & Production Stills Gallery: Filterable Grid, Reveal Drawer, Lightbox"]
-    NT["8. AI & VFX Technical Notes: CopyCat, Deep Comp, Pipeline Insights"]
-    CT["9. Direct Contact & Footer: Inquiries Form, Details, Original PDF Download"]
+    SG["5. Shot Gallery: High-Frequency Mosaic (Hover-Only Scrim & Reactions)"]
+    EX["6. Professional Experience: 25-Year Chronology, Education, Awards & Notables"]
+    CT["7. Direct Contact & Footer: Recruiter Quick Info, Unaugmented PDF Download, Footer"]
 
-    H --> AR --> IN --> SR --> KC --> EX --> PR --> NT --> CT
+    H --> AR --> IN --> SR --> SG --> EX --> CT
 ```
 
 1. **Digital Business Card Header (`#site-header`):**
    - Left: Brand Avatar (`DR`), Dan Rubin, "Compositing Supervisor and Artist • Mentor & Educator".
    - Right: Recruiter contact chips (Desktop) and compact 1-tap call/email/CV triggers (Mobile).
-   - Bottom Row: Swipeable single-row pill tray jumping directly to key sections. Zero middle navigation clutter.
+   - Action Pills: Jump directly to Artist Reel, Supervisory Breakdowns, Shot Gallery, Experience, Résumé, IMDb, LinkedIn, Vimeo (`pw: password`), Contact. Zero middle navigation clutter.
 2. **2026 Artist Compositing Reel (`#artist-reel`):**
-   - Edge-to-edge full-width cinema player dedicated purely to direct shot compositing (creature integration, blue/green screen, deep comp, 2.5D projection). Free of supervisory management tasks.
+   - Edge-to-edge full-width cinema player dedicated purely to direct shot compositing (creature integration, blue/green screen, deep comp, 2.5D projection). Free of supervisory management tasks and redundant eyebrow labels.
 3. **Executive Introduction & Hero (`#hero`):**
-   - Concise biographical overview, citizenship and Emmy/Gemini credentials, responsive 2×2 touch action grid, and 25-year industry stats panel.
+   - Concise biographical overview, citizenship and Emmy/Gemini credentials, and 25-year industry stats panel. Clean layout without redundant button clutter underneath.
 4. **Supervisory Video Showcase & Breakdowns (`#supervisory-reels`):**
    - Four flagship supervisory shows presented side-by-side in a **balanced 2×2 grid pattern** on desktop (*Contra el Huracán*, *Lift*, *Kraven the Hunter*, *American Underdog*). Minimalist show title and role/studio metadata below each 16:9 player, gracefully stacking to 1 column on mobile.
-5. **Featured Stills Mosaic (`#featured-stills-carousel`):**
-   - 16-frame **high-frequency grid mosaic** (4 columns desktop, 3 tablet, 2 mobile). Pure unmarred visual frames by default; technical metadata (title, role, studio) and single-vote emoji reactions appear **only when hovered or tapped**.
+5. **Shot Gallery (`#featured-stills-carousel`):**
+   - 16-frame **high-frequency grid mosaic** (4 columns desktop, 3 tablet, 2 mobile). Pure visual frames by default; technical metadata (title, role, studio) and single-vote emoji reactions appear **only when hovered or tapped**.
 6. **Career Experience Timeline (`#experience`):**
-   - Verbatim 25-year chronology matching original resume, alongside studio badges, VFS advanced teaching statement, awards, and technical notables.
-7. **Credits & Production Stills Gallery (`#projects`):**
-   - Filterable catalog (All, Supervised, Feature Films, Episodic, Deep Comp) with 16:9 verified stills, studio badges, click-to-reveal contribution drawers, and Lightbox triggers.
-8. **AI & VFX Technical Notes (`#ai-notes`):**
-   - Articles on Foundry Nuke CopyCat machine learning, deep compositing pipelines, and AI integration in high-end VFX, with searchable archive modal.
-9. **Contact & Direct Inquiries (`#contact`):**
-   - Interactive inquiry form with input validation (Safari auto-zoom protected at `16px`), direct contact information, and direct download of the original intact 3-page résumé PDF.
+   - Verbatim 25-year chronology matching original resume, alongside studio badges, awards, and technical notables.
+7. **Contact & Direct Inquiries (`#contact`):**
+   - Streamlined recruiter contact cards (Email, Phone, Location & Citizenship, LinkedIn), 1-click unaugmented PDF download, and footer links.
 
 ---
 
@@ -117,7 +111,7 @@ To deliver engaging, responsive interactions without violating minimalism:
 - **Single-Vote Emoji Reactions:** One vote per emoji type per still (❤️, 🔥, 👏, 🎬). Increments by exactly +1; repeated clicks trigger a gentle micro-shake indicating the vote is recorded. Persists locally via `localStorage`.
 - **Spring Physics Micro-Bounce:** Buttons, pills, and filter chips feature organic spring easing (`translateY(-2px)` on hover, `scale(0.96)` on active press), returning smoothly on release.
 - **Theater-Grade Lightbox Modal:** Fullscreen dark canvas (`z-index: 100000`), pinned top exit bar (<kbd>✕ BACK TO PORTFOLIO (ESC)</kbd>), keyboard arrow navigation, swipe gestures, and protective media shields.
-- **Interactive Résumé Modal & Intact PDF Engine:** Embedded viewer displaying the exact unaugmented 3-page original PDF (`Dan_Rubin_Resume.pdf`) with 1-click download triggers across Hero, Experience, Contact, and Footer, alongside structured CV, Cover Letter, and Verbatim text tabs.
+- **Interactive Résumé Modal & Intact PDF Engine:** Direct embedded viewer displaying the exact unaugmented 3-page original PDF (`Dan_Rubin_Resume.pdf`) without tab clutter, with 1-click download triggers across Header, Experience, Contact, and Footer.
 
 ---
 
@@ -126,13 +120,14 @@ To deliver engaging, responsive interactions without violating minimalism:
 ### 6.1 Strict Invariants
 1. **Minimalist Aesthetic:** Clean, light canvas with generous whitespace and zero decorative bloat. Visual assets and verified credits remain the primary focus.
 2. **Title Invariant:** Strictly **"Compositing Supervisor and Artist"** in all brand headers, hero sections, and resume titles. (Historical credits retain their specific accredited roles).
-3. **Exact Sequence Mandate:** Header → Artist Reel → Intro (Hero) → Supervisory Breakdowns → Stills Carousel → Experience → Credits & Stills → AI Notes → Contact.
+3. **Exact Sequence Mandate:** Header → Artist Reel → Intro (Hero) → Supervisory Breakdowns → Shot Gallery → Experience → Contact.
 4. **Artist Reel Purity:** The Artist Compositing Reel highlights only direct hands-on compositing; supervisory management tasks remain in the Supervisory Showcase.
 5. **Zero Master MP4 Download Buttons:** Master MP4 downloads are disabled to protect proprietary VFX studio media.
 6. **Single-Vote Emoji Engine:** Strictly 1 vote per emoji type per still, contributing once (+1).
 7. **Unaugmented Résumé Integrity & Intact PDF Downloads:** The downloadable resume PDF must never be augmented or re-generated from HTML. The original 3-page PDF (`Dan_Rubin_Resume.pdf`) formatting, layout, typography, and page count must be preserved 100% intact for download by recruiters.
 8. **VFS Teaching Statement:** Preserves Dan Rubin's exact wording, bolding, and pedagogical intent.
 9. **Zero Build Mandate:** 100% Vanilla HTML5, CSS3, and JavaScript. No Node.js build step, bundler, or runtime framework dependencies.
+10. **Mobile Parity:** ~74px compact two-row header with swipeable pill tray, 2-column high-frequency stills mosaic with touch-reveal scrim, stacked 16:9 supervisory video cards, and touch swipe gestures.
 10. **Mobile Parity:** ~74px compact two-row header with swipeable pill tray, 2-column high-frequency stills mosaic with touch-reveal scrim, stacked 16:9 supervisory video cards, 16px form inputs to prevent iOS Safari auto-zoom, and touch swipe gestures.
 
 ### 6.2 Non-Goals
