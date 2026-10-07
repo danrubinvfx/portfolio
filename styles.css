@@ -1069,13 +1069,6 @@ select:focus-visible {
   stroke: #ffffff;
 }
 
-/* Watermark smooth repositioning when controls are visible */
-.cinema-controls-overlay.visible ~ .cinema-watermark,
-.artist-player-fullwidth:has(.cinema-controls-overlay.visible) .cinema-watermark {
-  transform: translateY(-44px);
-  opacity: 0.75;
-}
-
 @media (max-width: 768px) {
   .cinema-controls-overlay {
     padding: 24px 12px 10px 12px;
@@ -1161,12 +1154,6 @@ select:focus-visible {
 .supervisory-player-wrap .cinema-center-splash .cinema-splash-badge svg {
   width: 22px;
   height: 22px;
-}
-
-.supervisory-player-wrap .cinema-controls-overlay.visible ~ .cinema-watermark,
-.supervisory-player-wrap:has(.cinema-controls-overlay.visible) .cinema-watermark {
-  transform: translateY(-38px);
-  opacity: 0.75;
 }
 
 /* Fullscreen support for both artist player and supervisory cards */
@@ -3436,23 +3423,7 @@ input, textarea, select {
   pointer-events: auto;
 }
 
-/* Cinema Player & Lightbox Security Watermarks */
-.cinema-watermark {
-  position: absolute;
-  bottom: 12px;
-  right: 14px;
-  font-family: var(--font-mono);
-  font-size: 10px;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.55);
-  pointer-events: none;
-  z-index: 5;
-  user-select: none;
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9);
-  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease;
-}
-
+/* Lightbox Security Watermark */
 .lightbox-watermark {
   font-family: var(--font-mono);
   font-size: 11px;

@@ -646,8 +646,6 @@ function renderSupervisoryCardHtml(v, isMobile = false) {
           </div>
         </div>
 
-        <div class="cinema-watermark">&copy; Dan Rubin &bull; Proprietary VFX Material</div>
-
         <!-- Cinema Overlay Control Bar (Hidden on initial load, auto-hides after 2.5s) -->
         <div class="cinema-controls-overlay" aria-label="${v.title} Video Controls">
           <!-- Scrubber Timeline -->
