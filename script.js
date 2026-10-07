@@ -202,26 +202,29 @@ let currentVideoId = "trailer-contra";
 let isYouTubeMode = false;
 
 /**
- * Bespoke Cinema Player Overlay for 2026 Artist Compositing Reel
+ * Bespoke Cinema Player Overlay for Hero & Breakdown Reels
  * - Controls are strictly HIDDEN on initial page load (zero obstruction for autoplay reel)
+ * - Autoplays muted in loop with playsinline
  * - Auto-hides after 2.5s of inactivity while playing
  * - Interactive scrubber, volume toggle, time readout, and mobile-friendly touch targets
  */
-function initCinemaPlayer() {
-  const container = document.getElementById("artist-player-container");
-  const video = document.getElementById("artist-showreel-video");
-  const overlay = document.getElementById("cinema-controls-overlay");
-  const scrubber = document.getElementById("cinema-scrubber");
-  const progress = document.getElementById("cinema-scrubber-progress");
-  const buffered = document.getElementById("cinema-scrubber-buffered");
-  const handle = document.getElementById("cinema-scrubber-handle");
-  const playBtn = document.getElementById("cinema-btn-play");
-  const muteBtn = document.getElementById("cinema-btn-mute");
-  const fsBtn = document.getElementById("cinema-btn-fullscreen");
-  const timeReadout = document.getElementById("cinema-time-readout");
-  const splash = document.getElementById("cinema-center-splash");
+function setupCinemaPlayer(container) {
+  if (!container || container._cinemaPlayerInitialized) return;
+  const video = container.querySelector("video");
+  const overlay = container.querySelector(".cinema-controls-overlay");
+  if (!video || !overlay) return;
 
-  if (!container || !video || !overlay) return;
+  container._cinemaPlayerInitialized = true;
+
+  const scrubber = container.querySelector(".cinema-scrubber-track, #cinema-scrubber");
+  const progress = container.querySelector(".cinema-scrubber-progress, #cinema-scrubber-progress");
+  const buffered = container.querySelector(".cinema-scrubber-buffered, #cinema-scrubber-buffered");
+  const handle = container.querySelector(".cinema-scrubber-handle, #cinema-scrubber-handle");
+  const playBtn = container.querySelector(".cinema-btn-play, #cinema-btn-play");
+  const muteBtn = container.querySelector(".cinema-btn-mute, #cinema-btn-mute");
+  const fsBtn = container.querySelector(".cinema-btn-fullscreen, #cinema-btn-fullscreen");
+  const timeReadout = container.querySelector(".cinema-time-readout, #cinema-time-readout");
+  const splash = container.querySelector(".cinema-center-splash, #cinema-center-splash");
 
   let hideTimeout = null;
   let isScrubbing = false;
@@ -300,11 +303,13 @@ function initCinemaPlayer() {
   function togglePlayPause() {
     userInteracted = true;
     if (video.paused) {
+      video._manuallyPaused = false;
       video.play().then(() => {
         flashSplash(true);
         updatePlayButtonUI();
       }).catch(e => console.log("Play error:", e));
     } else {
+      video._manuallyPaused = true;
       video.pause();
       flashSplash(false);
       updatePlayButtonUI();
@@ -330,6 +335,23 @@ function initCinemaPlayer() {
   function toggleMute() {
     userInteracted = true;
     if (video.muted) {
+      // Mute all other videos on the page so audio doesn't clash
+      document.querySelectorAll("video").forEach(v => {
+        if (v !== video) {
+          v.muted = true;
+          const otherWrap = v.closest(".artist-player-fullwidth, .supervisory-player-wrap");
+          if (otherWrap) {
+            const otherMuteBtn = otherWrap.querySelector(".cinema-btn-mute, #cinema-btn-mute");
+            if (otherMuteBtn) {
+              const mIcon = otherMuteBtn.querySelector(".cinema-icon-muted");
+              const uIcon = otherMuteBtn.querySelector(".cinema-icon-unmuted");
+              if (mIcon) mIcon.style.display = "inline-block";
+              if (uIcon) uIcon.style.display = "none";
+              otherMuteBtn.setAttribute("aria-label", "Unmute");
+            }
+          }
+        }
+      });
       video.muted = false;
       if (video.volume === 0) video.volume = 1;
     } else {
@@ -341,14 +363,13 @@ function initCinemaPlayer() {
 
   function toggleFullscreen() {
     userInteracted = true;
-    const isFs = document.fullscreenElement || document.webkitFullscreenElement;
+    const isFs = (document.fullscreenElement === container || document.webkitFullscreenElement === container);
     if (!isFs) {
       if (container.requestFullscreen) {
         container.requestFullscreen();
       } else if (container.webkitRequestFullscreen) {
         container.webkitRequestFullscreen();
       } else if (video.webkitEnterFullscreen) {
-        // Native iOS Safari Fullscreen
         video.webkitEnterFullscreen();
       }
     } else {
@@ -364,7 +385,7 @@ function initCinemaPlayer() {
     if (!fsBtn) return;
     const enterIcon = fsBtn.querySelector(".cinema-icon-fullscreen-enter");
     const exitIcon = fsBtn.querySelector(".cinema-icon-fullscreen-exit");
-    const isFs = document.fullscreenElement || document.webkitFullscreenElement;
+    const isFs = (document.fullscreenElement === container || document.webkitFullscreenElement === container);
     if (enterIcon && exitIcon) {
       enterIcon.style.display = isFs ? "none" : "inline-block";
       exitIcon.style.display = isFs ? "inline-block" : "none";
@@ -498,6 +519,37 @@ function initCinemaPlayer() {
     }
   });
 
+  // Autoplay muted in loop with playsinline (same as Artist Reel)
+  video.muted = true;
+  video.autoplay = true;
+  video.loop = true;
+  video.playsInline = true;
+
+  const playPromise = video.play();
+  if (playPromise !== undefined) {
+    playPromise.catch(err => {
+      // Browser autoplay restriction handled; will play on first interaction or viewport enter
+      console.log("Cinema player autoplay handled:", err);
+    });
+  }
+
+  // IntersectionObserver to resume playback if suspended when off-screen
+  if ("IntersectionObserver" in window) {
+    if (!window._cinemaVideoObserver) {
+      window._cinemaVideoObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          const v = entry.target;
+          if (entry.isIntersecting) {
+            if (v.paused && !v._manuallyPaused) {
+              v.play().catch(() => {});
+            }
+          }
+        });
+      }, { threshold: 0.12 });
+    }
+    window._cinemaVideoObserver.observe(video);
+  }
+
   // Ensure controls are strictly HIDDEN on initial load
   overlay.classList.remove("visible");
   container.classList.remove("controls-active");
@@ -507,17 +559,14 @@ function initCinemaPlayer() {
   if (window.lucide) window.lucide.createIcons();
 }
 
-function initVideoShowcase() {
-  // Autoplay muted on load for Artist Reel
-  const artistVid = document.getElementById("artist-showreel-video");
-  if (artistVid) {
-    artistVid.muted = true;
-    artistVid.autoplay = true;
-    artistVid.play().catch(e => {
-      console.log("Artist reel autoplay restriction handled:", e);
-    });
+function initCinemaPlayer() {
+  const container = document.getElementById("artist-player-container");
+  if (container) {
+    setupCinemaPlayer(container);
   }
+}
 
+function initVideoShowcase() {
   // Initialize bespoke cinema overlay player (controls auto-hide, hidden on initial load)
   initCinemaPlayer();
 
@@ -531,6 +580,9 @@ function initVideoShowcase() {
 
   // Render desktop 2x2 grid
   gridContainer.innerHTML = supervisoryVideos.map(v => renderSupervisoryCardHtml(v, false)).join("");
+  gridContainer.querySelectorAll(".supervisory-player-wrap").forEach(wrap => {
+    setupCinemaPlayer(wrap);
+  });
 
   // Render mobile 1-reel carousel
   if (mobileCarousel && supervisoryVideos.length) {
@@ -563,6 +615,11 @@ function initVideoShowcase() {
       </div>
     `;
 
+    const mobileWrap = mobileCarousel.querySelector(".supervisory-player-wrap");
+    if (mobileWrap) {
+      setupCinemaPlayer(mobileWrap);
+    }
+
     initMobileReelSwipe(supervisoryVideos);
     updateMobileReelNav(supervisoryVideos);
   }
@@ -575,12 +632,55 @@ let currentMobileReelIdx = 0;
 function renderSupervisoryCardHtml(v, isMobile = false) {
   return `
     <div class="supervisory-card ${isMobile ? 'mobile-supervisory-card' : ''}">
-      <div class="supervisory-player-wrap" oncontextmenu="return false;">
-        <video controls controlsList="nodownload noplaybackrate nofullscreen" disablePictureInPicture loop playsinline preload="none" poster="${v.poster || ''}" oncontextmenu="return false;">
+      <div class="supervisory-player-wrap" oncontextmenu="return false;" tabindex="0" role="region" aria-label="${v.title} Video Player">
+        <video disablePictureInPicture autoplay muted loop playsinline preload="metadata" poster="${v.poster || ''}" oncontextmenu="return false;">
           <source src="${v.file}" type="video/mp4">
           <p style="color:#888;padding:24px;font-family:monospace;font-size:12px;">Browser cannot play video inline.</p>
         </video>
+
+        <!-- Center Play/Pause Splash Feedback -->
+        <div class="cinema-center-splash" aria-hidden="true">
+          <div class="cinema-splash-badge">
+            <i data-lucide="play" class="cinema-splash-icon-play"></i>
+            <i data-lucide="pause" class="cinema-splash-icon-pause" style="display:none;"></i>
+          </div>
+        </div>
+
         <div class="cinema-watermark">&copy; Dan Rubin &bull; Proprietary VFX Material</div>
+
+        <!-- Cinema Overlay Control Bar (Hidden on initial load, auto-hides after 2.5s) -->
+        <div class="cinema-controls-overlay" aria-label="${v.title} Video Controls">
+          <!-- Scrubber Timeline -->
+          <div class="cinema-scrubber-track" role="slider" aria-label="Video scrubber" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" tabindex="0">
+            <div class="cinema-scrubber-buffered"></div>
+            <div class="cinema-scrubber-progress"></div>
+            <div class="cinema-scrubber-handle"></div>
+          </div>
+
+          <!-- Controls Action Row -->
+          <div class="cinema-controls-row">
+            <!-- Left: Play/Pause Toggle & Time Readout -->
+            <div class="cinema-controls-left">
+              <button type="button" class="cinema-ctrl-btn cinema-btn-play" aria-label="Pause" title="Play / Pause">
+                <i data-lucide="play" class="cinema-icon-play" style="display:none;"></i>
+                <i data-lucide="pause" class="cinema-icon-pause"></i>
+              </button>
+              <div class="cinema-time-readout">00:00 / --:--</div>
+            </div>
+
+            <!-- Right: Audio Mute Toggle & Fullscreen -->
+            <div class="cinema-controls-right">
+              <button type="button" class="cinema-ctrl-btn cinema-btn-mute" aria-label="Unmute" title="Mute / Unmute">
+                <i data-lucide="volume-x" class="cinema-icon-muted"></i>
+                <i data-lucide="volume-2" class="cinema-icon-unmuted" style="display:none;"></i>
+              </button>
+              <button type="button" class="cinema-ctrl-btn cinema-btn-fullscreen" aria-label="Fullscreen" title="Fullscreen">
+                <i data-lucide="maximize" class="cinema-icon-fullscreen-enter"></i>
+                <i data-lucide="minimize" class="cinema-icon-fullscreen-exit" style="display:none;"></i>
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
       <div class="supervisory-card-meta">
         <div class="supervisory-card-title">${v.title}</div>
@@ -613,6 +713,10 @@ window.navigateMobileReel = function(delta) {
 
     setTimeout(() => {
       wrap.innerHTML = renderSupervisoryCardHtml(supervisoryVideos[currentMobileReelIdx], true);
+      const newWrap = wrap.querySelector(".supervisory-player-wrap");
+      if (newWrap) {
+        setupCinemaPlayer(newWrap);
+      }
       wrap.style.transform = delta > 0 ? "translateX(20px)" : "translateX(-20px)";
       requestAnimationFrame(() => {
         wrap.style.transition = "opacity 0.22s ease, transform 0.22s cubic-bezier(0.16, 1, 0.3, 1)";

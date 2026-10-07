@@ -118,8 +118,8 @@ const PORTFOLIO_DATA = {
       downloadName: "Lift_Compositing_Breakdown.mp4",
       poster: "images/posters/Lift_poster.jpg",
       isReel: false,
-      autoplay: false,
-      muted: false,
+      autoplay: true,
+      muted: true,
       desc: "Supervisory breakdown on Netflix's Lift: 340+ shots delivered with a team of up to 20 compositors, DMP oversight, and color pipeline management."
     },
     {
@@ -132,8 +132,8 @@ const PORTFOLIO_DATA = {
       downloadName: "Kraven_Breakdown.mp4",
       poster: "images/posters/Kraven_poster.jpg",
       isReel: false,
-      autoplay: false,
-      muted: false,
+      autoplay: true,
+      muted: true,
       desc: "Sequence look-development, creature interaction passes, and practical stunt plate compositing."
     },
     {
@@ -149,8 +149,8 @@ const PORTFOLIO_DATA = {
       downloadName: "American_Underdog_Crowd_Tool_Reel.mp4",
       poster: "images/posters/AmericanUnderdog_poster.jpg",
       isReel: false,
-      autoplay: false,
-      muted: false,
+      autoplay: true,
+      muted: true,
       desc: "Demonstration of Dan's proprietary 2D Sprite Crowd Tool written in Python, populating stadium sequences from 2,000 to 17,000 seats."
     },
     {
@@ -163,8 +163,8 @@ const PORTFOLIO_DATA = {
       downloadName: "Princess_Switch_3_Laser_Effects.mp4",
       poster: "images/posters/PrincessSwitch_poster.jpg",
       isReel: false,
-      autoplay: false,
-      muted: false,
+      autoplay: true,
+      muted: true,
       desc: "Interactive laser beam opticals, atmospheric volumetric dispersion, and security heist compositing."
     }
   ],

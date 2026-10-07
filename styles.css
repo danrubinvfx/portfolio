@@ -1131,6 +1131,62 @@ select:focus-visible {
   height: 100%;
   object-fit: cover;
   display: block;
+  cursor: pointer;
+}
+
+/* Compact Cinema Controls inside Supervisory Cards */
+.supervisory-player-wrap .cinema-controls-overlay {
+  padding: 24px 12px 10px 12px;
+  gap: 6px;
+}
+
+.supervisory-player-wrap .cinema-ctrl-btn {
+  padding: 4px;
+}
+
+.supervisory-player-wrap .cinema-ctrl-btn svg {
+  width: 15px;
+  height: 15px;
+}
+
+.supervisory-player-wrap .cinema-time-readout {
+  font-size: 11px;
+}
+
+.supervisory-player-wrap .cinema-center-splash .cinema-splash-badge {
+  width: 48px;
+  height: 48px;
+}
+
+.supervisory-player-wrap .cinema-center-splash .cinema-splash-badge svg {
+  width: 22px;
+  height: 22px;
+}
+
+.supervisory-player-wrap .cinema-controls-overlay.visible ~ .cinema-watermark,
+.supervisory-player-wrap:has(.cinema-controls-overlay.visible) .cinema-watermark {
+  transform: translateY(-38px);
+  opacity: 0.75;
+}
+
+/* Fullscreen support for both artist player and supervisory cards */
+.supervisory-player-wrap:fullscreen,
+.supervisory-player-wrap:-webkit-full-screen,
+.artist-player-fullwidth:fullscreen,
+.artist-player-fullwidth:-webkit-full-screen {
+  width: 100vw !important;
+  height: 100vh !important;
+  max-height: none !important;
+  background: #000000 !important;
+}
+
+.supervisory-player-wrap:fullscreen video,
+.supervisory-player-wrap:-webkit-full-screen video,
+.artist-player-fullwidth:fullscreen video,
+.artist-player-fullwidth:-webkit-full-screen video {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: contain !important;
 }
 
 .supervisory-card-meta {
@@ -3394,6 +3450,7 @@ input, textarea, select {
   z-index: 5;
   user-select: none;
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9);
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease;
 }
 
 .lightbox-watermark {
