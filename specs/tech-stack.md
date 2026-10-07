@@ -198,7 +198,7 @@ To serve as an instantaneous business card for VFX Recruiters and HODs:
    - Embedded native 3-page PDF viewer with fullscreen and open-in-tab actions.
    - One-click "Copy Clean Text" action with visual toast notification.
 3. **External Profile Verification Matrix:**
-   - Direct IMDb badge linking to `https://www.imdb.com/name/nm1885406/`.
+   - Direct IMDb badge linking to `https://www.imdb.com/name/nm1025156/`.
    - Direct LinkedIn badge linking to `https://www.linkedin.com/in/dan-rubin-8371032/`.
    - Direct Vimeo badge linking to `https://vimeo.com/showcase/11081895` with interactive password copy chip (`pw: password`).
 4. **Minimalist Floating Quick-Contact Pill:**

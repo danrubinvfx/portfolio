@@ -34,7 +34,7 @@ const PORTFOLIO_DATA = {
     email: "danielrubin76@gmail.com",
     phone: "(604) 345-8636",
     resumeUrl: "https://danrubinvfx.github.io/portfolio/Dan_Rubin_Resume.pdf",
-    imdbUrl: "https://www.imdb.com/name/nm1885406/",
+    imdbUrl: "https://www.imdb.com/name/nm1025156/",
     vimeoUrl: "https://vimeo.com/showcase/11081895",
     vimeoPassword: "password",
     linkedinUrl: "https://www.linkedin.com/in/dan-rubin-8371032/",
