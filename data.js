@@ -18,7 +18,7 @@ const ACTIVE_REEL_CONFIG = {
   role: "Senior Compositor / Artist Work",
   studio: "Feature Films & Episodic",
   file: "videos/2026CompositingReel.mp4",        // Drop new .mp4 into videos/
-  poster: "images/stills/AvatarFireandAsh_01.png",
+  poster: "images/posters/AvatarFireandAsh_poster.jpg",
   isReel: true,
   autoplay: false,
   muted: true,
@@ -33,6 +33,7 @@ const PORTFOLIO_DATA = {
     location: "Vancouver, BC (Dual US & Canadian Citizen)",
     email: "danielrubin76@gmail.com",
     phone: "(604) 345-8636",
+    resumeUrl: "https://danrubinvfx.github.io/portfolio/Dan_Rubin_Resume.pdf",
     imdbUrl: "https://www.imdb.com/name/nm1885406/",
     vimeoUrl: "https://vimeo.com/showcase/11081895",
     vimeoPassword: "password",
@@ -115,7 +116,7 @@ const PORTFOLIO_DATA = {
       studio: "Image Engine / Netflix (2024)",
       file: "videos/LIFTBreakdown.mp4",
       downloadName: "Lift_Compositing_Breakdown.mp4",
-      poster: "images/stills/Lift_01.png",
+      poster: "images/posters/Lift_poster.jpg",
       isReel: false,
       autoplay: false,
       muted: false,
@@ -129,7 +130,7 @@ const PORTFOLIO_DATA = {
       studio: "Image Engine / Sony & Marvel (2024)",
       file: "videos/Kraven_Breakdown.mp4",
       downloadName: "Kraven_Breakdown.mp4",
-      poster: "images/stills/Kraven.png",
+      poster: "images/posters/Kraven_poster.jpg",
       isReel: false,
       autoplay: false,
       muted: false,
@@ -146,7 +147,7 @@ const PORTFOLIO_DATA = {
       studio: "FuseFX-BC / Lionsgate (2021)",
       file: "videos/AUD_Reel.mp4",
       downloadName: "American_Underdog_Crowd_Tool_Reel.mp4",
-      poster: "images/stills/AmericanUnderdog.png",
+      poster: "images/posters/AmericanUnderdog_poster.jpg",
       isReel: false,
       autoplay: false,
       muted: false,
@@ -160,7 +161,7 @@ const PORTFOLIO_DATA = {
       studio: "FuseFX-BC / Netflix",
       file: "videos/PS3-laserEffects.mp4",
       downloadName: "Princess_Switch_3_Laser_Effects.mp4",
-      poster: "images/stills/PrincessSwitch03_01.png",
+      poster: "images/posters/PrincessSwitch_poster.jpg",
       isReel: false,
       autoplay: false,
       muted: false,
@@ -173,192 +174,192 @@ const PORTFOLIO_DATA = {
   // ==========================================================================
   topBannerImages: [
     {
-      src: "images/stills/ContraElHuracan_01.png",
+      src: "images/stills/ContraElHuracan_01.webp",
       title: "Contra el Huracán (2026)",
       role: "Compositing Supervisor • Eyeline VFX / Netflix"
     },
     {
-      src: "images/stills/AvatarFireandAsh_01.png",
+      src: "images/stills/AvatarFireandAsh_01.webp",
       title: "Avatar: Fire and Ash (2025)",
       role: "Senior Compositor • Wētā FX"
     },
     {
-      src: "images/stills/Kraven.png",
+      src: "images/stills/Kraven.webp",
       title: "Kraven the Hunter (2024)",
       role: "Compositing Supervisor • Image Engine"
     },
     {
-      src: "images/stills/Lift_01.png",
+      src: "images/stills/Lift_01.webp",
       title: "Lift (2024)",
       role: "Compositing Supervisor • Netflix Feature"
     },
     {
-      src: "images/stills/SkeletonCrew_01.png",
+      src: "images/stills/SkeletonCrew_01.webp",
       title: "Star Wars: Skeleton Crew (2024–2025)",
       role: "Senior Compositor • Lucasfilm / Disney+"
     },
     {
-      src: "images/stills/Superman2025.png",
+      src: "images/stills/Superman2025.webp",
       title: "Superman (2025)",
       role: "Senior Compositor • Wētā FX / DC Studios"
     },
     {
-      src: "images/stills/IntoTheSpiderverse_01.png",
+      src: "images/stills/IntoTheSpiderverse_01.webp",
       title: "Spider-Man: Into the Spider-Verse (2018)",
       role: "Lead Compositor • Academy Award Winner"
     },
     {
-      src: "images/stills/AmericanUnderdog.png",
+      src: "images/stills/AmericanUnderdog.webp",
       title: "American Underdog (2021)",
       role: "Compositing Supervisor / Lead • FuseFX"
     },
     {
-      src: "images/stills/TheEdgeOfTomorrow_01.png",
+      src: "images/stills/TheEdgeOfTomorrow_01.webp",
       title: "Edge of Tomorrow (2014)",
       role: "Senior Compositor • Sony Pictures Imageworks"
     },
     {
-      src: "images/stills/Ghostbusters2016_01.png",
+      src: "images/stills/Ghostbusters2016_01.webp",
       title: "Ghostbusters (2016)",
       role: "Senior Compositor • Deep Compositing • Sony"
     },
     {
-      src: "images/stills/District9.png",
+      src: "images/stills/District9.webp",
       title: "District 9 (2009)",
       role: "Senior Compositor • Image Engine"
     },
     {
-      src: "images/stills/TheGuard.png",
+      src: "images/stills/TheGuard.webp",
       title: "The Guard (2008)",
       role: "Gemini Award Nominee • Best Visual Effects"
     },
     {
-      src: "images/stills/AliceThroughTheLookingGlass_01.png",
+      src: "images/stills/AliceThroughTheLookingGlass_01.webp",
       title: "Alice Through the Looking Glass (2016)",
       role: "Senior Compositor • Deep Comp • Sony"
     },
     {
-      src: "images/stills/X-Men_DaysOfFuturePast_01.png",
+      src: "images/stills/X-Men_DaysOfFuturePast_01.webp",
       title: "X-Men: Days of Future Past (2014)",
       role: "Senior Compositor • Stereoscopic 3D • Digital Domain"
     },
     {
-      src: "images/stills/Thor.png",
+      src: "images/stills/Thor.webp",
       title: "Thor (2011)",
       role: "Senior Compositor • Digital Domain"
     },
     {
-      src: "images/stills/OZTheGreatandPowerful.png",
+      src: "images/stills/OZTheGreatandPowerful.webp",
       title: "Oz the Great and Powerful (2013)",
       role: "Senior Compositor • Stereo 3D • Sony"
     },
     {
-      src: "images/stills/Upload_01.png",
+      src: "images/stills/Upload_01.webp",
       title: "Upload (2020– )",
       role: "Compositing Supervisor • FuseFX / Amazon"
     },
     {
-      src: "images/stills/PrincessSwitch03_01.png",
+      src: "images/stills/PrincessSwitch03_01.webp",
       title: "The Princess Switch 3 (2021)",
       role: "Compositing Supervisor • Netflix / FuseFX"
     },
     {
-      src: "images/stills/PrincessSwitch03_02.png",
+      src: "images/stills/PrincessSwitch03_02.webp",
       title: "The Princess Switch 3 (2021)",
       role: "Compositing Supervisor • Netflix / FuseFX"
     },
     {
-      src: "images/stills/Pixels_01.png",
+      src: "images/stills/Pixels_01.webp",
       title: "Pixels (2015)",
       role: "Senior Compositor • Sony Pictures Imageworks"
     },
     {
-      src: "images/stills/Pixels_02.png",
+      src: "images/stills/Pixels_02.webp",
       title: "Pixels (2015)",
       role: "Senior Compositor • Sony Pictures Imageworks"
     },
     {
-      src: "images/stills/ContraElHuracan_02.png",
+      src: "images/stills/ContraElHuracan_02.webp",
       title: "Contra el Huracán (2026)",
       role: "Compositing Supervisor • Eyeline VFX / Netflix"
     },
     {
-      src: "images/stills/BladeTrinity_01.png",
+      src: "images/stills/BladeTrinity_01.webp",
       title: "Blade: Trinity (2004)",
       role: "Compositor • New Line Cinema"
     },
     {
-      src: "images/stills/BladeTrinity_02.png",
+      src: "images/stills/BladeTrinity_02.webp",
       title: "Blade: Trinity (2004)",
       role: "Compositor • New Line Cinema"
     },
     {
-      src: "images/stills/TaledegaNights.png",
+      src: "images/stills/TaledegaNights.webp",
       title: "Talladega Nights (2006)",
       role: "Lead Compositor • Columbia Pictures"
     },
     {
-      src: "images/stills/TheNightAtTheMuseum_01.png",
+      src: "images/stills/TheNightAtTheMuseum_01.webp",
       title: "Night at the Museum (2006)",
       role: "Lead Compositor • 20th Century Fox"
     },
     {
-      src: "images/stills/TheNightAtTheMuseum_02.png",
+      src: "images/stills/TheNightAtTheMuseum_02.webp",
       title: "Night at the Museum (2006)",
       role: "Lead Compositor • 20th Century Fox"
     },
     {
-      src: "images/stills/VantagePoint_01.png",
+      src: "images/stills/VantagePoint_01.webp",
       title: "Vantage Point (2008)",
       role: "Senior Compositor • Columbia Pictures"
     },
     {
-      src: "images/stills/VantagePoint_02.png",
+      src: "images/stills/VantagePoint_02.webp",
       title: "Vantage Point (2008)",
       role: "Senior Compositor • Columbia Pictures"
     },
     {
-      src: "images/stills/Zathura.png",
+      src: "images/stills/Zathura.webp",
       title: "Zathura: A Space Adventure (2005)",
       role: "Digital Compositor • Sony Pictures Imageworks"
     },
     {
-      src: "images/stills/TheMask2.jpg",
+      src: "images/stills/TheMask2.webp",
       title: "Son of the Mask (2005)",
       role: "Compositor • New Line Cinema"
     },
     {
-      src: "images/stills/Upload_03.png",
+      src: "images/stills/Upload_03.webp",
       title: "Upload (2020– )",
       role: "Compositing Supervisor • Amazon Studios"
     },
     {
-      src: "images/stills/SkeletonCrew_03.png",
+      src: "images/stills/SkeletonCrew_03.webp",
       title: "Star Wars: Skeleton Crew (2024–2025)",
       role: "Senior Compositor • Lucasfilm / Disney+"
     },
     {
-      src: "images/stills/Superman2025_02.png",
+      src: "images/stills/Superman2025_02.webp",
       title: "Superman (2025)",
       role: "Senior Compositor • Wētā FX / DC Studios"
     },
     {
-      src: "images/stills/IntoTheSpiderverse_02.png",
+      src: "images/stills/IntoTheSpiderverse_02.webp",
       title: "Spider-Man: Into the Spider-Verse (2018)",
       role: "Lead Compositor • Sony Pictures Imageworks"
     },
     {
-      src: "images/stills/AvatarFireandAsh_03.png",
+      src: "images/stills/AvatarFireandAsh_03.webp",
       title: "Avatar: Fire and Ash (2025)",
       role: "Senior Compositor • Wētā FX"
     },
     {
-      src: "images/stills/TheEdgeOfTomorrow_02.png",
+      src: "images/stills/TheEdgeOfTomorrow_02.webp",
       title: "Edge of Tomorrow (2014)",
       role: "Senior Compositor • Sony Pictures Imageworks"
     },
     {
-      src: "images/stills/Lift_03.png",
+      src: "images/stills/Lift_03.webp",
       title: "Lift (2024)",
       role: "Compositing Supervisor • Netflix Feature"
     }
@@ -374,149 +375,9 @@ const PORTFOLIO_DATA = {
       role: "Compositing Supervisor",
       studio: "Eyeline VFX / Netflix",
       year: "2026",
-      image: "images/stills/ContraElHuracan_01.png",
+      image: "images/stills/ContraElHuracan_01.webp",
       caption: "High-intensity storm and maritime survival feature for Netflix. Supervised compositing teams, sea-spray volumetrics, dynamic wave lighting, and color pipeline delivery.",
       technicalDetail: "Supervised compositing at Eyeline VFX; led sequence look-development, extreme ocean water interactions, and photoreal plate integration."
-    },
-    {
-      id: "still-lift-hero",
-      title: "Lift (2024)",
-      role: "Compositing Supervisor",
-      studio: "Image Engine / Netflix",
-      year: "2024",
-      image: "images/stills/Lift_01.png",
-      caption: "Airborne heist sequence featuring complex digital matte painting extensions, cloud volumetrics, and cockpit comps.",
-      technicalDetail: "Supervised 340+ shots and up to 20 compositors; established look-dev templates and color pipeline alignment."
-    },
-    {
-      id: "still-kraven-hero",
-      title: "Kraven the Hunter (2024)",
-      role: "Compositing Supervisor",
-      studio: "Image Engine / Sony Pictures & Marvel",
-      year: "2024",
-      image: "images/stills/Kraven.png",
-      caption: "High-octane action sequence compositing, creature interactions, and seamless practical stunt integration.",
-      technicalDetail: "Led sequence look-development, high-speed camera match comp, and multi-pass creature asset integration."
-    },
-    {
-      id: "still-avatar-hero",
-      title: "Avatar: Fire and Ash (2025)",
-      role: "Senior Compositor",
-      studio: "Wētā FX / 20th Century Studios",
-      year: "2025",
-      image: "images/stills/AvatarFireandAsh_01.png",
-      caption: "Photorealistic environmental CG integration, stereoscopic depth balancing, and hero creature plate lighting.",
-      technicalDetail: "Executed multi-pass ACEScg lighting integration and stereoscopic alignment under James Cameron's exacting photoreal standards."
-    },
-    {
-      id: "still-skeleton-crew",
-      title: "Star Wars: Skeleton Crew (2024–2025)",
-      role: "Senior Compositor",
-      studio: "Image Engine / Lucasfilm / Disney+",
-      year: "2024–2025",
-      image: "images/stills/SkeletonCrew_01.png",
-      caption: "Star Wars episodic streaming series featuring deep-space craft compositing, practical animatronic integration, and alien environment balance.",
-      technicalDetail: "Multi-layered live-action plate integration with CG spacecraft, laser interaction, and optical anamorphic lens matching."
-    },
-    {
-      id: "still-superman",
-      title: "Superman (2025)",
-      role: "Senior Compositor",
-      studio: "Wētā FX / DC Studios",
-      year: "2025",
-      image: "images/stills/Superman2025.png",
-      caption: "Dynamic superhero action sequence with high-energy passes, aerial plate integration, and atmospheric volumetrics.",
-      technicalDetail: "Complex photographic lighting balance and interaction between practical wire-work plates and hero CG assets."
-    },
-    {
-      id: "still-spiderverse-hero",
-      title: "Spider-Man: Into the Spider-Verse (2018)",
-      role: "Lead Compositor",
-      studio: "Sony Pictures Imageworks / Sony Pictures Animation",
-      year: "2018",
-      image: "images/stills/IntoTheSpiderverse_01.png",
-      caption: "Pioneering comic-book halftone print aesthetics, chromatic separation, and bespoke composite treatments. Academy Award Winner for Best Animated Feature.",
-      technicalDetail: "Led sequence artist pods to execute the directors' signature multi-dimensional visual style."
-    },
-    {
-      id: "still-underdog-hero",
-      title: "American Underdog (2021)",
-      role: "Compositing Supervisor / Lead",
-      studio: "FuseFX-BC / Lionsgate",
-      year: "2021",
-      image: "images/stills/AmericanUnderdog.png",
-      caption: "Proprietary Python 2D Sprite Crowd Tool populating stadium crowds from 2,000 to 17,000 seats.",
-      technicalDetail: "Wrote production crowd generator reducing 3D render queues, paired with plate neutral grading across dynamic stadium light."
-    },
-    {
-      id: "still-edge-tomorrow",
-      title: "Edge of Tomorrow (2014)",
-      role: "Senior Compositor",
-      studio: "Sony Pictures Imageworks / Warner Bros.",
-      year: "2014",
-      image: "images/stills/TheEdgeOfTomorrow_01.png",
-      caption: "Complex battle beach sequence with multi-pass mimic alien integration, explosive debris, dynamic camera shake, and sand volumetrics.",
-      technicalDetail: "Multi-pass CG integration matching physical practical armor and fast-paced hand-held photographic plates."
-    },
-    {
-      id: "still-ghostbusters",
-      title: "Ghostbusters (2016)",
-      role: "Senior Compositor",
-      studio: "Sony Pictures Imageworks / Columbia",
-      year: "2016",
-      image: "images/stills/Ghostbusters2016_01.png",
-      caption: "Pioneered Deep Compositing pipelines merging live-action proton stream interactive light passes with volumetric spectral CG ghosts.",
-      technicalDetail: "Utilized Deep EXR sample data to avoid matte edge artifacts in complex semi-transparent glowing entity interactions."
-    },
-    {
-      id: "still-district9",
-      title: "District 9 (2009)",
-      role: "Senior Compositor",
-      studio: "Image Engine / TriStar",
-      year: "2009",
-      image: "images/stills/District9.png",
-      caption: "Academy Award Nominee for Best Visual Effects. Groundbreaking documentary-style photoreal alien integration.",
-      technicalDetail: "Seamless photoreal CG character integration into harsh documentary hand-held plates."
-    },
-    {
-      id: "still-guard",
-      title: "The Guard (2008)",
-      role: "Gemini Award Nominee",
-      studio: "CIS-Vancouver / CBC",
-      year: "2008",
-      image: "images/stills/TheGuard.png",
-      caption: "Gemini Award Nominee for Best Visual Effects. High-seas Coast Guard rescue sequences with heavy wave volumetrics.",
-      technicalDetail: "Integrated water simulations and physical boat miniature plates with marine atmospherics."
-    },
-    {
-      id: "still-alice",
-      title: "Alice Through the Looking Glass (2016)",
-      role: "Senior Compositor",
-      studio: "Sony Pictures Imageworks / Disney",
-      year: "2016",
-      image: "images/stills/AliceThroughTheLookingGlass_01.png",
-      caption: "Advanced Deep Compositing, hyper-stylized environment extensions, and fantastical VFX integration.",
-      technicalDetail: "Utilized Deep Compositing workflows for complex edge integration with multi-layered volume passes."
-    },
-    {
-      id: "still-xmen",
-      title: "X-Men: Days of Future Past (2014)",
-      role: "Senior Compositor",
-      studio: "Digital Domain / 20th Century Fox",
-      year: "2014",
-      image: "images/stills/X-Men_DaysOfFuturePast_01.png",
-      caption: "Stereoscopic 3D compositing, Sentinel sequence look-dev, and high-energy optical beam integration.",
-      technicalDetail: "Stereo alignment, depth grading, and multi-pass CG integration for hero action sequences."
-    },
-    {
-      id: "still-upload",
-      title: "Upload (2020– )",
-      role: "Compositing Supervisor",
-      studio: "FuseFX-BC / Amazon Studios",
-      year: "2020",
-      image: "images/stills/Upload_01.png",
-      caption: "Futuristic digital visual effects, UI holograms, virtual world aesthetic, and invisible environment composites.",
-      technicalDetail: "Supervised compositing for episodic delivery across multiple VFX pods and motion graphics integration."
     },
     {
       id: "still-contra-wave",
@@ -524,9 +385,589 @@ const PORTFOLIO_DATA = {
       role: "Compositing Supervisor",
       studio: "Eyeline VFX / Netflix",
       year: "2026",
-      image: "images/stills/ContraElHuracan_02.png",
+      image: "images/stills/ContraElHuracan_02.webp",
       caption: "Extreme maritime survival sequence: pitch-black ocean swells, vessel illumination through spray, and dynamic storm turbulence.",
       technicalDetail: "High-dynamic-range color management, interactive lighting from searchlights on churning water passes."
+    },
+    {
+      id: "still-lift-01",
+      title: "Lift (2024)",
+      role: "Compositing Supervisor",
+      studio: "Image Engine / Netflix",
+      year: "2024",
+      image: "images/stills/Lift_01.webp",
+      caption: "Airborne heist sequence featuring complex digital matte painting extensions, cloud volumetrics, and cockpit comps.",
+      technicalDetail: "Supervised 340+ shots and up to 20 compositors; established look-dev templates and color pipeline alignment."
+    },
+    {
+      id: "still-lift-02",
+      title: "Lift — Stealth Jet Approach (2024)",
+      role: "Compositing Supervisor",
+      studio: "Image Engine / Netflix",
+      year: "2024",
+      image: "images/stills/Lift_02.webp",
+      caption: "High-altitude exterior aerial sequence showing luxury jet formation and atmospheric haze integration.",
+      technicalDetail: "Multi-layered live-action cockpit integration with CG aircraft, interactive cloud light wrapping, and anamorphic lens match."
+    },
+    {
+      id: "still-lift-03",
+      title: "Lift — Sky Heist Interior (2024)",
+      role: "Compositing Supervisor",
+      studio: "Image Engine / Netflix",
+      year: "2024",
+      image: "images/stills/Lift_03.webp",
+      caption: "In-flight jet interior extraction and dynamic moving digital matte painting exterior background projection.",
+      technicalDetail: "Interactive lighting matching moving horizon line, green screen SpillClean extraction, and reflection balancing."
+    },
+    {
+      id: "still-lift-04",
+      title: "Lift — High-Altitude Dogfight (2024)",
+      role: "Compositing Supervisor",
+      studio: "Image Engine / Netflix",
+      year: "2024",
+      image: "images/stills/Lift_04.webp",
+      caption: "High-speed aerial intercept maneuver with heat distortion shimmer and dynamic contrail volumetrics.",
+      technicalDetail: "Complex particle pass compositing, jet exhaust refraction, and ACEScg pipeline color balance."
+    },
+    {
+      id: "still-lift-05",
+      title: "Lift — Mountain Horizon (2024)",
+      role: "Compositing Supervisor",
+      studio: "Image Engine / Netflix",
+      year: "2024",
+      image: "images/stills/Lift_05.webp",
+      caption: "Alpine mountain range environment extension composite under changing sunset light conditions.",
+      technicalDetail: "High-resolution digital matte painting projection blending seamless depth fog and atmospheric scattering."
+    },
+    {
+      id: "still-kraven-01",
+      title: "Kraven the Hunter (2024)",
+      role: "Compositing Supervisor",
+      studio: "Image Engine / Sony Pictures & Marvel",
+      year: "2024",
+      image: "images/stills/Kraven.webp",
+      caption: "High-octane action sequence compositing, creature interactions, and seamless practical stunt integration.",
+      technicalDetail: "Led sequence look-development, high-speed camera match comp, and multi-pass creature asset integration."
+    },
+    {
+      id: "still-kraven-02",
+      title: "Kraven the Hunter — Predator Instinct (2024)",
+      role: "Compositing Supervisor",
+      studio: "Image Engine / Sony Pictures & Marvel",
+      year: "2024",
+      image: "images/stills/Kraven_02.webp",
+      caption: "Hero beast interaction and practical stunt plate integration with multi-layered blood and mud splatters.",
+      technicalDetail: "Supervised dynamic plate clean-up, optical wire removals, and photoreal CG fur lighting matching harsh overcast plates."
+    },
+    {
+      id: "still-kraven-03",
+      title: "Kraven the Hunter — Forest Hunt (2024)",
+      role: "Compositing Supervisor",
+      studio: "Image Engine / Sony Pictures & Marvel",
+      year: "2024",
+      image: "images/stills/Kraven_03.webp",
+      caption: "Dense woodland chase sequence with interactive foliage displacement, dynamic light dappling, and lens flares.",
+      technicalDetail: "Fine-hair matte extraction against complex wooded backdrops, integrating CG creature limbs seamlessly."
+    },
+    {
+      id: "still-kraven-04",
+      title: "Kraven the Hunter — Climax Confrontation (2024)",
+      role: "Compositing Supervisor",
+      studio: "Image Engine / Sony Pictures & Marvel",
+      year: "2024",
+      image: "images/stills/Kraven_04.webp",
+      caption: "High-impact tactical combat plate with practical pyrotechnics enhancement, dust volumetrics, and debris scatter.",
+      technicalDetail: "Multi-layered interactive explosion grading and seamless 2.5D projection for set extension continuity."
+    },
+    {
+      id: "still-avatar-01",
+      title: "Avatar: Fire and Ash (2025)",
+      role: "Senior Compositor",
+      studio: "Wētā FX / 20th Century Studios",
+      year: "2025",
+      image: "images/stills/AvatarFireandAsh_01.webp",
+      caption: "Photorealistic environmental CG integration, stereoscopic depth balancing, and hero creature plate lighting.",
+      technicalDetail: "Executed multi-pass ACEScg lighting integration and stereoscopic alignment under James Cameron's exacting standards."
+    },
+    {
+      id: "still-avatar-02",
+      title: "Avatar: Fire and Ash — Ash Clan Volcanics (2025)",
+      role: "Senior Compositor",
+      studio: "Wētā FX / 20th Century Studios",
+      year: "2025",
+      image: "images/stills/AvatarFireandAsh_02.webp",
+      caption: "Volcanic ash atmosphere compositing with molten lava illumination, thermal heat shimmers, and micro-particulates.",
+      technicalDetail: "Deep EXR multi-pass merging of airborne ember volumes and deep creature occlusions."
+    },
+    {
+      id: "still-avatar-03",
+      title: "Avatar: Fire and Ash — Pandora Coastline (2025)",
+      role: "Senior Compositor",
+      studio: "Wētā FX / 20th Century Studios",
+      year: "2025",
+      image: "images/stills/AvatarFireandAsh_03.webp",
+      caption: "Hyper-realistic marine water surface refraction, caustic light projection, and Na'vi skin subsurface scattering balance.",
+      technicalDetail: "Subsurface light transmission balancing and dual-eye convergence verification."
+    },
+    {
+      id: "still-avatar-04",
+      title: "Avatar: Fire and Ash — Creature Look-Dev (2025)",
+      role: "Senior Compositor",
+      studio: "Wētā FX / 20th Century Studios",
+      year: "2025",
+      image: "images/stills/AvatarFireandAsh_04.webp",
+      caption: "Hero flying banshee sequence with intricate multi-spectral skin specular highlights and atmospheric depth falloff.",
+      technicalDetail: "Rebuilding beauty passes from diffuse, transmission, and cryptomattes for fine-grained client revisions."
+    },
+    {
+      id: "still-avatar-05",
+      title: "Avatar: Fire and Ash — Aerial Formation (2025)",
+      role: "Senior Compositor",
+      studio: "Wētā FX / 20th Century Studios",
+      year: "2025",
+      image: "images/stills/AvatarFireandAsh_05.webp",
+      caption: "Dynamic flight through floating mountain archipelagos with volumetric cloud slicing and sunbeam rays.",
+      technicalDetail: "Deep compositing sample merges preserving sub-pixel edge clarity across heavy volume fields."
+    },
+    {
+      id: "still-avatar-06",
+      title: "Avatar: Fire and Ash — Bioluminescent Canopy (2025)",
+      role: "Senior Compositor",
+      studio: "Wētā FX / 20th Century Studios",
+      year: "2025",
+      image: "images/stills/AvatarFireandAsh_06.webp",
+      caption: "Night-time Pandora forest illumination with interactive bioluminescent pulses and micro-spores floating in air.",
+      technicalDetail: "Complex glow dissipation curves and camera optical bloom modeling matching physical anamorphic glass."
+    },
+    {
+      id: "still-avatar-07",
+      title: "Avatar: Fire and Ash — Clan Gathering (2025)",
+      role: "Senior Compositor",
+      studio: "Wētā FX / 20th Century Studios",
+      year: "2025",
+      image: "images/stills/AvatarFireandAsh_07.webp",
+      caption: "Intimate character close-up balance focusing on realistic corneal reflections, facial hair, and pore displacement.",
+      technicalDetail: "Precision stereo 3D floating window adjustments eliminating edge ocular violations."
+    },
+    {
+      id: "still-avatar-08",
+      title: "Avatar: Fire and Ash — Fire Ritual (2025)",
+      role: "Senior Compositor",
+      studio: "Wētā FX / 20th Century Studios",
+      year: "2025",
+      image: "images/stills/AvatarFireandAsh_08.webp",
+      caption: "Interactive firelight flickering across Na'vi ceremonial war paint and woven tribal costume textiles.",
+      technicalDetail: "Dynamic lighting grading across normal vectors and point-position passes."
+    },
+    {
+      id: "still-avatar-09",
+      title: "Avatar: Fire and Ash — Ocean Depths (2025)",
+      role: "Senior Compositor",
+      studio: "Wētā FX / 20th Century Studios",
+      year: "2025",
+      image: "images/stills/AvatarFireandAsh_09.webp",
+      caption: "Deep underwater reef expedition with marine particulate fog, god-rays, and buoyant aquatic flora motion.",
+      technicalDetail: "Z-depth-driven chromatic wavelength absorption matching genuine oceanic light falloff."
+    },
+    {
+      id: "still-avatar-10",
+      title: "Avatar: Fire and Ash — Sky Skirmish (2025)",
+      role: "Senior Compositor",
+      studio: "Wētā FX / 20th Century Studios",
+      year: "2025",
+      image: "images/stills/AvatarFireandAsh_10.webp",
+      caption: "Fast-panned aerial combat shot with motion-blurred rotorcraft blades and explosive tracer trails.",
+      technicalDetail: "Vector motion blur balancing and optical artifact matching across extreme frame deltas."
+    },
+    {
+      id: "still-avatar-11",
+      title: "Avatar: Fire and Ash — Ash Wastes (2025)",
+      role: "Senior Compositor",
+      studio: "Wētā FX / 20th Century Studios",
+      year: "2025",
+      image: "images/stills/AvatarFireandAsh_11.webp",
+      caption: "Desolate volcanic ash desert landscape with wind-whipped sand dunes and scorched rock monoliths.",
+      technicalDetail: "Matte painting projection blending onto dynamic 3D terrain meshes with haze layers."
+    },
+    {
+      id: "still-avatar-12",
+      title: "Avatar: Fire and Ash — Spirit Tree Communion (2025)",
+      role: "Senior Compositor",
+      studio: "Wētā FX / 20th Century Studios",
+      year: "2025",
+      image: "images/stills/AvatarFireandAsh_12.webp",
+      caption: "Ethereal luminous tendril interactions with character fingertips, casting soft pink and violet light wrap.",
+      technicalDetail: "Multi-layered optical diffuse convolutions creating organic, dream-like bioluminescence."
+    },
+    {
+      id: "still-avatar-13",
+      title: "Avatar: Fire and Ash — Climax Warfare (2025)",
+      role: "Senior Compositor",
+      studio: "Wētā FX / 20th Century Studios",
+      year: "2025",
+      image: "images/stills/AvatarFireandAsh_13.webp",
+      caption: "Massive multi-clan battle sequence involving hundreds of flying creatures, explosive detonations, and smoke plumes.",
+      technicalDetail: "High-density crowd EXR compositing with multi-plane depth management and stereo convergence."
+    },
+    {
+      id: "still-skeleton-crew-01",
+      title: "Star Wars: Skeleton Crew (2024–2025)",
+      role: "Senior Compositor",
+      studio: "Image Engine / Lucasfilm / Disney+",
+      year: "2024–2025",
+      image: "images/stills/SkeletonCrew_01.webp",
+      caption: "Star Wars episodic streaming series featuring deep-space craft compositing, animatronic integration, and alien environment balance.",
+      technicalDetail: "Multi-layered live-action plate integration with CG spacecraft, laser interaction, and optical anamorphic lens matching."
+    },
+    {
+      id: "still-skeleton-crew-02",
+      title: "Star Wars: Skeleton Crew — Hyperspace Re-entry (2024–2025)",
+      role: "Senior Compositor",
+      studio: "Image Engine / Lucasfilm / Disney+",
+      year: "2024–2025",
+      image: "images/stills/SkeletonCrew_02.webp",
+      caption: "Signature Star Wars hyperspace reversion flash illuminating the cockpit crew and cockpit console controls.",
+      technicalDetail: "Interactive lighting matching practical cockpit rig with digital starlight streaking outside."
+    },
+    {
+      id: "still-skeleton-crew-03",
+      title: "Star Wars: Skeleton Crew — Alien Cantina (2024–2025)",
+      role: "Senior Compositor",
+      studio: "Image Engine / Lucasfilm / Disney+",
+      year: "2024–2025",
+      image: "images/stills/SkeletonCrew_03.webp",
+      caption: "Practical puppetry clean-up, rod removal, and seamless CG facial micro-expression enhancement.",
+      technicalDetail: "Organic plate repair and 2D tracking around physical animatronic seams under moody interior lighting."
+    },
+    {
+      id: "still-skeleton-crew-04",
+      title: "Star Wars: Skeleton Crew — Desert Planet Descent (2024–2025)",
+      role: "Senior Compositor",
+      studio: "Image Engine / Lucasfilm / Disney+",
+      year: "2024–2025",
+      image: "images/stills/SkeletonCrew_04.webp",
+      caption: "Atmospheric planet entry through storm clouds with frictional ionization glow on ship heat shielding.",
+      technicalDetail: "Particle spray and heat shimmer distortion passes matching live-action camera shake."
+    },
+    {
+      id: "still-skeleton-crew-05",
+      title: "Star Wars: Skeleton Crew — Space Wreckage (2024–2025)",
+      role: "Senior Compositor",
+      studio: "Image Engine / Lucasfilm / Disney+",
+      year: "2024–2025",
+      image: "images/stills/SkeletonCrew_05.webp",
+      caption: "Derelict starship graveyard with harsh zero-atmosphere directional sunlight and floating hull debris.",
+      technicalDetail: "Extreme dynamic range sunlight speculars and razor-sharp shadow falloff characteristic of deep space."
+    },
+    {
+      id: "still-skeleton-crew-06",
+      title: "Star Wars: Skeleton Crew — Droid Companion (2024–2025)",
+      role: "Senior Compositor",
+      studio: "Image Engine / Lucasfilm / Disney+",
+      year: "2024–2025",
+      image: "images/stills/SkeletonCrew_06.webp",
+      caption: "Full CG droid integration onto practical set floor with realistic contact shadows and optical dirt passes.",
+      technicalDetail: "Physical set bounce integration, metallic roughness matching, and plate lens curvature emulation."
+    },
+    {
+      id: "still-superman-01",
+      title: "Superman (2025)",
+      role: "Senior Compositor",
+      studio: "Wētā FX / DC Studios",
+      year: "2025",
+      image: "images/stills/Superman2025.webp",
+      caption: "Dynamic superhero action sequence with high-energy passes, aerial plate integration, and atmospheric volumetrics.",
+      technicalDetail: "Complex photographic lighting balance and interaction between practical wire-work plates and hero CG assets."
+    },
+    {
+      id: "still-superman-02",
+      title: "Superman — Metropolis Sky Battle (2025)",
+      role: "Senior Compositor",
+      studio: "Wētā FX / DC Studios",
+      year: "2025",
+      image: "images/stills/Superman2025_02.webp",
+      caption: "Supersonic flight through city skyscrapers with shattering glass passes, air compression shockwaves, and building reflections.",
+      technicalDetail: "High-speed 2.5D background projection and interactive building facet reflections."
+    },
+    {
+      id: "still-superman-03",
+      title: "Superman — Fortress of Solitude (2025)",
+      role: "Senior Compositor",
+      studio: "Wētā FX / DC Studios",
+      year: "2025",
+      image: "images/stills/Superman2025_03.webp",
+      caption: "Monumental crystalline architecture with internal crystal light refractions, glacial ice shaders, and drifting snow.",
+      technicalDetail: "Multi-layered refractive caustics and deep volumetric drift snow integration."
+    },
+    {
+      id: "still-superman-04",
+      title: "Superman — Heat Vision Climax (2025)",
+      role: "Senior Compositor",
+      studio: "Wētā FX / DC Studios",
+      year: "2025",
+      image: "images/stills/Superman2025_04.webp",
+      caption: "Intense hero optical beam effects casting scorching red interactive illumination across character eyes and facial skin.",
+      technicalDetail: "Dynamic high-energy optical flare modeling, skin subsurface thermal response, and interactive lens blooming."
+    },
+    {
+      id: "still-spiderverse-01",
+      title: "Spider-Man: Into the Spider-Verse (2018)",
+      role: "Lead Compositor",
+      studio: "Sony Pictures Imageworks / Sony Pictures Animation",
+      year: "2018",
+      image: "images/stills/IntoTheSpiderverse_01.webp",
+      caption: "Pioneering comic-book halftone print aesthetics, chromatic separation, and bespoke composite treatments. Academy Award Winner for Best Animated Feature.",
+      technicalDetail: "Led sequence artist pods to execute the directors' signature multi-dimensional visual style."
+    },
+    {
+      id: "still-spiderverse-02",
+      title: "Spider-Man: Into the Spider-Verse — Collider Breach (2018)",
+      role: "Lead Compositor",
+      studio: "Sony Pictures Imageworks / Sony Pictures Animation",
+      year: "2018",
+      image: "images/stills/IntoTheSpiderverse_02.webp",
+      caption: "Dimensional rift breakdown with CMYK print misalignment, Ben-Day dots, and reality-shattering prismatic shards.",
+      technicalDetail: "Developed innovative Nuke gizmos for halftone screens and chromatic print registration offsets."
+    },
+    {
+      id: "still-spiderverse-03",
+      title: "Spider-Man: Into the Spider-Verse — Leap of Faith (2018)",
+      role: "Lead Compositor",
+      studio: "Sony Pictures Imageworks / Sony Pictures Animation",
+      year: "2018",
+      image: "images/stills/IntoTheSpiderverse_03.webp",
+      caption: "Iconic inverted skyscraper dive through neon-lit rainy Brooklyn with stylized optical streak flares.",
+      technicalDetail: "Hand-painted ink line integration over 3D animation passes with custom atmospheric perspective grades."
+    },
+    {
+      id: "still-underdog-01",
+      title: "American Underdog (2021)",
+      role: "Compositing Supervisor / Lead",
+      studio: "FuseFX-BC / Lionsgate",
+      year: "2021",
+      image: "images/stills/AmericanUnderdog.webp",
+      caption: "Proprietary Python 2D Sprite Crowd Tool populating stadium crowds from 2,000 to 17,000 seats.",
+      technicalDetail: "Wrote production crowd generator reducing 3D render queues, paired with plate neutral grading across dynamic stadium light."
+    },
+    {
+      id: "still-underdog-02",
+      title: "American Underdog — Championship Drive (2021)",
+      role: "Compositing Supervisor / Lead",
+      studio: "FuseFX-BC / Lionsgate",
+      year: "2021",
+      image: "images/stills/AmericanUnderdog_02.webp",
+      caption: "Floodlit stadium night match with atmospheric haze, sports camera lens flares, and synthetic crowd cheering.",
+      technicalDetail: "Multi-tier sprite crowd placement aligned to 3D stadium geometry with randomized cheering animation cycles."
+    },
+    {
+      id: "still-edge-tomorrow-01",
+      title: "Edge of Tomorrow (2014)",
+      role: "Senior Compositor",
+      studio: "Sony Pictures Imageworks / Warner Bros.",
+      year: "2014",
+      image: "images/stills/TheEdgeOfTomorrow_01.webp",
+      caption: "Complex battle beach sequence with multi-pass mimic alien integration, explosive debris, dynamic camera shake, and sand volumetrics.",
+      technicalDetail: "Multi-pass CG integration matching physical practical armor and fast-paced hand-held photographic plates."
+    },
+    {
+      id: "still-edge-tomorrow-02",
+      title: "Edge of Tomorrow — Mimic Combat (2014)",
+      role: "Senior Compositor",
+      studio: "Sony Pictures Imageworks / Warner Bros.",
+      year: "2014",
+      image: "images/stills/TheEdgeOfTomorrow_02.webp",
+      caption: "Tentacled mimic alien whip-pan attacks with interactive sand displacement and high-speed motion blur tracking.",
+      technicalDetail: "Sub-pixel deep compositing of semi-translucent alien tentacles over gritty practical beach explosions."
+    },
+    {
+      id: "still-edge-tomorrow-03",
+      title: "Edge of Tomorrow — Drop Ship Assault (2014)",
+      role: "Senior Compositor",
+      studio: "Sony Pictures Imageworks / Warner Bros.",
+      year: "2014",
+      image: "images/stills/TheEdgeofTomorrow_03.webp",
+      caption: "Transport quad-rotor air drops with burning wreckage, flak bursts, and heavy coastal smoke banks.",
+      technicalDetail: "Photoreal fire and pyrotechnic integration into real sky helicopter plates."
+    },
+    {
+      id: "still-edge-tomorrow-04",
+      title: "Edge of Tomorrow — Exosuit Mech Action (2014)",
+      role: "Senior Compositor",
+      studio: "Sony Pictures Imageworks / Warner Bros.",
+      year: "2014",
+      image: "images/stills/TheEdgeofTomorrow_04.webp",
+      caption: "Close-quarters combat highlighting mechanical hydraulic piston detail and practical gun smoke interaction.",
+      technicalDetail: "Seamlessly blending physical wearable stunt suits with fully digital mechanical weapon arms."
+    },
+    {
+      id: "still-ghostbusters-01",
+      title: "Ghostbusters (2016)",
+      role: "Senior Compositor",
+      studio: "Sony Pictures Imageworks / Columbia",
+      year: "2016",
+      image: "images/stills/Ghostbusters2016_01.webp",
+      caption: "Pioneered Deep Compositing pipelines merging live-action proton stream interactive light passes with volumetric spectral CG ghosts.",
+      technicalDetail: "Utilized Deep EXR sample data to avoid matte edge artifacts in complex semi-transparent glowing entity interactions."
+    },
+    {
+      id: "still-ghostbusters-02",
+      title: "Ghostbusters — Times Square Swarm (2016)",
+      role: "Senior Compositor",
+      studio: "Sony Pictures Imageworks / Columbia",
+      year: "2016",
+      image: "images/stills/Ghostbusters2016_02.webp",
+      caption: "Mass spectral entity invasion of Times Square with interactive street sign illumination, slime splashes, and proton beam cross-fires.",
+      technicalDetail: "Volumetric light wrap modeling casting vibrant green and electric blue ambient lighting onto live-action actors."
+    },
+    {
+      id: "still-district9",
+      title: "District 9 (2009)",
+      role: "Senior Compositor",
+      studio: "Image Engine / TriStar",
+      year: "2009",
+      image: "images/stills/District9.webp",
+      caption: "Academy Award Nominee for Best Visual Effects. Groundbreaking documentary-style photoreal alien integration.",
+      technicalDetail: "Seamless photoreal CG character integration into harsh documentary hand-held plates."
+    },
+    {
+      id: "still-the-guard",
+      title: "The Guard (2008)",
+      role: "Gemini Award Nominee",
+      studio: "CIS-Vancouver / CBC",
+      year: "2008",
+      image: "images/stills/TheGuard.webp",
+      caption: "Gemini Award Nominee for Best Visual Effects. High-seas Coast Guard rescue sequences with heavy wave volumetrics.",
+      technicalDetail: "Integrated water simulations and physical boat miniature plates with marine atmospherics."
+    },
+    {
+      id: "still-alice-01",
+      title: "Alice Through the Looking Glass (2016)",
+      role: "Senior Compositor",
+      studio: "Sony Pictures Imageworks / Disney",
+      year: "2016",
+      image: "images/stills/AliceThroughTheLookingGlass_01.webp",
+      caption: "Advanced Deep Compositing, hyper-stylized environment extensions, and fantastical VFX integration.",
+      technicalDetail: "Utilized Deep Compositing workflows for complex edge integration with multi-layered volume passes."
+    },
+    {
+      id: "still-alice-02",
+      title: "Alice Through the Looking Glass — Chronosphere Ocean (2016)",
+      role: "Senior Compositor",
+      studio: "Sony Pictures Imageworks / Disney",
+      year: "2016",
+      image: "images/stills/AliceThroughTheLookingGlass_02.webp",
+      caption: "Surfing the Sea of Time with golden fluid dynamics, chronosphere clockwork reflections, and temporal distortions.",
+      technicalDetail: "High-complexity metallic caustic reflections and liquid surface refractive depth mapping."
+    },
+    {
+      id: "still-alice-03",
+      title: "Alice Through the Looking Glass — Time's Castle (2016)",
+      role: "Senior Compositor",
+      studio: "Sony Pictures Imageworks / Disney",
+      year: "2016",
+      image: "images/stills/AliceThroughTheLookingGlass_03.webp",
+      caption: "Gigantic clockwork interior featuring thousands of rotating interlocking brass gears and swinging pendulum blades.",
+      technicalDetail: "Deep EXR multi-plane rendering allowing seamless camera passes through dense rotating mechanical geometries."
+    },
+    {
+      id: "still-alice-04",
+      title: "Alice Through the Looking Glass — Tea Party Past (2016)",
+      role: "Senior Compositor",
+      studio: "Sony Pictures Imageworks / Disney",
+      year: "2016",
+      image: "images/stills/AliceThroughTheLookingGlass_04.webp",
+      caption: "Vibrant fantasy garden plate balancing extreme color saturation against photorealistic lighting and character integration.",
+      technicalDetail: "Intricate rotoscoping, hair detail preservation, and magical particle dispersal passes."
+    },
+    {
+      id: "still-alice-05",
+      title: "Alice Through the Looking Glass — Rust Wave (2016)",
+      role: "Senior Compositor",
+      studio: "Sony Pictures Imageworks / Disney",
+      year: "2016",
+      image: "images/stills/AliceThroughTheLookingGlass_05.webp",
+      caption: "Catastrophic temporal decay wave turning entire fantasy landscapes into crumbling metallic rust crystals.",
+      technicalDetail: "Dynamic procedural 3D matte generation driving multi-pass textural decay transitions."
+    },
+    {
+      id: "still-xmen-01",
+      title: "X-Men: Days of Future Past (2014)",
+      role: "Senior Compositor",
+      studio: "Digital Domain / 20th Century Fox",
+      year: "2014",
+      image: "images/stills/X-Men_DaysOfFuturePast_01.webp",
+      caption: "Stereoscopic 3D compositing, Sentinel sequence look-dev, and high-energy optical beam integration.",
+      technicalDetail: "Stereo alignment, depth grading, and multi-pass CG integration for hero action sequences."
+    },
+    {
+      id: "still-xmen-02",
+      title: "X-Men: Days of Future Past — Future Moscow (2014)",
+      role: "Senior Compositor",
+      studio: "Digital Domain / 20th Century Fox",
+      year: "2014",
+      image: "images/stills/XMenDaysofFuturePast_02.webp",
+      caption: "Bleak apocalyptic future battlefield featuring shape-shifting Sentinel nanotech scales and fiery mutant power blasts.",
+      technicalDetail: "Dual-camera stereoscopic convergence calibration and complex volumetric fire integration."
+    },
+    {
+      id: "still-xmen-03",
+      title: "X-Men: Days of Future Past — Portal Battles (2014)",
+      role: "Senior Compositor",
+      studio: "Digital Domain / 20th Century Fox",
+      year: "2014",
+      image: "images/stills/XmenDaysofFuturePast_03.webp",
+      caption: "Blink's teleportation portal spatial warps with localized refraction distortions and energy particle halos.",
+      technicalDetail: "Spatial coordinate remapping in Nuke, edge optical fringe compensation, and stereo depth continuity."
+    },
+    {
+      id: "still-upload-01",
+      title: "Upload (2020– )",
+      role: "Compositing Supervisor",
+      studio: "FuseFX-BC / Amazon Studios",
+      year: "2020",
+      image: "images/stills/Upload_01.webp",
+      caption: "Futuristic digital visual effects, UI holograms, virtual world aesthetic, and invisible environment composites.",
+      technicalDetail: "Supervised compositing for episodic delivery across multiple VFX pods and motion graphics integration."
+    },
+    {
+      id: "still-upload-02",
+      title: "Upload — Lakeview Resort (2020– )",
+      role: "Compositing Supervisor",
+      studio: "FuseFX-BC / Amazon Studios",
+      year: "2020",
+      image: "images/stills/Upload_02.webp",
+      caption: "Hyper-idealized digital afterlife environment with pristine digital sky replacements and seasonal color tuning.",
+      technicalDetail: "Supervised invisible split-screen comping, greenscreen environment stitching, and lighting continuity."
+    },
+    {
+      id: "still-upload-03",
+      title: "Upload — In-Eye Hologram UI (2020– )",
+      role: "Compositing Supervisor",
+      studio: "FuseFX-BC / Amazon Studios",
+      year: "2020",
+      image: "images/stills/Upload_03.webp",
+      caption: "Interactive floating heads-up display graphics tracking flawlessly to character eye gaze and finger gestures.",
+      technicalDetail: "3D planar tracking, organic motion graphics compositing, and subtle optical eye-reflection passes."
+    },
+    {
+      id: "still-upload-04",
+      title: "Upload — Grey Market Digital Glitch (2020– )",
+      role: "Compositing Supervisor",
+      studio: "FuseFX-BC / Amazon Studios",
+      year: "2020",
+      image: "images/stills/Upload_04.webp",
+      caption: "Low-bandwidth virtual world degradation featuring digital macro-blocking, frame tearing, and polygon dropouts.",
+      technicalDetail: "Custom algorithmic pixel corruption and datamoshing passes balanced against clean plate action."
+    },
+    {
+      id: "still-upload-05",
+      title: "Upload — Memory Drive Chamber (2020– )",
+      role: "Compositing Supervisor",
+      studio: "FuseFX-BC / Amazon Studios",
+      year: "2020",
+      image: "images/stills/Upload_05.webp",
+      caption: "Futuristic hard drive server farm with infinite LED optical depth blurs and floating memory cubes.",
+      technicalDetail: "Multi-layered depth-of-field post-processing and volumetric atmospheric laser glows."
     },
     {
       id: "still-thor",
@@ -534,7 +975,7 @@ const PORTFOLIO_DATA = {
       role: "Senior Compositor",
       studio: "Digital Domain / Marvel Studios",
       year: "2011",
-      image: "images/stills/Thor.png",
+      image: "images/stills/Thor.webp",
       caption: "Bifrost bridge energy portal sequences, celestial space environments, and high-energy particle compositing.",
       technicalDetail: "Multi-layered volumetric lighting integration and practical set extension balance."
     },
@@ -544,9 +985,159 @@ const PORTFOLIO_DATA = {
       role: "Senior Compositor",
       studio: "Sony Pictures Imageworks / Disney",
       year: "2013",
-      image: "images/stills/OZTheGreatandPowerful.png",
+      image: "images/stills/OZTheGreatandPowerful.webp",
       caption: "Stereoscopic 3D fantasy world construction, Emerald City plate integration, and atmospheric volumetric layers.",
       technicalDetail: "Dual-eye stereoscopic compositing and depth-accurate atmospheric matching."
+    },
+    {
+      id: "still-blade-trinity-01",
+      title: "Blade: Trinity (2004)",
+      role: "Lead Compositor",
+      studio: "Digital Dimension / New Line Cinema",
+      year: "2004",
+      image: "images/stills/BladeTrinity_01.webp",
+      caption: "Pioneering vampire ash vaporization effects, skeletal burn-through, and dynamic particle disintegration.",
+      technicalDetail: "Lead artist developing multi-layered 2D procedural ember maps and skeletal ash reveal passes."
+    },
+    {
+      id: "still-blade-trinity-02",
+      title: "Blade: Trinity — Night Hunter Strike (2004)",
+      role: "Lead Compositor",
+      studio: "Digital Dimension / New Line Cinema",
+      year: "2004",
+      image: "images/stills/BladeTrinity_02.webp",
+      caption: "Fast-paced rooftop night combat with interactive weapon tracer flashes and practical stunt plate clean-up.",
+      technicalDetail: "Interactive lighting matching practical blanks, wire removal, and camera motion tracking."
+    },
+    {
+      id: "still-blade-trinity-03",
+      title: "Blade: Trinity — Drake Transmutation (2004)",
+      role: "Lead Compositor",
+      studio: "Digital Dimension / New Line Cinema",
+      year: "2004",
+      image: "images/stills/BladeTrinity_03.webp",
+      caption: "Complex organic morphing sequence blending practical prosthetic suit elements with CG demonic skin stretching.",
+      technicalDetail: "2D warp grid transformations and organic texture displacement mapping."
+    },
+    {
+      id: "still-pixels-01",
+      title: "Pixels (2015)",
+      role: "Senior Compositor",
+      studio: "Sony Pictures Imageworks / Columbia",
+      year: "2015",
+      image: "images/stills/Pixels_01.webp",
+      caption: "8-bit voxel destruction effects, glowing pixel disintegrations, and interactive light on live-action night plates.",
+      technicalDetail: "Rebuilding scene lighting with voxel illumination passes, multi-bounce reflections on wet asphalt."
+    },
+    {
+      id: "still-pixels-02",
+      title: "Pixels — PAC-MAN NYC Assault (2015)",
+      role: "Senior Compositor",
+      studio: "Sony Pictures Imageworks / Columbia",
+      year: "2015",
+      image: "images/stills/Pixels_02.webp",
+      caption: "Giant luminous yellow PAC-MAN chomping through Manhattan fire trucks, turning metal and glass into glowing cubic voxels.",
+      technicalDetail: "High-energy ambient lighting passes cast from CG character onto practical stunt vehicles and buildings."
+    },
+    {
+      id: "still-princess-switch-01",
+      title: "The Princess Switch 3 (2021)",
+      role: "Compositing Supervisor / Lead",
+      studio: "FuseFX-BC / Netflix",
+      year: "2021",
+      image: "images/stills/PrincessSwitch03_01.webp",
+      caption: "High-tech museum laser security grid sequences, interactive beam refraction, and seamless triple split-screens.",
+      technicalDetail: "Supervised multi-character split-screens for Vanessa Hudgens playing three roles, with optical laser beam passes."
+    },
+    {
+      id: "still-princess-switch-02",
+      title: "The Princess Switch 3 — Laser Heist Vault (2021)",
+      role: "Compositing Supervisor / Lead",
+      studio: "FuseFX-BC / Netflix",
+      year: "2021",
+      image: "images/stills/PrincessSwitch03_02.webp",
+      caption: "Acrobatic laser vault infiltration sequence with volumetric dust motes catching ruby red security laser beams.",
+      technicalDetail: "Volumetric light bloom modeling, body silhouette extraction, and seamless optical interaction."
+    },
+    {
+      id: "still-talladega-01",
+      title: "Talladega Nights (2006)",
+      role: "Lead Compositor",
+      studio: "Frantic Films / Columbia",
+      year: "2006",
+      image: "images/stills/TaledegaNights.webp",
+      caption: "High-speed NASCAR race track action with seamless digital car replacements, heat haze, and tire smoke volumetrics.",
+      technicalDetail: "Lead artist comping photoreal CG stock cars into genuine packed speedway broadcast plates."
+    },
+    {
+      id: "still-talladega-02",
+      title: "Talladega Nights — Speedway Crash (2006)",
+      role: "Lead Compositor",
+      studio: "Frantic Films / Columbia",
+      year: "2006",
+      image: "images/stills/TaledegaNights_02.webp",
+      caption: "Spectacular multi-car rollover crash sequence with flying chassis debris, asphalt sparks, and burning rubber smoke.",
+      technicalDetail: "Photorealistic spark and smoke layer integration matching physical broadcast cameras and lens flares."
+    },
+    {
+      id: "still-museum-01",
+      title: "Night at the Museum (2006)",
+      role: "Senior Compositor",
+      studio: "Frantic Films / 20th Century Fox",
+      year: "2006",
+      image: "images/stills/TheNightAtTheMuseum_01.webp",
+      caption: "Miniature diorama figurines brought to life, scale integration, and museum exhibit photoreal VFX.",
+      technicalDetail: "Precision scale keying, depth-of-field matching, and integrating 2-inch live-action characters onto tabletop sets."
+    },
+    {
+      id: "still-museum-02",
+      title: "Night at the Museum — Diorama Battle (2006)",
+      role: "Senior Compositor",
+      studio: "Frantic Films / 20th Century Fox",
+      year: "2006",
+      image: "images/stills/TheNightAtTheMuseum_02.webp",
+      caption: "Cowboy and Roman miniature armies clashing around a model railway with tiny explosive firecrackers and dust puffs.",
+      technicalDetail: "Extreme shallow depth-of-field simulation and lens chromatic aberration matching macro photography."
+    },
+    {
+      id: "still-vantage-point-01",
+      title: "Vantage Point (2008)",
+      role: "Senior Compositor",
+      studio: "Frantic Films / Columbia",
+      year: "2008",
+      image: "images/stills/VantagePoint_01.webp",
+      caption: "Multiple-perspective plaza bomb blast sequence with shockwave dust clouds, shrapnel, and shattered glass.",
+      technicalDetail: "Complex 2D plate stitching, set extension blending, and dynamic blast light integration across multiple camera angles."
+    },
+    {
+      id: "still-vantage-point-02",
+      title: "Vantage Point — Salamanca Chase (2008)",
+      role: "Senior Compositor",
+      studio: "Frantic Films / Columbia",
+      year: "2008",
+      image: "images/stills/VantagePoint_02.webp",
+      caption: "High-speed narrow street car pursuit with seamless digital environment repair and vehicle impact enhancements.",
+      technicalDetail: "Optical motion blur tracking, reflection map updates, and invisible split-screen stunt synchronization."
+    },
+    {
+      id: "still-zathura",
+      title: "Zathura: A Space Adventure (2005)",
+      role: "Senior Compositor",
+      studio: "Digital Dimension / Columbia",
+      year: "2005",
+      image: "images/stills/Zathura.webp",
+      caption: "Deep space house exterior drifting among asteroid belts, meteor storm strikes, and retro sci-fi practical/CG integration.",
+      technicalDetail: "Blending physical miniature house models with digital starfields, asteroid debris, and volumetric solar flares."
+    },
+    {
+      id: "still-mask-2",
+      title: "Son of the Mask (2005)",
+      role: "Senior Compositor",
+      studio: "Digital Dimension / New Line Cinema",
+      year: "2005",
+      image: "images/stills/TheMask2.webp",
+      caption: "Cartoony live-action morphing, exaggerated expressions, and zany Tex Avery visual effects.",
+      technicalDetail: "Multi-layered facial warping, eye-popping 2D/3D composite integration, and photoreal texture blending."
     }
   ],
 
@@ -745,7 +1336,7 @@ const PORTFOLIO_DATA = {
       client: "Netflix",
       role: "Compositing Supervisor",
       badge: "Netflix Feature",
-      image: "images/stills/Lift_01.png",
+      image: "images/stills/Lift_01.webp",
       videoFile: "videos/LIFTBreakdown.mp4",
       downloadName: "Lift_Compositing_Breakdown.mp4",
       description: "Compositing Supervisor delivering 340+ shots on F. Gary Gray's high-stakes heist feature for Netflix.",
@@ -768,7 +1359,7 @@ const PORTFOLIO_DATA = {
       client: "Sony Pictures / Marvel",
       role: "Compositing Supervisor",
       badge: "Marvel Feature",
-      image: "images/stills/Kraven.png",
+      image: "images/stills/Kraven.webp",
       videoFile: "videos/Kraven_BreakDown.mov",
       downloadName: "Kraven_Breakdown.mov",
       description: "Compositing Supervisor heading sequences for Sony Pictures' Marvel action feature.",
@@ -790,7 +1381,7 @@ const PORTFOLIO_DATA = {
       client: "20th Century Studios / Lightstorm",
       role: "Senior Compositor",
       badge: "Blockbuster Feature",
-      image: "images/stills/AvatarFireandAsh_01.png",
+      image: "images/stills/AvatarFireandAsh_01.webp",
       description: "Contributed high-complexity photorealistic compositing for James Cameron's acclaimed Avatar franchise at Wētā FX.",
       actualContribution: "Executed hero CG character and high-density environmental integration shots in full stereoscopic 3D and deep compositing, adhering to strict ACEScg and stereoscopic convergence standards.",
       shotsDelivered: "Hero Sequences",
@@ -810,7 +1401,7 @@ const PORTFOLIO_DATA = {
       client: "DC Studios / Warner Bros.",
       role: "Senior Compositor",
       badge: "Tentpole Feature",
-      image: "images/stills/Superman2025.png",
+      image: "images/stills/Superman2025.webp",
       description: "Senior Compositor on James Gunn's flagship DC Universe feature film at Wētā FX.",
       actualContribution: "Assembled multi-layered live-action and full CG integration shots with complex dynamic lighting interactions, energy passes, and atmospheric simulation layers.",
       shotsDelivered: "Action Sequences",
@@ -830,7 +1421,7 @@ const PORTFOLIO_DATA = {
       client: "Lionsgate / Kingdom Story",
       role: "Compositing Supervisor / Lead",
       badge: "Proprietary Tech",
-      image: "images/stills/AmericanUnderdog.png",
+      image: "images/stills/AmericanUnderdog.webp",
       videoFile: "videos/AUD_Reel.mov",
       downloadName: "American_Underdog_Crowd_Tool_Reel.mov",
       description: "Supervised compositing for feature football stadium sequences, authoring a proprietary Python 2D crowd generation tool.",
@@ -852,7 +1443,7 @@ const PORTFOLIO_DATA = {
       client: "Sony Pictures Animation / Columbia",
       role: "Lead Compositor",
       badge: "Academy Award Winner",
-      image: "images/stills/IntoTheSpiderverse_01.png",
+      image: "images/stills/IntoTheSpiderverse_01.webp",
       description: "Lead Compositor on the revolutionary, Oscar-winning animated feature film renowned for its groundbreaking visual language.",
       actualContribution: "Lead Compositor directing sequence pods. Developed custom Nuke node setups for comic-book halftone print aesthetics, misregistration offset passes, and stylized dimensional lighting.",
       shotsDelivered: "Key Sequence Pods",
@@ -872,7 +1463,7 @@ const PORTFOLIO_DATA = {
       client: "Lucasfilm / Disney+",
       role: "Senior Compositor",
       badge: "Disney+ / Star Wars",
-      image: "images/stills/SkeletonCrew_01.png",
+      image: "images/stills/SkeletonCrew_01.webp",
       description: "Senior Compositor delivering high-end cinematic visual effects for Lucasfilm's live-action Star Wars series.",
       actualContribution: "Integrated alien creature prosthetics, ship cockpit views, digital environments, and laser weapon interactions within strict Lucasfilm canon aesthetics.",
       shotsDelivered: "Episodic Sequences",
@@ -892,7 +1483,7 @@ const PORTFOLIO_DATA = {
       client: "Warner Bros.",
       role: "Senior Compositor",
       badge: "Sci-Fi Action",
-      image: "images/stills/TheEdgeOfTomorrow_01.png",
+      image: "images/stills/TheEdgeOfTomorrow_01.webp",
       description: "Senior Compositor on Doug Liman's acclaimed time-loop action thriller starring Tom Cruise and Emily Blunt.",
       actualContribution: "Executed multi-pass CG mimic alien integration, dynamic explosive atmospherics, and high-speed combat camera shakes with plate neutral grading.",
       shotsDelivered: "Combat Sequences",
@@ -912,7 +1503,7 @@ const PORTFOLIO_DATA = {
       client: "Columbia Pictures",
       role: "Senior Compositor",
       badge: "Deep Compositing",
-      image: "images/stills/Ghostbusters2016_01.png",
+      image: "images/stills/Ghostbusters2016_01.webp",
       description: "Executed complex deep compositing and stereoscopic alignment for dynamic spectral VFX sequences.",
       actualContribution: "Composited complex proton-pack streams, spectral volumetric entity passes, and stereo alignment utilizing Deep EXR workflows to avoid matte edge fringing.",
       shotsDelivered: "Hero VFX Shots",
@@ -932,7 +1523,7 @@ const PORTFOLIO_DATA = {
       client: "Walt Disney Pictures",
       role: "Senior Compositor",
       badge: "Deep Compositing",
-      image: "images/stills/AliceThroughTheLookingGlass_01.png",
+      image: "images/stills/AliceThroughTheLookingGlass_01.webp",
       description: "Advanced Deep Compositing and stereoscopic 3D on Disney's fantastical visual effects feature.",
       actualContribution: "Composited intricate chronological ocean volumetrics, time-travel sequences, and fantastical character transformations using deep z-depth slicing.",
       shotsDelivered: "Hero Fantasy Shots",
@@ -952,7 +1543,7 @@ const PORTFOLIO_DATA = {
       client: "Amazon Studios",
       role: "Compositing Supervisor",
       badge: "Amazon Prime Series",
-      image: "images/stills/Upload_01.png",
+      image: "images/stills/Upload_01.webp",
       description: "Compositing Supervisor for Greg Daniels' sci-fi comedy streaming series on Amazon Prime.",
       actualContribution: "Supervised compositing for futuristic holographic interface elements, digital set replacements, and humorous high-tech digital interactions.",
       shotsDelivered: "Season 1 Episodes",
@@ -972,7 +1563,7 @@ const PORTFOLIO_DATA = {
       client: "TriStar / WingNut",
       role: "Senior Compositor",
       badge: "Academy Award Nominee",
-      image: "images/stills/District9.png",
+      image: "images/stills/District9.webp",
       description: "Senior Compositor on Neill Blomkamp's Oscar-nominated sci-fi masterpiece at Image Engine.",
       actualContribution: "Integrated alien prawn characters into raw handheld documentary-style live-action photography with realistic grit, harsh daylight, and natural lens imperfections.",
       shotsDelivered: "Key Sequences",
@@ -992,7 +1583,7 @@ const PORTFOLIO_DATA = {
       client: "CBC / Lionsgate",
       role: "Lead Compositor",
       badge: "Gemini Award Nominee",
-      image: "images/stills/TheGuard.png",
+      image: "images/stills/TheGuard.webp",
       description: "Lead Compositor on the acclaimed Canadian drama series, nominated for the Gemini Award for Best Visual Effects.",
       actualContribution: "Composited intense Coast Guard search-and-rescue marine sequences, storm surge volumetrics, and water simulation integration.",
       shotsDelivered: "Episodes Across Seasons",

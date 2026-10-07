@@ -953,6 +953,14 @@ select:focus-visible {
   color: var(--text-muted);
 }
 
+.desktop-supervisory-grid {
+  display: grid;
+}
+
+.mobile-supervisory-carousel {
+  display: none !important;
+}
+
 /* ── Section 2: Career Experience Timeline ───────────────────────────────── */
 .exp-layout {
   display: grid;
@@ -977,6 +985,16 @@ select:focus-visible {
   width: 2px;
   background: var(--border-light);
   z-index: 0;
+}
+
+.desktop-exp-timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.mobile-exp-carousel {
+  display: none !important;
 }
 
 .exp-card {
@@ -1131,11 +1149,122 @@ select:focus-visible {
   color: var(--text-muted);
 }
 
+/* ── Shot Gallery Header & Controls ────────────────────────────────────────── */
+.gallery-header-row {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+.gallery-nav-controls {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--bg-secondary);
+  padding: 4px 6px;
+  border-radius: 999px;
+  border: 1px solid var(--border-light);
+}
+
+.gallery-nav-btn {
+  width: 34px;
+  height: 34px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-light);
+  color: var(--text-main);
+  cursor: pointer;
+  transition: transform 0.22s var(--spring-easing), background-color 0.18s ease, border-color 0.18s ease, color 0.18s ease;
+  user-select: none;
+}
+
+.gallery-nav-btn:hover {
+  transform: translateY(-2px);
+  background: var(--text-main);
+  color: var(--text-inverse);
+  border-color: var(--text-main);
+  box-shadow: 0 4px 12px rgba(17, 24, 39, 0.12);
+}
+
+.gallery-nav-btn:active {
+  transform: scale(0.92);
+}
+
+
+/* ── Swipable Viewport for Touch & Drag ───────────────────────────────────── */
+.stills-swipe-viewport {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  border-radius: 8px;
+  cursor: grab;
+  user-select: none;
+  touch-action: pan-y;
+  outline: none;
+}
+
+.stills-swipe-viewport.is-dragging {
+  cursor: grabbing;
+}
+
 /* ── Featured Stills (High-Frequency Grid Pattern) ────────────────────────── */
 .stills-grid-highfreq {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 16px;
+  transition: transform 0.32s var(--smooth-easing), opacity 0.28s ease;
+  will-change: transform, opacity;
+}
+
+.stills-grid-highfreq.anim-sliding-out-left {
+  transform: translateX(-40px);
+  opacity: 0;
+}
+
+.stills-grid-highfreq.anim-sliding-out-right {
+  transform: translateX(40px);
+  opacity: 0;
+}
+
+.stills-grid-highfreq.anim-pre-enter-left {
+  transform: translateX(40px);
+  opacity: 0;
+  transition: none;
+}
+
+.stills-grid-highfreq.anim-pre-enter-right {
+  transform: translateX(-40px);
+  opacity: 0;
+  transition: none;
+}
+
+/* ── Gallery Swipe Hint Bar ──────────────────────────────────────────────── */
+.gallery-swipe-hint-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 16px;
+  padding-top: 12px;
+}
+
+.gallery-hint-text {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  font-family: var(--font-mono);
+  color: var(--text-muted);
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-light);
+  padding: 6px 14px;
+  border-radius: 999px;
+  letter-spacing: 0.02em;
 }
 
 @media (max-width: 1024px) {
@@ -1147,8 +1276,8 @@ select:focus-visible {
 
 @media (max-width: 640px) {
   .stills-grid-highfreq {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 10px;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 6px;
   }
 }
 
@@ -1266,17 +1395,23 @@ select:focus-visible {
 }
 
 .reaction-chip.voted {
-  cursor: default;
+  cursor: pointer;
 }
 
 .reaction-chip.voted:hover {
-  transform: none;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
 }
 
 .reaction-count {
   font-size: 11px;
   font-family: var(--font-mono);
   font-weight: 700;
+}
+
+.reaction-count:empty {
+  display: none !important;
+  margin-left: 0 !important;
 }
 
 @keyframes reactionPop {
@@ -1287,6 +1422,16 @@ select:focus-visible {
 
 .reaction-chip.pop {
   animation: reactionPop 0.25s var(--spring-easing);
+}
+
+@keyframes reactionUnpop {
+  0% { transform: scale(1); }
+  50% { transform: scale(0.88); }
+  100% { transform: scale(1); }
+}
+
+.reaction-chip.unpop {
+  animation: reactionUnpop 0.22s var(--spring-easing);
 }
 
 @keyframes alreadyVotedShake {
@@ -2162,6 +2307,7 @@ select:focus-visible {
   display: flex;
   align-items: center;
   gap: 16px;
+  flex-wrap: wrap;
   font-size: 12px;
   font-weight: 600;
   color: var(--text-body);
@@ -2229,7 +2375,12 @@ select:focus-visible {
 }
 
 @media (max-width: 768px) {
-  /* ── Spacing & Anchor Offsets for ~74px Sticky Header ──────────────────── */
+  /* ── Mobile Global Centering & Restraint ────────────────────────────────── */
+  html, body {
+    overflow-x: hidden !important;
+    max-width: 100vw;
+  }
+
   .section-divider {
     padding: 44px 0;
     scroll-margin-top: 84px;
@@ -2237,20 +2388,50 @@ select:focus-visible {
 
   .section-wrap {
     padding: 0 16px;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+
+  .section-eyebrow {
+    display: flex !important;
+    justify-content: center !important;
+    text-align: center !important;
+    margin-left: auto;
+    margin-right: auto;
+    width: fit-content;
   }
 
   .section-heading {
     font-size: 24px;
+    text-align: center !important;
   }
 
   .section-sub {
     font-size: 14px;
     margin-bottom: 24px;
+    text-align: center !important;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 520px;
   }
 
-  /* ── Mobile Sticky Header: Ultra-Compact 2-Row Design (~74px) ───────────── */
+  /* ── Mobile Fixed Header: Always Remains on Screen at Top (~76px) ───────── */
   #site-header {
-    padding: 0;
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    width: 100% !important;
+    z-index: 10000 !important;
+    padding: 0 !important;
+    background: rgba(255, 255, 255, 0.96) !important;
+    backdrop-filter: blur(14px) !important;
+    -webkit-backdrop-filter: blur(14px) !important;
+    box-shadow: 0 2px 10px rgba(17, 24, 39, 0.08) !important;
+  }
+
+  body {
+    padding-top: 78px !important;
   }
 
   .header-inner {
@@ -2333,33 +2514,42 @@ select:focus-visible {
     border-radius: 999px;
   }
 
-  /* ── Hero Section & 2x2 Touch CTAs ─────────────────────────────────────── */
+  /* ── Hero Section Centering ─────────────────────────────────────────────── */
   #hero {
     grid-template-columns: 1fr;
     padding: 24px 16px 36px;
     gap: 24px;
     scroll-margin-top: 84px;
+    text-align: center;
   }
 
   .hero-name {
     font-size: 32px;
     margin-bottom: 6px;
+    text-align: center;
   }
 
   .hero-title-line {
     font-size: 15px;
     margin-bottom: 12px;
+    justify-content: center;
+    text-align: center;
   }
 
   .hero-bio {
     font-size: 14px;
     line-height: 1.6;
     margin-bottom: 16px;
+    text-align: center;
+    max-width: 520px;
+    margin-left: auto;
+    margin-right: auto;
   }
 
   .hero-badges {
     gap: 6px;
     margin-bottom: 20px;
+    justify-content: center;
   }
 
   .hero-badge {
@@ -2397,125 +2587,390 @@ select:focus-visible {
     font-size: 11px;
   }
 
-  /* ── Artist Compositing Reel ────────────────────────────────────────────── */
+  /* ── Artist Compositing Reel Centering ──────────────────────────────────── */
   #artist-reel {
     padding-top: 20px !important;
     padding-bottom: 32px !important;
     scroll-margin-top: 84px;
+    text-align: center;
   }
 
-  /* ── Supervisory Showcase & Breakdowns ──────────────────────────────────── */
+  .artist-reel-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  /* ── Supervisory Showcase Centering ─────────────────────────────────────── */
   #supervisory-reels {
     scroll-margin-top: 84px;
   }
 
   .showreel-header {
     flex-direction: column;
-    align-items: flex-start;
+    align-items: center;
+    text-align: center;
     gap: 12px;
   }
 
   .showreel-title {
     font-size: 20px;
+    text-align: center;
   }
 
   .showreel-sub {
     font-size: 13px;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
   }
 
   .video-active-meta {
     padding: 12px 14px;
     flex-direction: column;
-    align-items: flex-start;
+    align-items: center;
+    text-align: center;
     gap: 8px;
   }
 
+  /* ── Supervisory Breakdowns: 1 Reel At A Time & Centered on Mobile ────────── */
+  #supervisory-reels {
+    scroll-margin-top: 84px;
+    text-align: center;
+  }
+
+  #supervisory-reels .section-eyebrow {
+    justify-content: center;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  #supervisory-reels .section-heading {
+    text-align: center;
+  }
+
+  .desktop-supervisory-grid,
   .supervisory-grid-2x2 {
-    grid-template-columns: 1fr;
-    gap: 16px;
+    display: none !important;
+  }
+
+  .mobile-supervisory-carousel {
+    display: block !important;
+    width: 100%;
+    max-width: 520px;
+    margin: 0 auto;
+  }
+
+  .mobile-reel-header-controls {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    margin-bottom: 12px;
+    padding: 0 4px;
+  }
+
+  .mobile-reel-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    background: #ffffff;
+    border: 1px solid var(--border-medium);
+    border-radius: 6px;
+    padding: 6px 12px;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--text-main);
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+
+  .mobile-reel-btn:hover:not(:disabled) {
+    background: var(--bg-secondary);
+    border-color: var(--accent);
+  }
+
+  .mobile-reel-tracker {
+    font-size: 11.5px;
+    font-family: var(--font-mono);
+    font-weight: 700;
+    color: var(--text-muted);
+  }
+
+  .mobile-reel-tracker span {
+    color: var(--text-main);
+  }
+
+  .mobile-reel-viewport {
+    position: relative;
+    overflow: hidden;
+    touch-action: pan-y;
+    border-radius: 10px;
+  }
+
+  .mobile-reel-card-wrap {
+    width: 100%;
+  }
+
+  .mobile-supervisory-card {
+    margin: 0 auto;
+    width: 100%;
+    box-shadow: 0 4px 16px rgba(17, 24, 39, 0.08);
   }
 
   .supervisory-card-title {
     font-size: 14px;
+    text-align: center;
   }
 
   .supervisory-card-sub {
     font-size: 10px;
+    text-align: center;
   }
 
-  /* ── Featured Stills (High-Frequency Grid) ───────────────────────────────── */
+  /* ── Shot Gallery: 3 Across / 4 Down & Centered ─────────────────────────── */
   #featured-stills-carousel {
     scroll-margin-top: 84px;
   }
 
   .stills-grid-highfreq {
-    gap: 8px;
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 6px !important;
+    max-width: 520px;
+    margin: 0 auto;
   }
 
   .still-grid-card {
-    border-radius: 6px;
-  }
-
-  .still-grid-title {
-    font-size: 11.5px;
-  }
-
-  .still-grid-sub {
-    font-size: 8.5px;
+    border-radius: 4px;
+    aspect-ratio: 16 / 9;
   }
 
   .still-grid-overlay {
-    padding: 8px 10px;
+    padding: 4px !important;
+    background: linear-gradient(to top, rgba(15, 23, 42, 0.95) 0%, rgba(15, 23, 42, 0.6) 70%, transparent 100%) !important;
+    justify-content: flex-end !important;
+  }
+
+  .still-grid-title {
+    font-size: 8.5px !important;
+    line-height: 1.15 !important;
+    font-weight: 800 !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    margin-bottom: 1px !important;
+  }
+
+  .still-grid-sub {
+    font-size: 7px !important;
+    line-height: 1.1 !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    opacity: 0.85 !important;
+    margin-bottom: 2px !important;
   }
 
   .still-grid-reactions {
-    gap: 3px;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 3px !important;
+    flex-wrap: nowrap !important;
+    margin-top: 2px !important;
   }
 
-  .reaction-chip {
-    padding: 3px 6px;
-    font-size: 10px;
-    min-height: 24px;
+  .still-grid-card .reaction-chip {
+    padding: 2px 4px !important;
+    font-size: 9.5px !important;
+    min-height: unset !important;
+    height: 18px !important;
+    border-radius: 999px !important;
+    background: rgba(0, 0, 0, 0.45) !important;
+    border: 1px solid rgba(255, 255, 255, 0.25) !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    line-height: 1 !important;
+    color: #ffffff !important;
   }
 
-  /* ── Professional Experience Timeline ───────────────────────────────────── */
+  .still-grid-card .reaction-chip.active {
+    background: #ffffff !important;
+    border-color: #ffffff !important;
+    color: #0f172a !important;
+  }
+
+  .still-grid-card .reaction-count {
+    font-size: 8px !important;
+    font-weight: 700 !important;
+    margin-left: 2px !important;
+  }
+
+  .reaction-count:empty {
+    display: none !important;
+    margin-left: 0 !important;
+  }
+
+  .gallery-swipe-hint-bar {
+    display: flex;
+    justify-content: center;
+    text-align: center;
+  }
+
+  /* ── Professional Experience: 1 Job At A Time & Centered ────────────────── */
   #experience {
     scroll-margin-top: 84px;
   }
 
-  .exp-card {
-    padding: 16px;
+  .exp-header-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 12px;
   }
 
-  .exp-role {
-    font-size: 16px;
+  .exp-header-actions {
+    justify-content: center !important;
+    width: 100%;
   }
 
-  /* ── Projects & Filmography Grid ────────────────────────────────────────── */
-  #projects {
-    scroll-margin-top: 84px;
-  }
-
-  .projects-grid {
+  .exp-layout {
     grid-template-columns: 1fr;
     gap: 20px;
   }
 
-  .project-card {
-    border-radius: 8px;
+  /* Desktop timeline hidden on mobile */
+  .desktop-exp-timeline {
+    display: none !important;
   }
 
-  .project-body {
-    padding: 16px;
+  /* Mobile 1-job carousel shown */
+  .mobile-exp-carousel {
+    display: block !important;
+    width: 100%;
+    max-width: 520px;
+    margin: 0 auto;
   }
 
-  .project-title {
-    font-size: 17px;
+  .mobile-exp-header-controls {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    margin-bottom: 12px;
+    padding: 0 4px;
   }
 
-  /* ── Contact Section & Safari Auto-Zoom Fix ─────────────────────────────── */
+  .mobile-exp-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    background: #ffffff;
+    border: 1px solid var(--border-medium);
+    border-radius: 6px;
+    padding: 6px 12px;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--text-main);
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+
+  .mobile-exp-btn:hover:not(:disabled) {
+    background: var(--bg-secondary);
+    border-color: var(--accent);
+  }
+
+  .mobile-exp-tracker {
+    font-size: 11.5px;
+    font-family: var(--font-mono);
+    font-weight: 700;
+    color: var(--text-muted);
+  }
+
+  .mobile-exp-tracker span {
+    color: var(--text-main);
+  }
+
+  .mobile-exp-viewport {
+    position: relative;
+    overflow: hidden;
+    cursor: grab;
+    touch-action: pan-y;
+  }
+
+  .mobile-exp-viewport:active {
+    cursor: grabbing;
+  }
+
+  .mobile-exp-card-wrap {
+    width: 100%;
+  }
+
+  .mobile-job-card {
+    margin-left: 0 !important;
+    width: 100% !important;
+    box-sizing: border-box;
+    box-shadow: 0 2px 10px rgba(17, 24, 39, 0.05);
+    padding: 18px 16px;
+  }
+
+  .mobile-job-card::before {
+    display: none !important;
+  }
+
+  #experience-timeline::before {
+    display: none !important;
+  }
+
+  .exp-sidebar {
+    max-width: 520px;
+    margin: 0 auto;
+    width: 100%;
+  }
+
+  .sidebar-card {
+    margin: 0 auto;
+    width: 100%;
+  }
+
+  /* ── Contact Section Centering ──────────────────────────────────────────── */
   #contact {
     scroll-margin-top: 84px;
+  }
+
+  .contact-item {
+    max-width: 520px;
+    margin: 0 auto;
+    width: 100%;
+  }
+
+  .contact-actions-row {
+    justify-content: center !important;
+    max-width: 520px;
+    margin: 16px auto 0 !important;
+  }
+
+  /* ── Footer Centering ───────────────────────────────────────────────────── */
+  .footer-inner {
+    flex-direction: column !important;
+    align-items: center !important;
+    text-align: center !important;
+    gap: 16px !important;
+    padding: 0 16px !important;
+  }
+
+  .footer-copy {
+    text-align: center !important;
+  }
+
+  .footer-links {
+    flex-wrap: wrap !important;
+    justify-content: center !important;
+    gap: 10px 14px !important;
   }
 
   input, textarea, select {

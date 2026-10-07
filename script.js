@@ -69,7 +69,12 @@ function shuffleArray(array) {
  * GAMIFIED REACTIONS ENGINE (localStorage Persistence & Spring Micro-Animations)
  * ============================================================================
  */
-const STORAGE_KEY_REACTIONS = "dan_portfolio_reactions";
+const STORAGE_KEY_REACTIONS = "dan_portfolio_reactions_v2";
+
+// Purge any legacy artificial baseline numbers
+try {
+  localStorage.removeItem("dan_portfolio_reactions");
+} catch (e) {}
 
 function getAllReactions() {
   try {
@@ -84,18 +89,12 @@ function getAllReactions() {
 function getReactionsForStill(stillId) {
   const all = getAllReactions();
   if (!all[stillId]) {
-    // Generate deterministic pleasing baseline count based on string hash
-    let hash = 0;
-    for (let i = 0; i < stillId.length; i++) {
-      hash = (hash << 5) - hash + stillId.charCodeAt(i);
-      hash |= 0;
-    }
-    const seed = Math.abs(hash);
+    // Pure clean baseline: all reaction counters start at 0
     all[stillId] = {
-      heart: 18 + (seed % 28),
-      fire: 12 + ((seed >> 2) % 19),
-      clap: 8 + ((seed >> 4) % 14),
-      cinema: 6 + ((seed >> 6) % 11),
+      heart: 0,
+      fire: 0,
+      clap: 0,
+      cinema: 0,
       userVoted: []
     };
     try {
@@ -115,43 +114,75 @@ window.handleReactionClick = function(event, stillId, reactionType) {
 
   if (!data.userVoted) data.userVoted = [];
 
-  // Enforce single contribution: user can only click on 1 type of emoji once, contributing once to the count
-  if (data.userVoted.includes(reactionType)) {
-    const btn = event?.currentTarget;
-    if (btn) {
-      btn.classList.add("already-voted-shake");
-      setTimeout(() => btn.classList.remove("already-voted-shake"), 300);
-    }
-    return;
-  }
+  const isUndo = data.userVoted.includes(reactionType);
 
-  // First time voting for this emoji type: add vote and increment count exactly once
-  data.userVoted.push(reactionType);
-  data[reactionType] = (data[reactionType] || 0) + 1;
+  if (isUndo) {
+    // User is undoing their vote: remove vote and decrement count
+    data.userVoted = data.userVoted.filter(t => t !== reactionType);
+    data[reactionType] = Math.max(0, (data[reactionType] || 1) - 1);
+  } else {
+    // First time voting for this emoji type: add vote and increment count exactly once
+    data.userVoted.push(reactionType);
+    data[reactionType] = (data[reactionType] || 0) + 1;
+  }
 
   all[stillId] = data;
   try {
     localStorage.setItem(STORAGE_KEY_REACTIONS, JSON.stringify(all));
   } catch (e) {}
 
+  const getReactionName = (type) => {
+    switch (type) {
+      case 'heart': return 'Love';
+      case 'fire': return 'Fire';
+      case 'clap': return 'Applaud';
+      case 'cinema': return 'Cinematic';
+      default: return type;
+    }
+  };
+
+  const getUnvotedTitle = (type) => {
+    switch (type) {
+      case 'heart': return 'Love this shot';
+      case 'fire': return 'Fire composite';
+      case 'clap': return 'Applaud';
+      case 'cinema': return 'Cinematic quality';
+      default: return `React with ${type}`;
+    }
+  };
+
   const btn = event?.currentTarget;
   if (btn) {
-    btn.classList.add("pop", "active", "voted");
-    btn.setAttribute("title", `You reacted with ${reactionType}`);
-    setTimeout(() => btn.classList.remove("pop"), 280);
+    if (isUndo) {
+      btn.classList.remove("active", "voted");
+      btn.classList.add("unpop");
+      btn.setAttribute("title", getUnvotedTitle(reactionType));
+      setTimeout(() => btn.classList.remove("unpop"), 240);
+    } else {
+      btn.classList.add("pop", "active", "voted");
+      btn.setAttribute("title", `You reacted with ${getReactionName(reactionType)} (Click to undo)`);
+      setTimeout(() => btn.classList.remove("pop"), 280);
+    }
 
     const countEl = btn.querySelector(".reaction-count");
     if (countEl) {
-      countEl.textContent = data[reactionType];
+      countEl.textContent = data[reactionType] > 0 ? data[reactionType] : "";
     }
   }
 
   // Synchronize count and voted state across all matching emoji elements in the DOM
   document.querySelectorAll(`[data-reaction-still="${stillId}"][data-reaction-type="${reactionType}"]`).forEach(otherBtn => {
-    otherBtn.classList.add("active", "voted");
-    otherBtn.setAttribute("title", `You reacted with ${reactionType}`);
+    if (isUndo) {
+      otherBtn.classList.remove("active", "voted");
+      otherBtn.setAttribute("title", getUnvotedTitle(reactionType));
+    } else {
+      otherBtn.classList.add("active", "voted");
+      otherBtn.setAttribute("title", `You reacted with ${getReactionName(reactionType)} (Click to undo)`);
+    }
     const countEl = otherBtn.querySelector(".reaction-count");
-    if (countEl) countEl.textContent = data[reactionType];
+    if (countEl) {
+      countEl.textContent = data[reactionType] > 0 ? data[reactionType] : "";
+    }
   });
 };
 
@@ -182,16 +213,61 @@ function initVideoShowcase() {
   }
 
   const gridContainer = document.getElementById("supervisory-grid");
+  const mobileCarousel = document.getElementById("mobile-supervisory-carousel");
   const allVideos = PORTFOLIO_DATA.showcaseVideos || [];
   if (!gridContainer || !allVideos.length) return;
 
-  // Filter out artist reel and take 4 supervisory breakdown shows for the 2x2 grid
+  // Filter out artist reel and take 4 supervisory breakdown shows
   const supervisoryVideos = allVideos.filter(v => v.id !== "reel-2026").slice(0, 4);
 
-  gridContainer.innerHTML = supervisoryVideos.map(v => `
-    <div class="supervisory-card">
+  // Render desktop 2x2 grid
+  gridContainer.innerHTML = supervisoryVideos.map(v => renderSupervisoryCardHtml(v, false)).join("");
+
+  // Render mobile 1-reel carousel
+  if (mobileCarousel && supervisoryVideos.length) {
+    mobileCarousel.innerHTML = `
+      <div class="mobile-reel-header-controls">
+        <button class="mobile-reel-btn" id="mobile-reel-prev" onclick="navigateMobileReel(-1)" aria-label="Previous breakdown reel">
+          <i data-lucide="chevron-left" style="width:14px;height:14px;"></i>
+          <span>Prev Reel</span>
+        </button>
+        <div class="mobile-reel-tracker" id="mobile-reel-tracker">
+          Reel <span id="mobile-reel-current">1</span> of <span>${supervisoryVideos.length}</span>
+        </div>
+        <button class="mobile-reel-btn" id="mobile-reel-next" onclick="navigateMobileReel(1)" aria-label="Next breakdown reel">
+          <span>Next Reel</span>
+          <i data-lucide="chevron-right" style="width:14px;height:14px;"></i>
+        </button>
+      </div>
+
+      <div class="mobile-reel-viewport" id="mobile-reel-viewport" tabindex="0" aria-label="Supervisory Breakdown Reel Carousel">
+        <div class="mobile-reel-card-wrap" id="mobile-reel-card-wrap">
+          ${renderSupervisoryCardHtml(supervisoryVideos[currentMobileReelIdx], true)}
+        </div>
+      </div>
+
+      <div class="gallery-swipe-hint-bar" style="margin-top:14px;">
+        <span class="gallery-hint-text">
+          <i data-lucide="move-horizontal" style="width:13px;height:13px;"></i>
+          <span>Swipe left / right for next / previous reel</span>
+        </span>
+      </div>
+    `;
+
+    initMobileReelSwipe(supervisoryVideos);
+    updateMobileReelNav(supervisoryVideos);
+  }
+
+  if (window.lucide) window.lucide.createIcons();
+}
+
+let currentMobileReelIdx = 0;
+
+function renderSupervisoryCardHtml(v, isMobile = false) {
+  return `
+    <div class="supervisory-card ${isMobile ? 'mobile-supervisory-card' : ''}">
       <div class="supervisory-player-wrap" oncontextmenu="return false;">
-        <video controls controlsList="nodownload noplaybackrate nofullscreen" disablePictureInPicture loop playsinline preload="metadata" poster="${v.poster || ''}" oncontextmenu="return false;">
+        <video controls controlsList="nodownload noplaybackrate nofullscreen" disablePictureInPicture loop playsinline preload="none" poster="${v.poster || ''}" oncontextmenu="return false;">
           <source src="${v.file}" type="video/mp4">
           <p style="color:#888;padding:24px;font-family:monospace;font-size:12px;">Browser cannot play video inline.</p>
         </video>
@@ -202,9 +278,133 @@ function initVideoShowcase() {
         <div class="supervisory-card-sub">${v.role || v.badge} &bull; ${v.studio}</div>
       </div>
     </div>
-  `).join("");
+  `;
+}
 
-  if (window.lucide) window.lucide.createIcons();
+window.navigateMobileReel = function(delta) {
+  const allVideos = PORTFOLIO_DATA.showcaseVideos || [];
+  const supervisoryVideos = allVideos.filter(v => v.id !== "reel-2026").slice(0, 4);
+  if (!supervisoryVideos.length) return;
+
+  const nextIdx = currentMobileReelIdx + delta;
+  if (nextIdx < 0 || nextIdx >= supervisoryVideos.length) return;
+
+  // CRITICAL: Pause any currently playing video on mobile stage before switching
+  const currentVideo = document.querySelector("#mobile-reel-card-wrap video");
+  if (currentVideo && !currentVideo.paused) {
+    currentVideo.pause();
+  }
+
+  currentMobileReelIdx = nextIdx;
+  const wrap = document.getElementById("mobile-reel-card-wrap");
+  if (wrap) {
+    wrap.style.transition = "opacity 0.15s ease, transform 0.15s ease";
+    wrap.style.opacity = "0";
+    wrap.style.transform = delta > 0 ? "translateX(-20px)" : "translateX(20px)";
+
+    setTimeout(() => {
+      wrap.innerHTML = renderSupervisoryCardHtml(supervisoryVideos[currentMobileReelIdx], true);
+      wrap.style.transform = delta > 0 ? "translateX(20px)" : "translateX(-20px)";
+      requestAnimationFrame(() => {
+        wrap.style.transition = "opacity 0.22s ease, transform 0.22s cubic-bezier(0.16, 1, 0.3, 1)";
+        wrap.style.opacity = "1";
+        wrap.style.transform = "translateX(0)";
+        if (window.lucide) window.lucide.createIcons();
+      });
+    }, 150);
+  }
+
+  updateMobileReelNav(supervisoryVideos);
+};
+
+function updateMobileReelNav(supervisoryVideos) {
+  const prevBtn = document.getElementById("mobile-reel-prev");
+  const nextBtn = document.getElementById("mobile-reel-next");
+  const curSpan = document.getElementById("mobile-reel-current");
+
+  if (curSpan) curSpan.textContent = currentMobileReelIdx + 1;
+  if (prevBtn) {
+    const isFirst = currentMobileReelIdx === 0;
+    prevBtn.disabled = isFirst;
+    prevBtn.style.opacity = isFirst ? "0.35" : "1";
+    prevBtn.style.pointerEvents = isFirst ? "none" : "auto";
+  }
+  if (nextBtn) {
+    const isLast = currentMobileReelIdx === supervisoryVideos.length - 1;
+    nextBtn.disabled = isLast;
+    nextBtn.style.opacity = isLast ? "0.35" : "1";
+    nextBtn.style.pointerEvents = isLast ? "none" : "auto";
+  }
+}
+
+function initMobileReelSwipe(supervisoryVideos) {
+  const viewport = document.getElementById("mobile-reel-viewport");
+  if (!viewport) return;
+
+  let startX = 0;
+  let startY = 0;
+  let distX = 0;
+  let distY = 0;
+  let isSwiping = false;
+
+  viewport.addEventListener("touchstart", (e) => {
+    if (!e.touches.length) return;
+    startX = e.touches[0].clientX;
+    startY = e.touches[0].clientY;
+    distX = 0;
+    distY = 0;
+    isSwiping = true;
+  }, { passive: true });
+
+  viewport.addEventListener("touchmove", (e) => {
+    if (!isSwiping || !e.touches.length) return;
+    distX = e.touches[0].clientX - startX;
+    distY = e.touches[0].clientY - startY;
+  }, { passive: true });
+
+  viewport.addEventListener("touchend", () => {
+    if (!isSwiping) return;
+    isSwiping = false;
+    if (Math.abs(distX) > 40 && Math.abs(distX) > Math.abs(distY) * 1.2) {
+      if (distX < 0) {
+        navigateMobileReel(1);
+      } else {
+        navigateMobileReel(-1);
+      }
+    }
+  });
+
+  // Mouse drag support
+  let isMouseDown = false;
+  let mouseStartX = 0;
+  viewport.addEventListener("mousedown", (e) => {
+    if (e.target && e.target.tagName === 'VIDEO') return;
+    isMouseDown = true;
+    mouseStartX = e.clientX;
+  });
+  window.addEventListener("mouseup", (e) => {
+    if (!isMouseDown) return;
+    isMouseDown = false;
+    const diff = e.clientX - mouseStartX;
+    if (Math.abs(diff) > 50) {
+      if (diff < 0) {
+        navigateMobileReel(1);
+      } else {
+        navigateMobileReel(-1);
+      }
+    }
+  });
+
+  // Keyboard navigation when focused
+  viewport.addEventListener("keydown", (e) => {
+    if (e.key === "ArrowLeft") {
+      e.preventDefault();
+      navigateMobileReel(-1);
+    } else if (e.key === "ArrowRight") {
+      e.preventDefault();
+      navigateMobileReel(1);
+    }
+  });
 }
 
 window.switchToTab = function(videoId) {
@@ -361,7 +561,7 @@ function initTopCyclingBanner() {
     <div class="banner-item"
          title="${(item.title || '').replace(/"/g, '&quot;')} &bull; ${(item.role || '').replace(/"/g, '&quot;')}"
          onclick="openBannerStill(${idx})">
-      <img src="${item.src}" alt="${(item.title || 'Production Still').replace(/"/g, '&quot;')}" loading="lazy" draggable="false">
+      <img src="${item.src}" alt="${(item.title || 'Production Still').replace(/"/g, '&quot;')}" loading="lazy" decoding="async" draggable="false">
       <div class="banner-item-overlay">
         <div class="banner-item-title">${item.title || ''}</div>
         <div class="banner-item-role">${item.role || 'VFX Still'}</div>
@@ -422,74 +622,322 @@ function initTopCyclingBanner() {
  * and single-vote emoji reactions.
  * ============================================================================
  */
+/**
+ * ============================================================================
+ * FEATURED STILLS / SHOT GALLERY (Randomized Swipable Grid Engine)
+ * - Swiping left or right reveals fresh random stills from the 77-still pool.
+ * - Invariant: Zero duplicates within any visible set ("never seen at the same time").
+ * - Supports touch gestures, mouse drag, arrow buttons, and keyboard left/right.
+ * - Single-vote emoji reactions and Lightbox integration preserved.
+ * ============================================================================
+ */
 let kineticSlidesData = [];
+let galleryHistory = [];
+let galleryHistoryIndex = 0;
+let isGalleryAnimating = false;
+
+function getGalleryBatchSize() {
+  const isMobile = window.innerWidth <= 768 || (window.matchMedia && window.matchMedia("(max-width: 768px)").matches);
+  if (isMobile) return 12; // Strictly 3 across * 4 down = 12 stills on mobile
+  if (window.innerWidth <= 1024) return 12;
+  return 16;
+}
+
+function generateRandomBatch(batchSize, previousBatch = []) {
+  const allStills = PORTFOLIO_DATA.galleryStills || [];
+  if (!allStills.length) return [];
+
+  const targetSize = Math.min(batchSize, allStills.length);
+  const shuffled = shuffleArray(allStills);
+
+  // Filter out items in previousBatch so the new batch maximizes novelty
+  const prevIds = new Set((previousBatch || []).map(p => p.id));
+  const freshItems = shuffled.filter(s => !prevIds.has(s.id));
+
+  const picked = [];
+  const pickedIds = new Set();
+
+  // First pick from fresh items
+  for (const s of freshItems) {
+    if (!pickedIds.has(s.id)) {
+      pickedIds.add(s.id);
+      picked.push(s);
+      if (picked.length === targetSize) break;
+    }
+  }
+
+  // If we need more items to reach targetSize, pick from remaining shuffled items (strictly no duplicates)
+  if (picked.length < targetSize) {
+    for (const s of shuffled) {
+      if (!pickedIds.has(s.id)) {
+        pickedIds.add(s.id);
+        picked.push(s);
+        if (picked.length === targetSize) break;
+      }
+    }
+  }
+
+  return picked;
+}
+
+function renderGalleryBatch(batch, direction, isInitial = false) {
+  const container = document.getElementById("stills-grid-container");
+  if (!container || !batch.length) return;
+
+  // Enforce strict batch size cap (12 on mobile = 3 across * 4 down; 16 on desktop = 4 across * 4 down)
+  const targetBatchSize = getGalleryBatchSize();
+  const visibleBatch = batch.slice(0, targetBatchSize);
+  kineticSlidesData = visibleBatch;
+
+  const renderCardsHTML = () => {
+    container.innerHTML = visibleBatch.map((s, idx) => {
+      const rx = getReactionsForStill(s.id || `still-${idx}`);
+      const displayTitle = (s.year && !s.title.includes(s.year)) ? `${s.title} (${s.year})` : s.title;
+
+      return `
+        <div class="still-grid-card" onclick="openKineticStill(${idx})" data-index="${idx}">
+          <img src="${s.image}" alt="${s.title}" loading="lazy" decoding="async" draggable="false" class="still-grid-img">
+          
+          <!-- Hover-Only Scrim (Text ONLY appears when hovered over) -->
+          <div class="still-grid-overlay">
+            <div class="still-grid-title">${displayTitle}</div>
+            <div class="still-grid-sub">${s.role} &bull; ${s.studio}</div>
+            
+            <!-- Single-Vote Emoji Reaction Chips -->
+            <div class="still-grid-reactions" onclick="event.stopPropagation()">
+              <button class="reaction-chip ${rx.userVoted.includes('heart') ? 'active voted' : ''}"
+                      data-reaction-still="${s.id || `still-${idx}`}"
+                      data-reaction-type="heart"
+                      onclick="handleReactionClick(event, '${s.id || `still-${idx}`}', 'heart')"
+                      title="${rx.userVoted.includes('heart') ? 'You reacted with Love (Click to undo)' : 'Love this shot'}">
+                <span>❤️</span>
+                <span class="reaction-count">${rx.heart > 0 ? rx.heart : ''}</span>
+              </button>
+              <button class="reaction-chip ${rx.userVoted.includes('fire') ? 'active voted' : ''}"
+                      data-reaction-still="${s.id || `still-${idx}`}"
+                      data-reaction-type="fire"
+                      onclick="handleReactionClick(event, '${s.id || `still-${idx}`}', 'fire')"
+                      title="${rx.userVoted.includes('fire') ? 'You reacted with Fire (Click to undo)' : 'Fire composite'}">
+                <span>🔥</span>
+                <span class="reaction-count">${rx.fire > 0 ? rx.fire : ''}</span>
+              </button>
+              <button class="reaction-chip ${rx.userVoted.includes('clap') ? 'active voted' : ''}"
+                      data-reaction-still="${s.id || `still-${idx}`}"
+                      data-reaction-type="clap"
+                      onclick="handleReactionClick(event, '${s.id || `still-${idx}`}', 'clap')"
+                      title="${rx.userVoted.includes('clap') ? 'You reacted with Applaud (Click to undo)' : 'Applaud'}">
+                <span>👏</span>
+                <span class="reaction-count">${rx.clap > 0 ? rx.clap : ''}</span>
+              </button>
+              <button class="reaction-chip ${rx.userVoted.includes('cinema') ? 'active voted' : ''}"
+                      data-reaction-still="${s.id || `still-${idx}`}"
+                      data-reaction-type="cinema"
+                      onclick="handleReactionClick(event, '${s.id || `still-${idx}`}', 'cinema')"
+                      title="${rx.userVoted.includes('cinema') ? 'You reacted with Cinematic (Click to undo)' : 'Cinematic quality'}">
+                <span>🎬</span>
+                <span class="reaction-count">${rx.cinema > 0 ? rx.cinema : ''}</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      `;
+    }).join("");
+
+    if (window.lucide) window.lucide.createIcons();
+  };
+
+  if (isInitial || !direction) {
+    renderCardsHTML();
+    return;
+  }
+
+  isGalleryAnimating = true;
+  const outClass = direction === 'left' ? 'anim-sliding-out-left' : 'anim-sliding-out-right';
+  const preEnterClass = direction === 'left' ? 'anim-pre-enter-left' : 'anim-pre-enter-right';
+
+  container.classList.add(outClass);
+
+  setTimeout(() => {
+    renderCardsHTML();
+    container.classList.remove(outClass);
+    container.classList.add(preEnterClass);
+
+    // Force browser reflow to register pre-enter position
+    void container.offsetHeight;
+
+    container.classList.remove(preEnterClass);
+    setTimeout(() => {
+      isGalleryAnimating = false;
+    }, 320);
+  }, 160);
+}
+
+window.swipeGallery = function(direction) {
+  if (isGalleryAnimating) return;
+
+  const batchSize = getGalleryBatchSize();
+
+  if (direction === 'left') {
+    // Next / Advance
+    if (galleryHistoryIndex < galleryHistory.length - 1) {
+      galleryHistoryIndex++;
+      renderGalleryBatch(galleryHistory[galleryHistoryIndex], 'left');
+    } else {
+      const nextBatch = generateRandomBatch(batchSize, kineticSlidesData);
+      galleryHistory.push(nextBatch);
+      galleryHistoryIndex = galleryHistory.length - 1;
+      renderGalleryBatch(nextBatch, 'left');
+    }
+  } else if (direction === 'right') {
+    // Prev / Back
+    if (galleryHistoryIndex > 0) {
+      galleryHistoryIndex--;
+      renderGalleryBatch(galleryHistory[galleryHistoryIndex], 'right');
+    } else {
+      const prevBatch = generateRandomBatch(batchSize, kineticSlidesData);
+      galleryHistory.unshift(prevBatch);
+      galleryHistoryIndex = 0;
+      renderGalleryBatch(prevBatch, 'right');
+    }
+  }
+};
+
+window.kineticCarouselNext = function() { swipeGallery('left'); };
+window.kineticCarouselPrev = function() { swipeGallery('right'); };
 
 function initKineticCarousel() {
   const container = document.getElementById("stills-grid-container");
+  const viewport = document.getElementById("stills-swipe-viewport");
   const rawStills = PORTFOLIO_DATA.galleryStills || [];
   if (!container || !rawStills.length) return;
 
-  // Curate 16 flagship shots for the high-frequency grid
-  kineticSlidesData = rawStills.slice(0, 16);
+  // Initialize first batch of unique random stills
+  const batchSize = getGalleryBatchSize();
+  const initialBatch = generateRandomBatch(batchSize);
+  galleryHistory = [initialBatch];
+  galleryHistoryIndex = 0;
 
-  container.innerHTML = kineticSlidesData.map((s, idx) => {
-    const rx = getReactionsForStill(s.id || `still-${idx}`);
-    const displayTitle = (s.year && !s.title.includes(s.year)) ? `${s.title} (${s.year})` : s.title;
+  renderGalleryBatch(initialBatch, null, true);
 
-    return `
-      <div class="still-grid-card" onclick="openKineticStill(${idx})" data-index="${idx}">
-        <img src="${s.image}" alt="${s.title}" loading="eager" draggable="false" class="still-grid-img">
-        
-        <!-- Hover-Only Scrim (Text ONLY appears when hovered over) -->
-        <div class="still-grid-overlay">
-          <div class="still-grid-title">${displayTitle}</div>
-          <div class="still-grid-sub">${s.role} &bull; ${s.studio}</div>
-          
-          <!-- Single-Vote Emoji Reaction Chips -->
-          <div class="still-grid-reactions" onclick="event.stopPropagation()">
-            <button class="reaction-chip ${rx.userVoted.includes('heart') ? 'active voted' : ''}"
-                    data-reaction-still="${s.id || `still-${idx}`}"
-                    data-reaction-type="heart"
-                    onclick="handleReactionClick(event, '${s.id || `still-${idx}`}', 'heart')"
-                    title="${rx.userVoted.includes('heart') ? 'Already reacted with Love' : 'Love this shot'}">
-              <span>❤️</span>
-              <span class="reaction-count">${rx.heart}</span>
-            </button>
-            <button class="reaction-chip ${rx.userVoted.includes('fire') ? 'active voted' : ''}"
-                    data-reaction-still="${s.id || `still-${idx}`}"
-                    data-reaction-type="fire"
-                    onclick="handleReactionClick(event, '${s.id || `still-${idx}`}', 'fire')"
-                    title="${rx.userVoted.includes('fire') ? 'Already reacted with Fire' : 'Fire composite'}">
-              <span>🔥</span>
-              <span class="reaction-count">${rx.fire}</span>
-            </button>
-            <button class="reaction-chip ${rx.userVoted.includes('clap') ? 'active voted' : ''}"
-                    data-reaction-still="${s.id || `still-${idx}`}"
-                    data-reaction-type="clap"
-                    onclick="handleReactionClick(event, '${s.id || `still-${idx}`}', 'clap')"
-                    title="${rx.userVoted.includes('clap') ? 'Already reacted with Applaud' : 'Applaud'}">
-              <span>👏</span>
-              <span class="reaction-count">${rx.clap}</span>
-            </button>
-            <button class="reaction-chip ${rx.userVoted.includes('cinema') ? 'active voted' : ''}"
-                    data-reaction-still="${s.id || `still-${idx}`}"
-                    data-reaction-type="cinema"
-                    onclick="handleReactionClick(event, '${s.id || `still-${idx}`}', 'cinema')"
-                    title="${rx.userVoted.includes('cinema') ? 'Already reacted with Cinematic' : 'Cinematic quality'}">
-              <span>🎬</span>
-              <span class="reaction-count">${rx.cinema}</span>
-            </button>
-          </div>
-        </div>
-      </div>
-    `;
-  }).join("");
+  if (!viewport) return;
 
-  if (window.lucide) window.lucide.createIcons();
+  // Touch Swipe Gesture Listeners
+  let touchStartX = 0;
+  let touchStartY = 0;
+  let isTouchSwiping = false;
+
+  viewport.addEventListener("touchstart", (e) => {
+    if (!e.touches || e.touches.length === 0) return;
+    touchStartX = e.touches[0].clientX;
+    touchStartY = e.touches[0].clientY;
+    isTouchSwiping = true;
+  }, { passive: true });
+
+  viewport.addEventListener("touchmove", (e) => {
+    if (!isTouchSwiping || !e.touches || e.touches.length === 0) return;
+    const diffX = e.touches[0].clientX - touchStartX;
+    const diffY = e.touches[0].clientY - touchStartY;
+    // If predominantly horizontal, prevent native scroll so swipe feels responsive
+    if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > 10) {
+      if (e.cancelable) e.preventDefault();
+    }
+  }, { passive: false });
+
+  viewport.addEventListener("touchend", (e) => {
+    if (!isTouchSwiping) return;
+    isTouchSwiping = false;
+    if (!e.changedTouches || e.changedTouches.length === 0) return;
+    const diffX = e.changedTouches[0].clientX - touchStartX;
+    const diffY = e.changedTouches[0].clientY - touchStartY;
+
+    if (Math.abs(diffX) > 40 && Math.abs(diffX) > Math.abs(diffY)) {
+      if (diffX < 0) {
+        swipeGallery('left'); // Swiped left -> next
+      } else {
+        swipeGallery('right'); // Swiped right -> prev
+      }
+    }
+  }, { passive: true });
+
+  // Desktop Mouse Drag Gesture Listeners
+  let isMouseDown = false;
+  let mouseStartX = 0;
+  let hasDragged = false;
+
+  viewport.addEventListener("mousedown", (e) => {
+    // Only left click
+    if (e.button !== 0) return;
+    // Don't intercept button clicks inside overlay
+    if (e.target.closest("button")) return;
+    isMouseDown = true;
+    mouseStartX = e.clientX;
+    hasDragged = false;
+  });
+
+  window.addEventListener("mousemove", (e) => {
+    if (!isMouseDown) return;
+    const diffX = e.clientX - mouseStartX;
+    if (Math.abs(diffX) > 8) {
+      hasDragged = true;
+      viewport.classList.add("is-dragging");
+    }
+  });
+
+  window.addEventListener("mouseup", (e) => {
+    if (!isMouseDown) return;
+    isMouseDown = false;
+    viewport.classList.remove("is-dragging");
+
+    if (hasDragged) {
+      const diffX = e.clientX - mouseStartX;
+      if (Math.abs(diffX) > 40) {
+        if (diffX < 0) {
+          swipeGallery('left');
+        } else {
+          swipeGallery('right');
+        }
+      }
+    }
+  });
+
+  // Capture click after dragging to avoid accidentally opening still when user was dragging
+  viewport.addEventListener("click", (e) => {
+    if (hasDragged) {
+      e.preventDefault();
+      e.stopPropagation();
+      hasDragged = false;
+    }
+  }, true);
+
+  // Keyboard navigation when gallery viewport is focused or section is in viewport
+  viewport.addEventListener("keydown", (e) => {
+    const lightboxModal = document.getElementById("lightbox-modal");
+    if (lightboxModal && !lightboxModal.classList.contains("hidden")) return;
+
+    if (e.key === "ArrowLeft") {
+      e.preventDefault();
+      swipeGallery('right');
+    } else if (e.key === "ArrowRight") {
+      e.preventDefault();
+      swipeGallery('left');
+    }
+  });
+
+  // Re-sync batch size if user resizes across mobile / desktop breakpoint
+  let resizeTimeout;
+  window.addEventListener("resize", () => {
+    clearTimeout(resizeTimeout);
+    resizeTimeout = setTimeout(() => {
+      const currentExpectedSize = getGalleryBatchSize();
+      if (kineticSlidesData && kineticSlidesData.length !== currentExpectedSize) {
+        const freshBatch = generateRandomBatch(currentExpectedSize);
+        galleryHistory = [freshBatch];
+        galleryHistoryIndex = 0;
+        renderGalleryBatch(freshBatch, null, true);
+      }
+    }, 150);
+  });
 }
-
-window.kineticCarouselNext = function() {};
-window.kineticCarouselPrev = function() {};
 
 /**
  * ============================================================================
@@ -504,7 +952,6 @@ function updateLightboxContent(index) {
   const img = document.getElementById("lightbox-image");
   const cap = document.getElementById("lightbox-caption");
   const titleEl = document.getElementById("lightbox-title");
-  const counterEl = document.getElementById("lightbox-counter");
 
   if (!modal || !img) return;
 
@@ -516,13 +963,9 @@ function updateLightboxContent(index) {
 
   img.src = item.image || item.src;
   if (titleEl) titleEl.textContent = item.title || "Production Still";
-  if (counterEl) counterEl.textContent = `${lightboxCurrentIndex + 1} / ${list.length}`;
   if (cap) {
-    if (item.caption) {
-      cap.innerHTML = `<strong>${item.title}</strong> &bull; ${item.role} (${item.studio || ''})<br><span style="color:var(--text-light);font-size:12px;">${item.caption}</span>`;
-    } else {
-      cap.innerHTML = `<strong>${item.title || ''}</strong> &bull; ${item.role || ''}`;
-    }
+    const studioPart = item.studio ? ` (${item.studio})` : '';
+    cap.innerHTML = `<strong>${item.title || ''}</strong> &bull; ${item.role || ''}${studioPart}`;
   }
 }
 
@@ -778,7 +1221,7 @@ function renderProjects(projectsList) {
       <div class="project-card" id="card-${p.id}">
         <!-- Thumbnail Wrap (Click opens Lightbox) -->
         <div class="project-thumb-wrap" onclick="openProjectStill(${pIdx})">
-          <img src="${p.image}" alt="${p.title}" class="project-thumb" loading="lazy" draggable="false">
+          <img src="${p.image}" alt="${p.title}" class="project-thumb" loading="lazy" decoding="async" draggable="false">
           <span class="project-role-badge">${p.role}</span>
           ${getStudioBadgeHtml(p.studio)}
           <span class="project-expand-hint">
@@ -808,7 +1251,7 @@ function renderProjects(projectsList) {
                       onclick="handleReactionClick(event, '${p.id}', 'heart')"
                       title="${rx.userVoted.includes('heart') ? 'Already reacted with Love' : 'Love this project'}">
                 <span>❤️</span>
-                <span class="reaction-count">${rx.heart}</span>
+                <span class="reaction-count">${rx.heart > 0 ? rx.heart : ''}</span>
               </button>
               <button class="reaction-chip ${rx.userVoted.includes('fire') ? 'active voted' : ''}"
                       data-reaction-still="${p.id}"
@@ -816,7 +1259,7 @@ function renderProjects(projectsList) {
                       onclick="handleReactionClick(event, '${p.id}', 'fire')"
                       title="${rx.userVoted.includes('fire') ? 'Already reacted with Fire' : 'Fire work'}">
                 <span>🔥</span>
-                <span class="reaction-count">${rx.fire}</span>
+                <span class="reaction-count">${rx.fire > 0 ? rx.fire : ''}</span>
               </button>
               <button class="reaction-chip ${rx.userVoted.includes('clap') ? 'active voted' : ''}"
                       data-reaction-still="${p.id}"
@@ -824,7 +1267,7 @@ function renderProjects(projectsList) {
                       onclick="handleReactionClick(event, '${p.id}', 'clap')"
                       title="${rx.userVoted.includes('clap') ? 'Already reacted with Applaud' : 'Applaud'}">
                 <span>👏</span>
-                <span class="reaction-count">${rx.clap}</span>
+                <span class="reaction-count">${rx.clap > 0 ? rx.clap : ''}</span>
               </button>
             </div>
 
@@ -891,12 +1334,11 @@ function initProjectFilters() {
  * PROFESSIONAL EXPERIENCE TIMELINE (Verbatim Resume)
  * ============================================================================
  */
-function renderExperience(experienceList) {
-  const container = document.getElementById("experience-timeline");
-  if (!container) return;
+let currentMobileJobIdx = 0;
 
-  container.innerHTML = experienceList.map(job => `
-    <div class="exp-card">
+function renderJobCardHtml(job, isMobile = false) {
+  return `
+    <div class="exp-card ${isMobile ? 'mobile-job-card' : ''}">
       <div class="exp-card-header">
         <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
           <span class="exp-card-company">${job.company}</span>
@@ -920,7 +1362,158 @@ function renderExperience(experienceList) {
         </ul>
       ` : ""}
     </div>
-  `).join("");
+  `;
+}
+
+function renderExperience(experienceList) {
+  const container = document.getElementById("experience-timeline");
+  if (!container || !experienceList.length) return;
+
+  const desktopCardsHtml = `
+    <div class="desktop-exp-timeline">
+      ${experienceList.map(job => renderJobCardHtml(job, false)).join("")}
+    </div>
+  `;
+
+  const mobileCarouselHtml = `
+    <div class="mobile-exp-carousel" id="mobile-exp-carousel">
+      <div class="mobile-exp-header-controls">
+        <button class="mobile-exp-btn" id="mobile-exp-prev" onclick="navigateMobileJob(-1)" aria-label="Previous role">
+          <i data-lucide="chevron-left" style="width:14px;height:14px;"></i>
+          <span>Prev Role</span>
+        </button>
+        <div class="mobile-exp-tracker" id="mobile-exp-tracker">
+          Role <span id="mobile-exp-current">1</span> of <span>${experienceList.length}</span>
+        </div>
+        <button class="mobile-exp-btn" id="mobile-exp-next" onclick="navigateMobileJob(1)" aria-label="Next role">
+          <span>Next Role</span>
+          <i data-lucide="chevron-right" style="width:14px;height:14px;"></i>
+        </button>
+      </div>
+
+      <div class="mobile-exp-viewport" id="mobile-exp-viewport">
+        <div class="mobile-exp-card-wrap" id="mobile-exp-card-wrap">
+          ${renderJobCardHtml(experienceList[currentMobileJobIdx], true)}
+        </div>
+      </div>
+
+      <div class="gallery-swipe-hint-bar" style="margin-top:14px;">
+        <span class="gallery-hint-text">
+          <i data-lucide="move-horizontal" style="width:13px;height:13px;"></i>
+          <span>Swipe left / right for next / previous role</span>
+        </span>
+      </div>
+    </div>
+  `;
+
+  container.innerHTML = desktopCardsHtml + mobileCarouselHtml;
+
+  initMobileJobSwipe(experienceList);
+  updateMobileJobNav(experienceList);
+  if (window.lucide) window.lucide.createIcons();
+}
+
+window.navigateMobileJob = function(delta) {
+  const { experience } = PORTFOLIO_DATA;
+  if (!experience || !experience.length) return;
+
+  const nextIdx = currentMobileJobIdx + delta;
+  if (nextIdx < 0 || nextIdx >= experience.length) return;
+
+  currentMobileJobIdx = nextIdx;
+  const wrap = document.getElementById("mobile-exp-card-wrap");
+  if (wrap) {
+    wrap.style.transition = "opacity 0.15s ease, transform 0.15s ease";
+    wrap.style.opacity = "0";
+    wrap.style.transform = delta > 0 ? "translateX(-20px)" : "translateX(20px)";
+
+    setTimeout(() => {
+      wrap.innerHTML = renderJobCardHtml(experience[currentMobileJobIdx], true);
+      wrap.style.transform = delta > 0 ? "translateX(20px)" : "translateX(-20px)";
+      requestAnimationFrame(() => {
+        wrap.style.transition = "opacity 0.22s ease, transform 0.22s cubic-bezier(0.16, 1, 0.3, 1)";
+        wrap.style.opacity = "1";
+        wrap.style.transform = "translateX(0)";
+        if (window.lucide) window.lucide.createIcons();
+      });
+    }, 150);
+  }
+
+  updateMobileJobNav(experience);
+};
+
+function updateMobileJobNav(experience) {
+  const prevBtn = document.getElementById("mobile-exp-prev");
+  const nextBtn = document.getElementById("mobile-exp-next");
+  const curSpan = document.getElementById("mobile-exp-current");
+
+  if (curSpan) curSpan.textContent = currentMobileJobIdx + 1;
+  if (prevBtn) {
+    const isFirst = currentMobileJobIdx === 0;
+    prevBtn.disabled = isFirst;
+    prevBtn.style.opacity = isFirst ? "0.35" : "1";
+    prevBtn.style.pointerEvents = isFirst ? "none" : "auto";
+  }
+  if (nextBtn) {
+    const isLast = currentMobileJobIdx === experience.length - 1;
+    nextBtn.disabled = isLast;
+    nextBtn.style.opacity = isLast ? "0.35" : "1";
+    nextBtn.style.pointerEvents = isLast ? "none" : "auto";
+  }
+}
+
+function initMobileJobSwipe(experience) {
+  const viewport = document.getElementById("mobile-exp-viewport");
+  if (!viewport) return;
+
+  let startX = 0;
+  let startY = 0;
+  let distX = 0;
+  let distY = 0;
+  let isSwiping = false;
+
+  viewport.addEventListener("touchstart", (e) => {
+    if (!e.touches.length) return;
+    startX = e.touches[0].clientX;
+    startY = e.touches[0].clientY;
+    distX = 0;
+    distY = 0;
+    isSwiping = true;
+  }, { passive: true });
+
+  viewport.addEventListener("touchmove", (e) => {
+    if (!isSwiping || !e.touches.length) return;
+    distX = e.touches[0].clientX - startX;
+    distY = e.touches[0].clientY - startY;
+  }, { passive: true });
+
+  viewport.addEventListener("touchend", () => {
+    if (!isSwiping) return;
+    isSwiping = false;
+    if (Math.abs(distX) > 40 && Math.abs(distX) > Math.abs(distY) * 1.2) {
+      if (distX < 0) {
+        navigateMobileJob(1);
+      } else {
+        navigateMobileJob(-1);
+      }
+    }
+  });
+
+  let isMouseDown = false;
+  let mouseStartX = 0;
+  viewport.addEventListener("mousedown", (e) => {
+    isMouseDown = true;
+    mouseStartX = e.clientX;
+  });
+  window.addEventListener("mouseup", (e) => {
+    if (!isMouseDown) return;
+    isMouseDown = false;
+    const diff = e.clientX - mouseStartX;
+    if (Math.abs(diff) > 40) {
+      if (diff < 0) navigateMobileJob(1);
+      else navigateMobileJob(-1);
+    }
+  });
 }
 
 /**
@@ -932,7 +1525,7 @@ function renderExperience(experienceList) {
 let activeResumeTab = "pdf";
 
 function initResumeModal() {
-  renderResumeDocument();
+  // Performance optimization: PDF iframe is lazy-loaded on demand when openResumeModal() is clicked
 }
 
 window.openResumeModal = function() {
@@ -1271,6 +1864,27 @@ function initSecurityProtection() {
  * UTILITY HELPERS
  * ============================================================================
  */
+window.copyContactInfoAndIntro = function() {
+  const { personal } = PORTFOLIO_DATA;
+  const resumeUrl = (typeof window !== "undefined" && window.location.protocol.startsWith("http") && !window.location.hostname.includes("localhost") && !window.location.hostname.includes("127.0.0.1"))
+    ? new URL("Dan_Rubin_Resume.pdf", window.location.href).href
+    : (personal.resumeUrl || "https://danrubinvfx.github.io/portfolio/Dan_Rubin_Resume.pdf");
+
+  const introText = `${personal.fullName} — ${personal.title} • ${personal.subtitle}
+
+${personal.bio}
+
+Contact & Portfolio:
+• Email: ${personal.email}
+• Résumé: ${resumeUrl}
+• LinkedIn: ${personal.linkedinUrl}
+• Vimeo Showcase: ${personal.vimeoUrl} (password: ${personal.vimeoPassword})
+• IMDb: ${personal.imdbUrl}
+• Location: ${personal.location}`;
+
+  copyToClipboard(introText, "Contact info & introduction");
+};
+
 window.copyToClipboard = function(text, label) {
   if (navigator.clipboard && navigator.clipboard.writeText) {
     navigator.clipboard.writeText(text).then(() => {
@@ -1286,24 +1900,38 @@ window.copyToClipboard = function(text, label) {
 function fallbackCopy(text, label) {
   const ta = document.createElement("textarea");
   ta.value = text;
+  ta.style.position = "fixed";
+  ta.style.left = "-9999px";
+  ta.style.top = "0";
   document.body.appendChild(ta);
+  ta.focus();
   ta.select();
-  document.execCommand("copy");
+  try {
+    document.execCommand("copy");
+    showToast(`${label || "Text"} copied to clipboard!`);
+  } catch (err) {
+    showToast("Unable to copy automatically. Please copy manually.");
+  }
   document.body.removeChild(ta);
-  showToast(`${label || 'Text'} copied to clipboard!`);
 }
 
+let toastTimeoutId = null;
 function showToast(message) {
-  const toast = document.getElementById("toast");
-  if (!toast) return;
+  let toast = document.getElementById("toast");
+  if (!toast) {
+    toast = document.createElement("div");
+    toast.id = "toast";
+    document.body.appendChild(toast);
+  }
 
-  toast.textContent = message;
+  toast.innerHTML = `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="color:#22c55e;"><polyline points="20 6 9 17 4 12"></polyline></svg> <span>${message}</span>`;
   toast.style.opacity = "1";
-  toast.style.transform = "translateY(0)";
+  toast.style.transform = "translateX(-50%) translateY(0)";
 
-  setTimeout(() => {
+  if (toastTimeoutId) clearTimeout(toastTimeoutId);
+  toastTimeoutId = setTimeout(() => {
     toast.style.opacity = "0";
-    toast.style.transform = "translateY(8px)";
+    toast.style.transform = "translateX(-50%) translateY(12px)";
   }, 3200);
 }
 

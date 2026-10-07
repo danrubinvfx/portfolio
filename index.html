@@ -38,6 +38,7 @@
 </head>
 
 <body class="print-hide">
+<div id="top" style="position:absolute;top:0;left:0;height:1px;width:1px;pointer-events:none;"></div>
 
 <!-- ==========================================================================
      DIGITAL BUSINESS CARD HEADER & BRAND IDENTITY
@@ -49,7 +50,7 @@
 
     <!-- Left: Brand Identity & Direct Contact Info Chips -->
     <div class="header-brand-block">
-      <a href="#hero" class="brand-link" title="Dan Rubin — Portfolio Home">
+      <a href="#top" onclick="window.scrollTo({ top: 0, behavior: 'smooth' }); return false;" class="brand-link" title="Dan Rubin — Portfolio Home">
         <div class="brand-avatar">DR</div>
         <div>
           <div class="brand-name">Dan Rubin</div>
@@ -120,7 +121,7 @@
       </a>
 
       <a href="https://www.linkedin.com/in/dan-rubin-8371032/" target="_blank" rel="noopener" class="action-pill pill-linkedin" title="LinkedIn: dan-rubin-8371032">
-        <i data-lucide="linkedin" style="width:13px;height:13px;"></i>
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide-linkedin" style="vertical-align:middle;display:inline-block;"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect width="4" height="12" x="2" y="9"></rect><circle cx="4" cy="4" r="2"></circle></svg>
         <span>LinkedIn</span>
       </a>
 
@@ -160,7 +161,7 @@
 
     <!-- Edge-to-Edge Full-Width Cinema Player -->
     <div class="artist-player-fullwidth" id="artist-player-container" oncontextmenu="return false;">
-      <video id="artist-showreel-video" controls controlsList="nodownload noplaybackrate nofullscreen" disablePictureInPicture autoplay muted loop playsinline preload="auto" poster="images/stills/AvatarFireandAsh_01.png" oncontextmenu="return false;">
+      <video id="artist-showreel-video" controls controlsList="nodownload noplaybackrate nofullscreen" disablePictureInPicture autoplay muted loop playsinline preload="metadata" poster="images/posters/AvatarFireandAsh_poster.jpg" oncontextmenu="return false;">
         <source src="videos/2026CompositingReel.mp4" type="video/mp4">
         <p style="color:#888;padding:32px;font-family:monospace;font-size:13px;">
           Your browser cannot play this file inline.
@@ -245,24 +246,57 @@
       </div>
       <h2 class="section-heading" style="margin-bottom:24px;">Supervisory Breakdowns</h2>
 
-      <!-- 2x2 Video Grid -->
-      <div class="supervisory-grid-2x2" id="supervisory-grid">
+      <!-- Desktop 2x2 Video Grid -->
+      <div class="desktop-supervisory-grid supervisory-grid-2x2" id="supervisory-grid">
+        <!-- Rendered dynamically via script.js -->
+      </div>
+
+      <!-- Mobile 1-Reel Swipable Carousel -->
+      <div class="mobile-supervisory-carousel" id="mobile-supervisory-carousel">
         <!-- Rendered dynamically via script.js -->
       </div>
     </div>
   </section>
 
   <!-- ==========================================================================
-       SECTION 3: FEATURED STILLS (High-Frequency Grid Pattern)
-       Pure visual frames by default; text appears only on hover.
+       SECTION 3: FEATURED STILLS / SHOT GALLERY (Randomized Swipable Grid)
+       Swiping left/right reveals fresh non-overlapping shots from the 77-still pool.
+       Pure visual frames by default; text & reactions appear on hover/tap.
   ========================================================================== -->
   <section id="featured-stills-carousel" class="section-divider" aria-label="Shot Gallery">
     <div class="section-wrap">
-      <h2 class="section-heading" style="margin-bottom:24px;">Shot Gallery</h2>
+      <div class="gallery-header-row">
+        <div>
+          <h2 class="section-heading" style="margin-bottom:6px;">Shot Gallery</h2>
+          <p class="section-sub" style="margin-bottom:0;">
+            Swipe left or right to explore production stills at random across feature films and episodic VFX.
+          </p>
+        </div>
 
-      <!-- High-Frequency Stills Grid (4 Columns Desktop, 3 Tablet, 2 Mobile) -->
-      <div class="stills-grid-highfreq" id="stills-grid-container">
-        <!-- 16 Curated Flagship Stills Rendered via script.js -->
+        <!-- Left / Right Swipe Controls -->
+        <div class="gallery-nav-controls" role="group" aria-label="Shot Gallery Navigation">
+          <button id="gallery-prev-btn" class="gallery-nav-btn" onclick="swipeGallery('right')" aria-label="Previous random shots" title="Previous Shots (Left Arrow)">
+            <i data-lucide="chevron-left" style="width:18px;height:18px;"></i>
+          </button>
+          <button id="gallery-next-btn" class="gallery-nav-btn" onclick="swipeGallery('left')" aria-label="Next random shots" title="More Random Shots (Right Arrow)">
+            <i data-lucide="chevron-right" style="width:18px;height:18px;"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Swipable Viewport for Touch & Mouse Drag -->
+      <div class="stills-swipe-viewport" id="stills-swipe-viewport" tabindex="0" aria-label="Swipable Shot Gallery Grid">
+        <div class="stills-grid-highfreq" id="stills-grid-container">
+          <!-- Dynamic non-overlapping random shots rendered via script.js -->
+        </div>
+      </div>
+
+      <!-- Touch / Drag Micro-Hint -->
+      <div class="gallery-swipe-hint-bar">
+        <span class="gallery-hint-text">
+          <i data-lucide="move-horizontal" style="width:13px;height:13px;"></i>
+          <span>Swipe left / right or drag to reveal more shots</span>
+        </span>
       </div>
     </div>
   </section>
@@ -280,14 +314,14 @@
         <i data-lucide="briefcase" style="width:14px;height:14px;"></i>
         25-Year Career History
       </div>
-      <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:8px;">
+      <div class="exp-header-wrap" style="display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:8px;">
         <div>
           <h2 class="section-heading">Professional Experience</h2>
           <p class="section-sub">
             Eyeline VFX, Wētā FX, Image Engine, FuseFX, Sony Pictures Imageworks, MPC, Digital Domain, Prime Focus World, and more.
           </p>
         </div>
-        <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+        <div class="exp-header-actions" style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
           <a href="Dan_Rubin_Resume.pdf" download="Dan_Rubin_Resume.pdf" class="btn-primary" style="padding:8px 18px;font-size:12px;display:inline-flex;align-items:center;gap:6px;" title="Download Dan Rubin's Original Résumé PDF (3 Pages Intact)">
             <i data-lucide="download" style="width:14px;height:14px;"></i>
             <span>Download Original PDF</span>
@@ -423,7 +457,7 @@
             </div>
           </div>
           <div class="contact-item">
-            <div class="contact-icon"><i data-lucide="linkedin" style="width:16px;height:16px;"></i></div>
+            <div class="contact-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide-linkedin"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect width="4" height="12" x="2" y="9"></rect><circle cx="4" cy="4" r="2"></circle></svg></div>
             <div class="contact-info">
               <div class="contact-label">LinkedIn</div>
               <div class="contact-value">
@@ -433,19 +467,35 @@
               </div>
             </div>
           </div>
+          <div class="contact-item">
+            <div class="contact-icon"><i data-lucide="video" style="width:16px;height:16px;"></i></div>
+            <div class="contact-info">
+              <div class="contact-label">Vimeo Showcase</div>
+              <div class="contact-value">
+                <a href="https://vimeo.com/showcase/11081895" target="_blank" rel="noopener">
+                  vimeo.com/showcase/11081895
+                </a>
+                <span class="vimeo-pw-chip" style="margin-left:8px;">pw: password</span>
+              </div>
+            </div>
+          </div>
 
-          <!-- Official Résumé Quick Actions -->
-          <div style="margin-top:16px;padding-top:16px;border-top:1px solid var(--border-light);display:flex;gap:10px;flex-wrap:wrap;">
-            <a href="Dan_Rubin_Resume.pdf" download="Dan_Rubin_Resume.pdf" class="btn-primary" style="flex:1;min-width:200px;justify-content:center;display:inline-flex;align-items:center;gap:6px;" title="Download Dan Rubin's Original Résumé PDF (3 Pages Intact)">
-              <i data-lucide="download" style="width:16px;height:16px;"></i>
-              <span>Download Original PDF</span>
+          <!-- Contact Copy & Résumé Quick Actions -->
+          <div class="contact-actions-row" style="margin-top:16px;padding-top:16px;border-top:1px solid var(--border-light);display:flex;gap:10px;flex-wrap:wrap;">
+            <button onclick="copyContactInfoAndIntro()" class="btn-primary" style="flex:1;min-width:240px;justify-content:center;display:inline-flex;align-items:center;gap:8px;" title="Copy contact details and short bio to clipboard for pasting into an email">
+              <i data-lucide="copy" style="width:15px;height:15px;"></i>
+              <span>Copy Contact Info &amp; Intro for Email</span>
+            </button>
+            <a href="Dan_Rubin_Resume.pdf" download="Dan_Rubin_Resume.pdf" class="btn-outline" style="justify-content:center;display:inline-flex;align-items:center;gap:6px;" title="Download Dan Rubin's Original Résumé PDF (3 Pages Intact)">
+              <i data-lucide="download" style="width:15px;height:15px;"></i>
+              <span>Download PDF</span>
             </a>
             <a href="Dan_Rubin_Resume.pdf" target="_blank" rel="noopener" class="btn-outline" style="justify-content:center;display:inline-flex;align-items:center;gap:6px;" title="Open Original PDF in New Tab">
-              <i data-lucide="external-link" style="width:16px;height:16px;"></i>
+              <i data-lucide="external-link" style="width:15px;height:15px;"></i>
               <span>Open PDF</span>
             </a>
             <button onclick="openResumeModal()" class="btn-outline" style="justify-content:center;display:inline-flex;align-items:center;gap:6px;" title="View Interactive Document">
-              <i data-lucide="file-text" style="width:16px;height:16px;"></i>
+              <i data-lucide="file-text" style="width:15px;height:15px;"></i>
               <span>View Online</span>
             </button>
           </div>
@@ -466,7 +516,7 @@
       &copy; 2026 Dan Rubin. All rights reserved. Vancouver, BC. Dual US &amp; Canadian Citizen. Compositing Supervisor and Artist.
     </div>
     <div class="footer-links">
-      <a href="#hero">Top</a>
+      <a href="#top" onclick="window.scrollTo({ top: 0, behavior: 'smooth' }); return false;">Top</a>
       <a href="#artist-reel">Artist Reel</a>
       <a href="#supervisory-reels">Supervisory Breakdowns</a>
       <a href="#featured-stills-carousel">Shot Gallery</a>
@@ -497,7 +547,7 @@
   </a>
   <span class="floating-pill-divider"></span>
   <a href="https://www.linkedin.com/in/dan-rubin-8371032/" target="_blank" rel="noopener" class="floating-pill-item" title="Dan Rubin on LinkedIn" aria-label="Dan Rubin on LinkedIn">
-    <i data-lucide="linkedin" style="width:14px;height:14px;"></i>
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide-linkedin"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect width="4" height="12" x="2" y="9"></rect><circle cx="4" cy="4" r="2"></circle></svg>
     <span class="floating-pill-text">LinkedIn</span>
   </a>
 </aside>
@@ -513,7 +563,6 @@
   <div class="lightbox-top-bar" onclick="event.stopPropagation()">
     <div class="lightbox-title-info">
       <span id="lightbox-title" class="lightbox-title">Production Still</span>
-      <span id="lightbox-counter" class="lightbox-counter"></span>
     </div>
     <button class="lightbox-close-floating-btn" onclick="closeLightbox()" title="Close fullscreen and return to portfolio (ESC)">
       <span class="close-icon">&times;</span>
@@ -528,7 +577,7 @@
   <!-- Central Image & Caption Stage -->
   <div class="lightbox-content-box" onclick="event.stopPropagation()">
     <div class="lightbox-img-wrapper" oncontextmenu="return false;">
-      <img id="lightbox-image" src="images/stills/ContraElHuracan_01.png" alt="Fullscreen Still" class="lightbox-img-frame" draggable="false">
+      <img id="lightbox-image" src="images/stills/ContraElHuracan_01.webp" alt="Fullscreen Still" class="lightbox-img-frame" draggable="false">
       <div class="lightbox-shield"></div>
     </div>
     <div class="lightbox-caption-card">
@@ -580,12 +629,13 @@
 
 <!-- Toast notification -->
 <div id="toast" style="
-  position:fixed;bottom:24px;right:24px;z-index:200;
-  background:var(--accent);color:#111;
-  font-size:12px;font-family:'Space Mono',monospace;font-weight:700;
-  padding:10px 18px;border-radius:6px;
-  opacity:0;transform:translateY(8px);
-  transition:opacity 0.3s,transform 0.3s;
+  position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(12px);z-index:99999;
+  background:#0f172a;color:#f8fafc;
+  font-size:13px;font-family:var(--font-sans);font-weight:600;
+  padding:10px 20px;border-radius:9999px;
+  box-shadow:0 10px 25px rgba(0,0,0,0.3);
+  display:inline-flex;align-items:center;gap:8px;
+  opacity:0;transition:opacity 0.25s ease, transform 0.25s cubic-bezier(0.16,1,0.3,1);
   pointer-events:none;
 "></div>
 
