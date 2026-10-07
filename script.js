@@ -201,6 +201,312 @@ window.handleReactionClick = function(event, stillId, reactionType) {
 let currentVideoId = "trailer-contra";
 let isYouTubeMode = false;
 
+/**
+ * Bespoke Cinema Player Overlay for 2026 Artist Compositing Reel
+ * - Controls are strictly HIDDEN on initial page load (zero obstruction for autoplay reel)
+ * - Auto-hides after 2.5s of inactivity while playing
+ * - Interactive scrubber, volume toggle, time readout, and mobile-friendly touch targets
+ */
+function initCinemaPlayer() {
+  const container = document.getElementById("artist-player-container");
+  const video = document.getElementById("artist-showreel-video");
+  const overlay = document.getElementById("cinema-controls-overlay");
+  const scrubber = document.getElementById("cinema-scrubber");
+  const progress = document.getElementById("cinema-scrubber-progress");
+  const buffered = document.getElementById("cinema-scrubber-buffered");
+  const handle = document.getElementById("cinema-scrubber-handle");
+  const playBtn = document.getElementById("cinema-btn-play");
+  const muteBtn = document.getElementById("cinema-btn-mute");
+  const fsBtn = document.getElementById("cinema-btn-fullscreen");
+  const timeReadout = document.getElementById("cinema-time-readout");
+  const splash = document.getElementById("cinema-center-splash");
+
+  if (!container || !video || !overlay) return;
+
+  let hideTimeout = null;
+  let isScrubbing = false;
+  let userInteracted = false;
+
+  function formatTime(seconds) {
+    if (isNaN(seconds) || seconds < 0) return "00:00";
+    const mins = Math.floor(seconds / 60);
+    const secs = Math.floor(seconds % 60);
+    return `${String(mins).padStart(2, "0")}:${String(secs).padStart(2, "0")}`;
+  }
+
+  function updateTimeDisplay() {
+    const cur = video.currentTime || 0;
+    const dur = video.duration || 0;
+    if (timeReadout) {
+      timeReadout.textContent = `${formatTime(cur)} / ${formatTime(dur)}`;
+    }
+  }
+
+  function showControls(autoHide = true) {
+    userInteracted = true;
+    overlay.classList.add("visible");
+    container.classList.add("controls-active");
+    if (hideTimeout) clearTimeout(hideTimeout);
+    if (autoHide && !video.paused) {
+      hideTimeout = setTimeout(() => {
+        if (!video.paused && !isScrubbing) {
+          overlay.classList.remove("visible");
+          container.classList.remove("controls-active");
+        }
+      }, 2500);
+    }
+  }
+
+  function hideControls() {
+    if (!video.paused && !isScrubbing) {
+      overlay.classList.remove("visible");
+      container.classList.remove("controls-active");
+    }
+  }
+
+  function flashSplash(isPlay) {
+    if (!splash) return;
+    const playIcon = splash.querySelector(".cinema-splash-icon-play");
+    const pauseIcon = splash.querySelector(".cinema-splash-icon-pause");
+    if (playIcon && pauseIcon) {
+      playIcon.style.display = isPlay ? "inline-block" : "none";
+      pauseIcon.style.display = isPlay ? "none" : "inline-block";
+    }
+    splash.classList.remove("animate");
+    void splash.offsetWidth;
+    splash.classList.add("animate");
+    setTimeout(() => {
+      splash.classList.remove("animate");
+    }, 450);
+  }
+
+  function updatePlayButtonUI() {
+    if (!playBtn) return;
+    const playIcon = playBtn.querySelector(".cinema-icon-play");
+    const pauseIcon = playBtn.querySelector(".cinema-icon-pause");
+    if (video.paused) {
+      if (playIcon) playIcon.style.display = "inline-block";
+      if (pauseIcon) pauseIcon.style.display = "none";
+      playBtn.setAttribute("aria-label", "Play");
+      if (userInteracted) showControls(false);
+    } else {
+      if (playIcon) playIcon.style.display = "none";
+      if (pauseIcon) pauseIcon.style.display = "inline-block";
+      playBtn.setAttribute("aria-label", "Pause");
+      if (userInteracted) showControls(true);
+    }
+  }
+
+  function togglePlayPause() {
+    userInteracted = true;
+    if (video.paused) {
+      video.play().then(() => {
+        flashSplash(true);
+        updatePlayButtonUI();
+      }).catch(e => console.log("Play error:", e));
+    } else {
+      video.pause();
+      flashSplash(false);
+      updatePlayButtonUI();
+      showControls(false);
+    }
+  }
+
+  function updateMuteButtonUI() {
+    if (!muteBtn) return;
+    const mutedIcon = muteBtn.querySelector(".cinema-icon-muted");
+    const unmutedIcon = muteBtn.querySelector(".cinema-icon-unmuted");
+    if (video.muted || video.volume === 0) {
+      if (mutedIcon) mutedIcon.style.display = "inline-block";
+      if (unmutedIcon) unmutedIcon.style.display = "none";
+      muteBtn.setAttribute("aria-label", "Unmute");
+    } else {
+      if (mutedIcon) mutedIcon.style.display = "none";
+      if (unmutedIcon) unmutedIcon.style.display = "inline-block";
+      muteBtn.setAttribute("aria-label", "Mute");
+    }
+  }
+
+  function toggleMute() {
+    userInteracted = true;
+    if (video.muted) {
+      video.muted = false;
+      if (video.volume === 0) video.volume = 1;
+    } else {
+      video.muted = true;
+    }
+    updateMuteButtonUI();
+    showControls(true);
+  }
+
+  function toggleFullscreen() {
+    userInteracted = true;
+    const isFs = document.fullscreenElement || document.webkitFullscreenElement;
+    if (!isFs) {
+      if (container.requestFullscreen) {
+        container.requestFullscreen();
+      } else if (container.webkitRequestFullscreen) {
+        container.webkitRequestFullscreen();
+      } else if (video.webkitEnterFullscreen) {
+        // Native iOS Safari Fullscreen
+        video.webkitEnterFullscreen();
+      }
+    } else {
+      if (document.exitFullscreen) {
+        document.exitFullscreen();
+      } else if (document.webkitExitFullscreen) {
+        document.webkitExitFullscreen();
+      }
+    }
+  }
+
+  function updateFullscreenUI() {
+    if (!fsBtn) return;
+    const enterIcon = fsBtn.querySelector(".cinema-icon-fullscreen-enter");
+    const exitIcon = fsBtn.querySelector(".cinema-icon-fullscreen-exit");
+    const isFs = document.fullscreenElement || document.webkitFullscreenElement;
+    if (enterIcon && exitIcon) {
+      enterIcon.style.display = isFs ? "none" : "inline-block";
+      exitIcon.style.display = isFs ? "inline-block" : "none";
+    }
+  }
+
+  function seekTo(e) {
+    if (!video.duration || !scrubber) return;
+    const rect = scrubber.getBoundingClientRect();
+    const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+    const pct = Math.max(0, Math.min(1, (clientX - rect.left) / rect.width));
+    video.currentTime = pct * video.duration;
+    if (progress) progress.style.width = (pct * 100) + "%";
+    if (handle) handle.style.left = (pct * 100) + "%";
+    updateTimeDisplay();
+  }
+
+  if (scrubber) {
+    const onScrubStart = (e) => {
+      userInteracted = true;
+      isScrubbing = true;
+      scrubber.classList.add("scrubbing");
+      showControls(false);
+      seekTo(e);
+      window.addEventListener("mousemove", onScrubMove);
+      window.addEventListener("mouseup", onScrubEnd);
+      window.addEventListener("touchmove", onScrubMove, { passive: false });
+      window.addEventListener("touchend", onScrubEnd);
+    };
+
+    const onScrubMove = (e) => {
+      if (!isScrubbing) return;
+      if (e.preventDefault && e.type === "touchmove") e.preventDefault();
+      seekTo(e);
+    };
+
+    const onScrubEnd = (e) => {
+      if (!isScrubbing) return;
+      isScrubbing = false;
+      scrubber.classList.remove("scrubbing");
+      window.removeEventListener("mousemove", onScrubMove);
+      window.removeEventListener("mouseup", onScrubEnd);
+      window.removeEventListener("touchmove", onScrubMove);
+      window.removeEventListener("touchend", onScrubEnd);
+      showControls(true);
+    };
+
+    scrubber.addEventListener("mousedown", onScrubStart);
+    scrubber.addEventListener("touchstart", onScrubStart, { passive: false });
+  }
+
+  video.addEventListener("timeupdate", () => {
+    if (!isScrubbing && video.duration) {
+      const pct = (video.currentTime / video.duration) * 100;
+      if (progress) progress.style.width = pct + "%";
+      if (handle) handle.style.left = pct + "%";
+      updateTimeDisplay();
+    }
+  });
+
+  video.addEventListener("progress", () => {
+    if (video.duration && video.buffered.length > 0 && buffered) {
+      const bufEnd = video.buffered.end(video.buffered.length - 1);
+      buffered.style.width = ((bufEnd / video.duration) * 100) + "%";
+    }
+  });
+
+  video.addEventListener("loadedmetadata", updateTimeDisplay);
+  video.addEventListener("play", updatePlayButtonUI);
+  video.addEventListener("pause", updatePlayButtonUI);
+  video.addEventListener("volumechange", updateMuteButtonUI);
+
+  // Desktop Mouse Events: hover reveals, mouseleave hides
+  container.addEventListener("mousemove", () => showControls(true));
+  container.addEventListener("mouseenter", () => showControls(true));
+  container.addEventListener("mouseleave", () => hideControls());
+
+  // Mobile Touch Events: tap reveals controls or toggles play
+  container.addEventListener("touchstart", (e) => {
+    if (e.target.closest(".cinema-controls-overlay")) return;
+    if (!overlay.classList.contains("visible")) {
+      showControls(true);
+    } else {
+      togglePlayPause();
+    }
+  }, { passive: true });
+
+  // Click on video background (Desktop)
+  video.addEventListener("click", (e) => {
+    e.stopPropagation();
+    togglePlayPause();
+  });
+
+  if (playBtn) playBtn.addEventListener("click", (e) => {
+    e.stopPropagation();
+    togglePlayPause();
+  });
+
+  if (muteBtn) muteBtn.addEventListener("click", (e) => {
+    e.stopPropagation();
+    toggleMute();
+  });
+
+  if (fsBtn) fsBtn.addEventListener("click", (e) => {
+    e.stopPropagation();
+    toggleFullscreen();
+  });
+
+  document.addEventListener("fullscreenchange", updateFullscreenUI);
+  document.addEventListener("webkitfullscreenchange", updateFullscreenUI);
+
+  // Keyboard accessibility
+  container.addEventListener("keydown", (e) => {
+    if (e.key === " " || e.key === "k") {
+      e.preventDefault();
+      togglePlayPause();
+    } else if (e.key === "m") {
+      e.preventDefault();
+      toggleMute();
+    } else if (e.key === "f") {
+      e.preventDefault();
+      toggleFullscreen();
+    } else if (e.key === "ArrowLeft") {
+      e.preventDefault();
+      video.currentTime = Math.max(0, video.currentTime - 5);
+      showControls(true);
+    } else if (e.key === "ArrowRight") {
+      e.preventDefault();
+      video.currentTime = Math.min(video.duration, video.currentTime + 5);
+      showControls(true);
+    }
+  });
+
+  // Ensure controls are strictly HIDDEN on initial load
+  overlay.classList.remove("visible");
+  container.classList.remove("controls-active");
+  updatePlayButtonUI();
+  updateMuteButtonUI();
+  updateTimeDisplay();
+  if (window.lucide) window.lucide.createIcons();
+}
+
 function initVideoShowcase() {
   // Autoplay muted on load for Artist Reel
   const artistVid = document.getElementById("artist-showreel-video");
@@ -211,6 +517,9 @@ function initVideoShowcase() {
       console.log("Artist reel autoplay restriction handled:", e);
     });
   }
+
+  // Initialize bespoke cinema overlay player (controls auto-hide, hidden on initial load)
+  initCinemaPlayer();
 
   const gridContainer = document.getElementById("supervisory-grid");
   const mobileCarousel = document.getElementById("mobile-supervisory-carousel");

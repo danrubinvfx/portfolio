@@ -894,6 +894,206 @@ select:focus-visible {
   background: #000000;
 }
 
+/* ── Cinema Overlay Control Bar (Hidden on load, reveals on hover/tap, auto-hides after 2.5s) ── */
+.cinema-controls-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.88) 0%, rgba(0, 0, 0, 0.45) 60%, transparent 100%);
+  padding: 36px 18px 14px 18px;
+  z-index: 10;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(6px);
+  transition: opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1), transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* When visible */
+.cinema-controls-overlay.visible {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
+/* Scrubber / Progress Bar */
+.cinema-scrubber-track {
+  width: 100%;
+  height: 5px;
+  background: rgba(255, 255, 255, 0.22);
+  border-radius: 4px;
+  position: relative;
+  cursor: pointer;
+  transition: height 0.15s ease;
+  touch-action: none;
+}
+
+.cinema-scrubber-track:hover,
+.cinema-scrubber-track.scrubbing {
+  height: 8px;
+}
+
+.cinema-scrubber-buffered {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.32);
+  border-radius: 4px;
+  width: 0%;
+  pointer-events: none;
+}
+
+.cinema-scrubber-progress {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  background: #00d2ff;
+  border-radius: 4px;
+  width: 0%;
+  pointer-events: none;
+  box-shadow: 0 0 8px rgba(0, 210, 255, 0.6);
+}
+
+.cinema-scrubber-handle {
+  position: absolute;
+  top: 50%;
+  left: 0%;
+  width: 13px;
+  height: 13px;
+  background: #ffffff;
+  border-radius: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.6);
+  transition: transform 0.15s ease;
+  pointer-events: none;
+}
+
+.cinema-scrubber-track:hover .cinema-scrubber-handle,
+.cinema-scrubber-track.scrubbing .cinema-scrubber-handle {
+  transform: translate(-50%, -50%) scale(1);
+}
+
+/* Control buttons row */
+.cinema-controls-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+}
+
+.cinema-controls-left,
+.cinema-controls-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.cinema-ctrl-btn {
+  background: none;
+  border: none;
+  color: #ffffff;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 6px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.15s ease, transform 0.15s ease, color 0.15s ease;
+  line-height: 1;
+}
+
+.cinema-ctrl-btn svg {
+  width: 18px;
+  height: 18px;
+  stroke: #ffffff;
+}
+
+.cinema-ctrl-btn:hover {
+  background: rgba(255, 255, 255, 0.15);
+  transform: scale(1.08);
+}
+
+.cinema-ctrl-btn:active {
+  transform: scale(0.94);
+}
+
+.cinema-time-readout {
+  font-family: var(--font-mono, monospace);
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.85);
+  letter-spacing: 0.04em;
+  user-select: none;
+  font-weight: 500;
+}
+
+/* Central play/pause splash feedback */
+.cinema-center-splash {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.7);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.22s ease, transform 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+  z-index: 9;
+}
+
+.cinema-center-splash.animate {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1.1);
+}
+
+.cinema-splash-badge {
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  background: rgba(15, 23, 42, 0.75);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+}
+
+.cinema-splash-badge svg {
+  width: 26px;
+  height: 26px;
+  stroke: #ffffff;
+}
+
+/* Watermark smooth repositioning when controls are visible */
+.cinema-controls-overlay.visible ~ .cinema-watermark,
+.artist-player-fullwidth:has(.cinema-controls-overlay.visible) .cinema-watermark {
+  transform: translateY(-44px);
+  opacity: 0.75;
+}
+
+@media (max-width: 768px) {
+  .cinema-controls-overlay {
+    padding: 24px 12px 10px 12px;
+    gap: 8px;
+  }
+  .cinema-ctrl-btn {
+    padding: 8px;
+    min-width: 38px;
+    min-height: 38px;
+  }
+  .cinema-time-readout {
+    font-size: 11px;
+  }
+  .cinema-scrubber-track {
+    height: 6px;
+  }
+}
+
 /* ── Supervisory Video Showcase (2x2 Grid Pattern) ───────────────────────── */
 .supervisory-grid-2x2 {
   display: grid;

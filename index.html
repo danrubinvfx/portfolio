@@ -166,14 +166,58 @@
     </div>
 
     <!-- Edge-to-Edge Full-Width Cinema Player -->
-    <div class="artist-player-fullwidth" id="artist-player-container" oncontextmenu="return false;">
-      <video id="artist-showreel-video" controls controlsList="nodownload noplaybackrate nofullscreen" disablePictureInPicture autoplay muted loop playsinline preload="metadata" poster="images/posters/AvatarFireandAsh_poster.jpg" oncontextmenu="return false;">
+    <div class="artist-player-fullwidth" id="artist-player-container" oncontextmenu="return false;" tabindex="0" role="region" aria-label="2026 Artist Compositing Reel Player">
+      <video id="artist-showreel-video" disablePictureInPicture autoplay muted loop playsinline preload="metadata" poster="images/posters/AvatarFireandAsh_poster.jpg" oncontextmenu="return false;">
         <source src="videos/2026CompositingReel.mp4" type="video/mp4">
         <p style="color:#888;padding:32px;font-family:monospace;font-size:13px;">
           Your browser cannot play this file inline.
         </p>
       </video>
+
+      <!-- Center Play/Pause Splash Feedback -->
+      <div class="cinema-center-splash" id="cinema-center-splash" aria-hidden="true">
+        <div class="cinema-splash-badge">
+          <i data-lucide="play" class="cinema-splash-icon-play"></i>
+          <i data-lucide="pause" class="cinema-splash-icon-pause" style="display:none;"></i>
+        </div>
+      </div>
+
+      <!-- Watermark (Positioned safely above bottom controls) -->
       <div class="cinema-watermark">&copy; Dan Rubin &bull; Proprietary VFX Material</div>
+
+      <!-- Cinema Overlay Control Bar (Hidden on load, auto-hides after 2.5s of inactivity) -->
+      <div class="cinema-controls-overlay" id="cinema-controls-overlay" aria-label="Cinema Player Controls">
+        <!-- Scrubber Timeline -->
+        <div class="cinema-scrubber-track" id="cinema-scrubber" role="slider" aria-label="Video scrubber" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" tabindex="0">
+          <div class="cinema-scrubber-buffered" id="cinema-scrubber-buffered"></div>
+          <div class="cinema-scrubber-progress" id="cinema-scrubber-progress"></div>
+          <div class="cinema-scrubber-handle" id="cinema-scrubber-handle"></div>
+        </div>
+
+        <!-- Controls Action Row -->
+        <div class="cinema-controls-row">
+          <!-- Left: Play/Pause Toggle & Time Readout -->
+          <div class="cinema-controls-left">
+            <button type="button" class="cinema-ctrl-btn" id="cinema-btn-play" aria-label="Play / Pause" title="Play / Pause (Space)">
+              <i data-lucide="play" class="cinema-icon-play" style="display:none;"></i>
+              <i data-lucide="pause" class="cinema-icon-pause"></i>
+            </button>
+            <div class="cinema-time-readout" id="cinema-time-readout">00:00 / 01:21</div>
+          </div>
+
+          <!-- Right: Audio Mute Toggle & Fullscreen -->
+          <div class="cinema-controls-right">
+            <button type="button" class="cinema-ctrl-btn" id="cinema-btn-mute" aria-label="Mute / Unmute" title="Mute / Unmute (M)">
+              <i data-lucide="volume-x" class="cinema-icon-muted"></i>
+              <i data-lucide="volume-2" class="cinema-icon-unmuted" style="display:none;"></i>
+            </button>
+            <button type="button" class="cinema-ctrl-btn" id="cinema-btn-fullscreen" aria-label="Fullscreen" title="Fullscreen (F)">
+              <i data-lucide="maximize" class="cinema-icon-fullscreen-enter"></i>
+              <i data-lucide="minimize" class="cinema-icon-fullscreen-exit" style="display:none;"></i>
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 
