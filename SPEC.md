@@ -2,7 +2,7 @@
 **Version:** 1.0.0  
 **Methodology:** Spec-Driven Development (SDD)  
 **Author:** Antigravity Pairing Assistant & Dan Rubin  
-**Status:** DRAFT / UNDER REVIEW  
+**Status:** COMPLETE / VERIFIED PRODUCTION READY  
 **Date:** October 2, 2026  
 
 ---
@@ -164,12 +164,12 @@ vfx-compositing-portfolio/
 
 ## 6. Acceptance Criteria (Definition of Done)
 
-- [ ] **AC-1:** Navigation header displays "Dan Rubin" and "Compositing Supervisor • Mentor & Educator" on left, with direct `[Résumé]`, `[LinkedIn]`, `[Vimeo pw: password]`, and `[Contact]` buttons on right. No middle menu is present.
-- [ ] **AC-2:** 2026 Artist Compositing Reel autoplays on mute and is labeled "2026 Artist Compositing Reel".
-- [ ] **AC-3:** Video switcher switches cleanly between all 6 videos without console errors or playback stalls.
-- [ ] **AC-4:** *Contra el Huracán* card uses the dynamic wave-explosion still and links to local trailer MP4 and YouTube.
-- [ ] **AC-5:** Top stills ribbon is strictly horizontal, scrolls smoothly, randomizes order on load, and has zero broken image icons.
-- [ ] **AC-6:** Stills slideshow works smoothly with auto-play, thumbnail jumps, metadata, and randomized order.
-- [ ] **AC-7:** Expanding any still opens a Lightbox with a fixed, visible `[✕ BACK TO PORTFOLIO (ESC)]` button, working <kbd>ESC</kbd> key handler, backdrop click close, and left/right slide arrows.
-- [ ] **AC-8:** Teaching description matches verbatim the user-provided VFS statement.
-- [ ] **AC-9:** Résumé is strictly unaugmented and matches the user's source text verbatim.
+- [x] **AC-1:** Navigation header displays "Dan Rubin" and "Compositing Supervisor and Artist • Mentor & Educator" on left, with direct `[Résumé]`, `[LinkedIn]`, `[Vimeo pw: password]`, and `[Contact]` buttons on right. No middle menu is present.
+- [x] **AC-2:** 2026 Artist Compositing Reel autoplays on mute and is labeled "2026 Artist Compositing Reel".
+- [x] **AC-3:** Video switcher switches cleanly between all 6 videos without console errors or playback stalls.
+- [x] **AC-4:** *Contra el Huracán* card uses the dynamic wave-explosion still and links to local trailer MP4 and YouTube.
+- [x] **AC-5:** Top stills ribbon is strictly horizontal, scrolls smoothly, randomizes order on load, and has zero broken image icons.
+- [x] **AC-6:** Stills slideshow works smoothly with auto-play, thumbnail jumps, metadata, and randomized order.
+- [x] **AC-7:** Expanding any still opens a Lightbox with a fixed, visible `[✕ BACK TO PORTFOLIO (ESC)]` button, working <kbd>ESC</kbd> key handler, backdrop click close, and left/right slide arrows.
+- [x] **AC-8:** Teaching description matches verbatim the user-provided VFS statement.
+- [x] **AC-9:** Résumé is strictly unaugmented and matches the user's source text verbatim.
