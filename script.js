@@ -463,20 +463,28 @@ function setupCinemaPlayer(container) {
   container.addEventListener("mouseenter", () => showControls(true));
   container.addEventListener("mouseleave", () => hideControls());
 
-  // Mobile Touch Events: tap reveals controls or toggles play
+  // Mobile Touch Events: tap reveals controls; subsequent tap unmutes if playing muted or toggles play
   container.addEventListener("touchstart", (e) => {
     if (e.target.closest(".cinema-controls-overlay")) return;
     if (!overlay.classList.contains("visible")) {
       showControls(true);
     } else {
-      togglePlayPause();
+      if (!video.paused && video.muted) {
+        toggleMute();
+      } else {
+        togglePlayPause();
+      }
     }
   }, { passive: true });
 
-  // Click on video background (Desktop)
+  // Click on video background (Desktop): unmute on initial click if playing muted, else toggle play/pause
   video.addEventListener("click", (e) => {
     e.stopPropagation();
-    togglePlayPause();
+    if (!video.paused && video.muted) {
+      toggleMute();
+    } else {
+      togglePlayPause();
+    }
   });
 
   if (playBtn) playBtn.addEventListener("click", (e) => {
@@ -633,7 +641,7 @@ function renderSupervisoryCardHtml(v, isMobile = false) {
   return `
     <div class="supervisory-card ${isMobile ? 'mobile-supervisory-card' : ''}">
       <div class="supervisory-player-wrap" oncontextmenu="return false;" tabindex="0" role="region" aria-label="${v.title} Video Player">
-        <video disablePictureInPicture autoplay muted loop playsinline preload="metadata" poster="${v.poster || ''}" oncontextmenu="return false;">
+        <video disablePictureInPicture autoplay muted loop playsinline webkit-playsinline preload="metadata" controls poster="${v.poster || 'images/posters/AvatarFireandAsh_poster.jpg'}" oncontextmenu="return false;">
           <source src="${v.file}" type="video/mp4">
           <p style="color:#888;padding:24px;font-family:monospace;font-size:12px;">Browser cannot play video inline.</p>
         </video>
