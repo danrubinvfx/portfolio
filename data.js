@@ -153,6 +153,22 @@ const PORTFOLIO_DATA = {
       desc: "Official FuseFX VFX breakdown for Amazon Original series Upload. Dan Rubin served as Compositing Supervisor, overseeing holographic UI elements, digital environments, and comedic visual effects."
     },
     {
+      id: "breakdown-the-100",
+      title: "The 100 (Season 6) — Breakdown",
+      badge: "Compositing Supervisor",
+      role: "Compositing Supervisor at FuseFX",
+      studio: "The CW / Warner Bros. Television (2019)",
+      file: "videos/The100_Breakdown.mp4",
+      downloadName: "The_100_Season_6_VFX_Breakdown.mp4",
+      poster: "images/posters/The100_poster.jpg",
+      youtubeUrl: "https://www.youtube.com/watch?v=tXGcg49aRNE",
+      embedUrl: "https://www.youtube-nocookie.com/embed/tXGcg49aRNE",
+      isReel: false,
+      autoplay: true,
+      muted: true,
+      desc: "Official FuseFX VFX breakdown for Season 6 of The 100. Dan Rubin served as Compositing Supervisor, overseeing planetary environment extensions, atmospheric mountain vistas, and spaceship orbital composites."
+    },
+    {
       id: "breakdown-aud",
       title: "American Underdog — Python Tool",
       badge: "Pipeline Innovation",
