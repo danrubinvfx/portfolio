@@ -137,7 +137,20 @@ const PORTFOLIO_DATA = {
       desc: "Sequence look-development, creature interaction passes, and practical stunt plate compositing."
     },
     {
-      ...ACTIVE_REEL_CONFIG
+      id: "breakdown-upload",
+      title: "Upload (Amazon Prime) — Breakdown",
+      badge: "Compositing Supervisor",
+      role: "Compositing Supervisor at FuseFX",
+      studio: "FuseFX-BC / Amazon Studios (2020)",
+      file: "videos/Upload_Breakdown.mp4",
+      downloadName: "Upload_Amazon_VFX_Breakdown.mp4",
+      poster: "images/posters/Upload_poster.jpg",
+      youtubeUrl: "https://www.youtube.com/watch?v=FP4ZrhG9ji8",
+      embedUrl: "https://www.youtube-nocookie.com/embed/FP4ZrhG9ji8",
+      isReel: false,
+      autoplay: true,
+      muted: true,
+      desc: "Official FuseFX VFX breakdown for Amazon Original series Upload. Dan Rubin served as Compositing Supervisor, overseeing holographic UI elements, digital environments, and comedic visual effects."
     },
     {
       id: "breakdown-aud",
@@ -166,6 +179,9 @@ const PORTFOLIO_DATA = {
       autoplay: true,
       muted: true,
       desc: "Interactive laser beam opticals, atmospheric volumetric dispersion, and security heist compositing."
+    },
+    {
+      ...ACTIVE_REEL_CONFIG
     }
   ],
 

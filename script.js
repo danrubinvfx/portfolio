@@ -575,8 +575,8 @@ function initVideoShowcase() {
   const allVideos = PORTFOLIO_DATA.showcaseVideos || [];
   if (!gridContainer || !allVideos.length) return;
 
-  // Filter out artist reel and take 4 supervisory breakdown shows
-  const supervisoryVideos = allVideos.filter(v => v.id !== "reel-2026").slice(0, 4);
+  // Filter out artist reel to get all supervisory breakdown shows
+  const supervisoryVideos = allVideos.filter(v => v.id !== "reel-2026");
 
   // Render desktop 2x2 grid
   gridContainer.innerHTML = supervisoryVideos.map(v => renderSupervisoryCardHtml(v, false)).join("");
@@ -690,7 +690,7 @@ function renderSupervisoryCardHtml(v, isMobile = false) {
 
 window.navigateMobileReel = function(delta) {
   const allVideos = PORTFOLIO_DATA.showcaseVideos || [];
-  const supervisoryVideos = allVideos.filter(v => v.id !== "reel-2026").slice(0, 4);
+  const supervisoryVideos = allVideos.filter(v => v.id !== "reel-2026");
   if (!supervisoryVideos.length) return;
 
   const nextIdx = currentMobileReelIdx + delta;
