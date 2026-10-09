@@ -208,7 +208,7 @@ let isYouTubeMode = false;
  * - Auto-hides after 2.5s of inactivity while playing
  * - Interactive scrubber, volume toggle, time readout, and mobile-friendly touch targets
  */
-function setupCinemaPlayer(container) {
+function setupCinemaPlayer(container, shouldAutoplay = true) {
   if (!container || container._cinemaPlayerInitialized) return;
   const video = container.querySelector("video");
   const overlay = container.querySelector(".cinema-controls-overlay");
@@ -454,7 +454,15 @@ function setupCinemaPlayer(container) {
   });
 
   video.addEventListener("loadedmetadata", updateTimeDisplay);
-  video.addEventListener("play", updatePlayButtonUI);
+  video.addEventListener("play", () => {
+    updatePlayButtonUI();
+    // Ensure only one video ever plays at any time
+    document.querySelectorAll("video").forEach(v => {
+      if (v !== video && !v.paused) {
+        try { v.pause(); } catch (e) {}
+      }
+    });
+  });
   video.addEventListener("pause", updatePlayButtonUI);
   video.addEventListener("volumechange", updateMuteButtonUI);
 
@@ -506,6 +514,7 @@ function setupCinemaPlayer(container) {
   document.addEventListener("webkitfullscreenchange", updateFullscreenUI);
 
   // Keyboard accessibility
+  const isSupervisory = container.classList.contains("supervisory-player-wrap");
   container.addEventListener("keydown", (e) => {
     if (e.key === " " || e.key === "k") {
       e.preventDefault();
@@ -517,28 +526,44 @@ function setupCinemaPlayer(container) {
       e.preventDefault();
       toggleFullscreen();
     } else if (e.key === "ArrowLeft") {
-      e.preventDefault();
-      video.currentTime = Math.max(0, video.currentTime - 5);
-      showControls(true);
+      if (isSupervisory && typeof window.navigateSupervisoryReel === "function") {
+        e.preventDefault();
+        window.navigateSupervisoryReel(-1);
+      } else {
+        e.preventDefault();
+        video.currentTime = Math.max(0, video.currentTime - 5);
+        showControls(true);
+      }
     } else if (e.key === "ArrowRight") {
-      e.preventDefault();
-      video.currentTime = Math.min(video.duration, video.currentTime + 5);
-      showControls(true);
+      if (isSupervisory && typeof window.navigateSupervisoryReel === "function") {
+        e.preventDefault();
+        window.navigateSupervisoryReel(1);
+      } else {
+        e.preventDefault();
+        video.currentTime = Math.min(video.duration, video.currentTime + 5);
+        showControls(true);
+      }
     }
   });
 
-  // Autoplay muted in loop with playsinline (same as Artist Reel)
+  // Video playback initialization
   video.muted = true;
-  video.autoplay = true;
   video.loop = true;
   video.playsInline = true;
 
-  const playPromise = video.play();
-  if (playPromise !== undefined) {
-    playPromise.catch(err => {
-      // Browser autoplay restriction handled; will play on first interaction or viewport enter
-      console.log("Cinema player autoplay handled:", err);
-    });
+  if (shouldAutoplay) {
+    video.autoplay = true;
+    const playPromise = video.play();
+    if (playPromise !== undefined) {
+      playPromise.catch(err => {
+        // Browser autoplay restriction handled; will play on first interaction or viewport enter
+        console.log("Cinema player autoplay handled:", err);
+      });
+    }
+  } else {
+    video.autoplay = false;
+    video._manuallyPaused = true;
+    try { video.pause(); } catch (e) {}
   }
 
   // IntersectionObserver to resume playback if suspended when off-screen
@@ -574,74 +599,75 @@ function initCinemaPlayer() {
   }
 }
 
+let currentSupervisoryReelIdx = 0;
+let currentMobileReelIdx = 0;
+
 function initVideoShowcase() {
   // Initialize bespoke cinema overlay player (controls auto-hide, hidden on initial load)
   initCinemaPlayer();
 
-  const gridContainer = document.getElementById("supervisory-grid");
-  const mobileCarousel = document.getElementById("mobile-supervisory-carousel");
+  const container = document.getElementById("supervisory-showcase-carousel") ||
+                    document.getElementById("supervisory-grid") ||
+                    document.getElementById("mobile-supervisory-carousel");
   const allVideos = PORTFOLIO_DATA.showcaseVideos || [];
-  if (!gridContainer || !allVideos.length) return;
+  if (!container || !allVideos.length) return;
 
   // Filter out artist reel to get all supervisory breakdown shows
   const supervisoryVideos = allVideos.filter(v => v.id !== "reel-2026");
+  if (!supervisoryVideos.length) return;
 
-  // Render desktop 2x2 grid
-  gridContainer.innerHTML = supervisoryVideos.map(v => renderSupervisoryCardHtml(v, false)).join("");
-  gridContainer.querySelectorAll(".supervisory-player-wrap").forEach(wrap => {
-    setupCinemaPlayer(wrap);
-  });
-
-  // Render mobile 1-reel carousel
-  if (mobileCarousel && supervisoryVideos.length) {
-    mobileCarousel.innerHTML = `
-      <div class="mobile-reel-header-controls">
-        <button class="mobile-reel-btn" id="mobile-reel-prev" onclick="navigateMobileReel(-1)" aria-label="Previous breakdown reel">
-          <i data-lucide="chevron-left" style="width:14px;height:14px;"></i>
-          <span>Prev Reel</span>
-        </button>
-        <div class="mobile-reel-tracker" id="mobile-reel-tracker">
-          Reel <span id="mobile-reel-current">1</span> of <span>${supervisoryVideos.length}</span>
-        </div>
-        <button class="mobile-reel-btn" id="mobile-reel-next" onclick="navigateMobileReel(1)" aria-label="Next breakdown reel">
-          <span>Next Reel</span>
-          <i data-lucide="chevron-right" style="width:14px;height:14px;"></i>
-        </button>
-      </div>
-
-      <div class="mobile-reel-viewport" id="mobile-reel-viewport" tabindex="0" aria-label="Supervisory Breakdown Reel Carousel">
-        <div class="mobile-reel-card-wrap" id="mobile-reel-card-wrap">
-          ${renderSupervisoryCardHtml(supervisoryVideos[currentMobileReelIdx], true)}
-        </div>
-      </div>
-
-      <div class="gallery-swipe-hint-bar" style="margin-top:14px;">
-        <span class="gallery-hint-text">
-          <i data-lucide="move-horizontal" style="width:13px;height:13px;"></i>
-          <span>Swipe left / right for next / previous reel</span>
-        </span>
-      </div>
-    `;
-
-    const mobileWrap = mobileCarousel.querySelector(".supervisory-player-wrap");
-    if (mobileWrap) {
-      setupCinemaPlayer(mobileWrap);
-    }
-
-    initMobileReelSwipe(supervisoryVideos);
-    updateMobileReelNav(supervisoryVideos);
+  if (currentSupervisoryReelIdx >= supervisoryVideos.length) {
+    currentSupervisoryReelIdx = 0;
   }
+  currentMobileReelIdx = currentSupervisoryReelIdx;
+
+  // Render unified single-reel showcase carousel
+  container.innerHTML = `
+    <div class="supervisory-carousel-header mobile-reel-header-controls">
+      <button class="supervisory-nav-btn mobile-reel-btn" id="supervisory-reel-prev" onclick="navigateSupervisoryReel(-1)" aria-label="Previous breakdown reel">
+        <i data-lucide="chevron-left" style="width:14px;height:14px;"></i>
+        <span>Prev Reel</span>
+      </button>
+      <div class="supervisory-reel-tracker mobile-reel-tracker" id="supervisory-reel-tracker">
+        Reel <span id="supervisory-reel-current">${currentSupervisoryReelIdx + 1}</span> of <span id="supervisory-reel-total">${supervisoryVideos.length}</span>
+      </div>
+      <button class="supervisory-nav-btn mobile-reel-btn" id="supervisory-reel-next" onclick="navigateSupervisoryReel(1)" aria-label="Next breakdown reel">
+        <span>Next Reel</span>
+        <i data-lucide="chevron-right" style="width:14px;height:14px;"></i>
+      </button>
+    </div>
+
+    <div class="supervisory-reel-viewport mobile-reel-viewport" id="supervisory-reel-viewport" tabindex="0" role="region" aria-label="Supervisory Breakdown Reel Carousel">
+      <div class="supervisory-reel-card-wrap mobile-reel-card-wrap" id="supervisory-reel-card-wrap">
+        ${renderSupervisoryCardHtml(supervisoryVideos[currentSupervisoryReelIdx], true)}
+      </div>
+    </div>
+
+    <div class="gallery-swipe-hint-bar supervisory-swipe-hint-bar" style="margin-top:14px;">
+      <span class="gallery-hint-text">
+        <i data-lucide="move-horizontal" style="width:13px;height:13px;"></i>
+        <span>Swipe, drag, or use &larr; &rarr; arrow keys to switch reels</span>
+      </span>
+    </div>
+  `;
+
+  const playerWrap = container.querySelector(".supervisory-player-wrap");
+  if (playerWrap) {
+    setupCinemaPlayer(playerWrap, true);
+  }
+
+  initSupervisoryReelGestures(supervisoryVideos);
+  updateSupervisoryReelNav(supervisoryVideos);
 
   if (window.lucide) window.lucide.createIcons();
 }
 
-let currentMobileReelIdx = 0;
-
-function renderSupervisoryCardHtml(v, isMobile = false) {
+function renderSupervisoryCardHtml(v, shouldAutoplay = false) {
+  const autoplayAttr = shouldAutoplay ? 'autoplay' : '';
   return `
-    <div class="supervisory-card ${isMobile ? 'mobile-supervisory-card' : ''}">
+    <div class="supervisory-card">
       <div class="supervisory-player-wrap" oncontextmenu="return false;" tabindex="0" role="region" aria-label="${v.title} Video Player">
-        <video disablePictureInPicture autoplay muted loop playsinline webkit-playsinline preload="metadata" controls poster="${v.poster || 'images/posters/AvatarFireandAsh_poster.jpg'}" oncontextmenu="return false;">
+        <video disablePictureInPicture ${autoplayAttr} muted loop playsinline webkit-playsinline preload="metadata" controls poster="${v.poster || 'images/posters/AvatarFireandAsh_poster.jpg'}" oncontextmenu="return false;">
           <source src="${v.file}" type="video/mp4">
           <p style="color:#888;padding:24px;font-family:monospace;font-size:12px;">Browser cannot play video inline.</p>
         </video>
@@ -667,9 +693,9 @@ function renderSupervisoryCardHtml(v, isMobile = false) {
           <div class="cinema-controls-row">
             <!-- Left: Play/Pause Toggle & Time Readout -->
             <div class="cinema-controls-left">
-              <button type="button" class="cinema-ctrl-btn cinema-btn-play" aria-label="Pause" title="Play / Pause">
-                <i data-lucide="play" class="cinema-icon-play" style="display:none;"></i>
-                <i data-lucide="pause" class="cinema-icon-pause"></i>
+              <button type="button" class="cinema-ctrl-btn cinema-btn-play" aria-label="${shouldAutoplay ? 'Pause' : 'Play'}" title="Play / Pause">
+                <i data-lucide="play" class="cinema-icon-play" style="${shouldAutoplay ? 'display:none;' : ''}"></i>
+                <i data-lucide="pause" class="cinema-icon-pause" style="${shouldAutoplay ? '' : 'display:none;'}"></i>
               </button>
               <div class="cinema-time-readout">00:00 / --:--</div>
             </div>
@@ -696,34 +722,41 @@ function renderSupervisoryCardHtml(v, isMobile = false) {
   `;
 }
 
-window.navigateMobileReel = function(delta) {
+window.navigateSupervisoryReel = function(delta) {
   const allVideos = PORTFOLIO_DATA.showcaseVideos || [];
   const supervisoryVideos = allVideos.filter(v => v.id !== "reel-2026");
   if (!supervisoryVideos.length) return;
 
-  const nextIdx = currentMobileReelIdx + delta;
+  const nextIdx = currentSupervisoryReelIdx + delta;
   if (nextIdx < 0 || nextIdx >= supervisoryVideos.length) return;
 
-  // CRITICAL: Pause any currently playing video on mobile stage before switching
-  const currentVideo = document.querySelector("#mobile-reel-card-wrap video");
-  if (currentVideo && !currentVideo.paused) {
-    currentVideo.pause();
+  // 1. Immediately pause any currently playing video anywhere in the supervisory section
+  const supervisorySection = document.getElementById("supervisory-reels");
+  if (supervisorySection) {
+    supervisorySection.querySelectorAll("video").forEach(v => {
+      try {
+        if (!v.paused) v.pause();
+      } catch (e) {}
+    });
   }
 
+  currentSupervisoryReelIdx = nextIdx;
   currentMobileReelIdx = nextIdx;
-  const wrap = document.getElementById("mobile-reel-card-wrap");
+
+  const wrap = document.getElementById("supervisory-reel-card-wrap") || document.getElementById("mobile-reel-card-wrap");
   if (wrap) {
     wrap.style.transition = "opacity 0.15s ease, transform 0.15s ease";
     wrap.style.opacity = "0";
-    wrap.style.transform = delta > 0 ? "translateX(-20px)" : "translateX(20px)";
+    wrap.style.transform = delta > 0 ? "translateX(-24px)" : "translateX(24px)";
 
     setTimeout(() => {
-      wrap.innerHTML = renderSupervisoryCardHtml(supervisoryVideos[currentMobileReelIdx], true);
+      // Transition does NOT autoplay: shouldAutoplay = false (shows poster thumbnail, waits for user click)
+      wrap.innerHTML = renderSupervisoryCardHtml(supervisoryVideos[currentSupervisoryReelIdx], false);
       const newWrap = wrap.querySelector(".supervisory-player-wrap");
       if (newWrap) {
-        setupCinemaPlayer(newWrap);
+        setupCinemaPlayer(newWrap, false);
       }
-      wrap.style.transform = delta > 0 ? "translateX(20px)" : "translateX(-20px)";
+      wrap.style.transform = delta > 0 ? "translateX(24px)" : "translateX(-24px)";
       requestAnimationFrame(() => {
         wrap.style.transition = "opacity 0.22s ease, transform 0.22s cubic-bezier(0.16, 1, 0.3, 1)";
         wrap.style.opacity = "1";
@@ -733,97 +766,196 @@ window.navigateMobileReel = function(delta) {
     }, 150);
   }
 
-  updateMobileReelNav(supervisoryVideos);
+  updateSupervisoryReelNav(supervisoryVideos);
 };
 
-function updateMobileReelNav(supervisoryVideos) {
-  const prevBtn = document.getElementById("mobile-reel-prev");
-  const nextBtn = document.getElementById("mobile-reel-next");
-  const curSpan = document.getElementById("mobile-reel-current");
+window.navigateMobileReel = window.navigateSupervisoryReel;
 
-  if (curSpan) curSpan.textContent = currentMobileReelIdx + 1;
-  if (prevBtn) {
-    const isFirst = currentMobileReelIdx === 0;
-    prevBtn.disabled = isFirst;
-    prevBtn.style.opacity = isFirst ? "0.35" : "1";
-    prevBtn.style.pointerEvents = isFirst ? "none" : "auto";
-  }
-  if (nextBtn) {
-    const isLast = currentMobileReelIdx === supervisoryVideos.length - 1;
-    nextBtn.disabled = isLast;
-    nextBtn.style.opacity = isLast ? "0.35" : "1";
-    nextBtn.style.pointerEvents = isLast ? "none" : "auto";
+function updateSupervisoryReelNav(supervisoryVideos) {
+  const prevBtns = [
+    document.getElementById("supervisory-reel-prev"),
+    document.getElementById("mobile-reel-prev")
+  ].filter(Boolean);
+
+  const nextBtns = [
+    document.getElementById("supervisory-reel-next"),
+    document.getElementById("mobile-reel-next")
+  ].filter(Boolean);
+
+  const curSpans = [
+    document.getElementById("supervisory-reel-current"),
+    document.getElementById("mobile-reel-current")
+  ].filter(Boolean);
+
+  const totalSpans = [
+    document.getElementById("supervisory-reel-total"),
+    document.getElementById("mobile-reel-total")
+  ].filter(Boolean);
+
+  curSpans.forEach(span => { span.textContent = currentSupervisoryReelIdx + 1; });
+  totalSpans.forEach(span => { span.textContent = supervisoryVideos.length; });
+
+  const isFirst = currentSupervisoryReelIdx === 0;
+  prevBtns.forEach(btn => {
+    btn.disabled = isFirst;
+    btn.style.opacity = isFirst ? "0.35" : "1";
+    btn.style.pointerEvents = isFirst ? "none" : "auto";
+  });
+
+  const isLast = currentSupervisoryReelIdx === supervisoryVideos.length - 1;
+  nextBtns.forEach(btn => {
+    btn.disabled = isLast;
+    btn.style.opacity = isLast ? "0.35" : "1";
+    btn.style.pointerEvents = isLast ? "none" : "auto";
+  });
+}
+
+function updateMobileReelNav(supervisoryVideos) {
+  updateSupervisoryReelNav(supervisoryVideos);
+}
+
+function initSupervisoryReelGestures(supervisoryVideos) {
+  const viewport = document.getElementById("supervisory-reel-viewport") || document.getElementById("mobile-reel-viewport");
+  if (!viewport) return;
+
+  // Touch Swipe Support (Mobile & Touch Devices)
+  let touchStartX = 0;
+  let touchStartY = 0;
+  let isTouchSwiping = false;
+
+  viewport.addEventListener("touchstart", (e) => {
+    if (!e.touches || !e.touches.length) return;
+    touchStartX = e.touches[0].clientX;
+    touchStartY = e.touches[0].clientY;
+    isTouchSwiping = true;
+  }, { passive: true });
+
+  viewport.addEventListener("touchmove", (e) => {
+    if (!isTouchSwiping || !e.touches || !e.touches.length) return;
+    const diffX = e.touches[0].clientX - touchStartX;
+    const diffY = e.touches[0].clientY - touchStartY;
+    if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > 10) {
+      if (e.cancelable) e.preventDefault();
+    }
+  }, { passive: false });
+
+  viewport.addEventListener("touchend", (e) => {
+    if (!isTouchSwiping) return;
+    isTouchSwiping = false;
+    if (!e.changedTouches || !e.changedTouches.length) return;
+    const diffX = e.changedTouches[0].clientX - touchStartX;
+    const diffY = e.changedTouches[0].clientY - touchStartY;
+    if (Math.abs(diffX) > 40 && Math.abs(diffX) > Math.abs(diffY) * 1.2) {
+      if (diffX < 0) {
+        navigateSupervisoryReel(1);
+      } else {
+        navigateSupervisoryReel(-1);
+      }
+    }
+  }, { passive: true });
+
+  // Mouse Drag Support (Desktop)
+  let isMouseDown = false;
+  let mouseStartX = 0;
+  let hasDragged = false;
+
+  viewport.addEventListener("mousedown", (e) => {
+    if (e.button !== 0) return; // Only left click
+    // Don't drag when interacting with controls or buttons
+    if (e.target.closest(".cinema-controls-overlay") || e.target.closest(".cinema-ctrl-btn") || e.target.closest(".cinema-scrubber-track") || e.target.closest("button")) {
+      return;
+    }
+    isMouseDown = true;
+    mouseStartX = e.clientX;
+    hasDragged = false;
+  });
+
+  window.addEventListener("mousemove", (e) => {
+    if (!isMouseDown) return;
+    const diffX = e.clientX - mouseStartX;
+    if (Math.abs(diffX) > 8) {
+      hasDragged = true;
+      viewport.classList.add("is-dragging");
+    }
+  });
+
+  window.addEventListener("mouseup", (e) => {
+    if (!isMouseDown) return;
+    isMouseDown = false;
+    viewport.classList.remove("is-dragging");
+
+    if (hasDragged) {
+      const diffX = e.clientX - mouseStartX;
+      if (Math.abs(diffX) > 45) {
+        if (diffX < 0) {
+          navigateSupervisoryReel(1);
+        } else {
+          navigateSupervisoryReel(-1);
+        }
+      }
+    }
+  });
+
+  // Capture click after dragging to avoid accidental video pause/play
+  viewport.addEventListener("click", (e) => {
+    if (hasDragged) {
+      e.preventDefault();
+      e.stopPropagation();
+      hasDragged = false;
+    }
+  }, true);
+
+  // Keyboard navigation when viewport is focused
+  viewport.addEventListener("keydown", (e) => {
+    const lightboxModal = document.getElementById("lightbox-modal");
+    if (lightboxModal && !lightboxModal.classList.contains("hidden")) return;
+
+    if (e.key === "ArrowLeft") {
+      e.preventDefault();
+      navigateSupervisoryReel(-1);
+    } else if (e.key === "ArrowRight") {
+      e.preventDefault();
+      navigateSupervisoryReel(1);
+    }
+  });
+
+  // Global window keyboard navigation when Supervisory section is in view
+  if (!window._supervisoryKeydownRegistered) {
+    window._supervisoryKeydownRegistered = true;
+    window.addEventListener("keydown", (e) => {
+      const lightboxModal = document.getElementById("lightbox-modal");
+      if (lightboxModal && !lightboxModal.classList.contains("hidden")) return;
+      if (e.target && (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA')) return;
+
+      // If Shot Gallery viewport is explicitly focused, let Shot Gallery handle arrows
+      const galleryViewport = document.getElementById("stills-swipe-viewport");
+      if (galleryViewport && (document.activeElement === galleryViewport || galleryViewport.contains(document.activeElement))) {
+        return;
+      }
+
+      // Check if supervisory section is currently in view or focused
+      const section = document.getElementById("supervisory-reels");
+      if (!section) return;
+      const rect = section.getBoundingClientRect();
+      const vh = window.innerHeight || document.documentElement.clientHeight;
+      const isVisible = rect.top < vh * 0.75 && rect.bottom > vh * 0.25;
+      const isFocused = document.activeElement === viewport || viewport.contains(document.activeElement);
+
+      if (isVisible || isFocused) {
+        if (e.key === "ArrowLeft") {
+          e.preventDefault();
+          navigateSupervisoryReel(-1);
+        } else if (e.key === "ArrowRight") {
+          e.preventDefault();
+          navigateSupervisoryReel(1);
+        }
+      }
+    });
   }
 }
 
 function initMobileReelSwipe(supervisoryVideos) {
-  const viewport = document.getElementById("mobile-reel-viewport");
-  if (!viewport) return;
-
-  let startX = 0;
-  let startY = 0;
-  let distX = 0;
-  let distY = 0;
-  let isSwiping = false;
-
-  viewport.addEventListener("touchstart", (e) => {
-    if (!e.touches.length) return;
-    startX = e.touches[0].clientX;
-    startY = e.touches[0].clientY;
-    distX = 0;
-    distY = 0;
-    isSwiping = true;
-  }, { passive: true });
-
-  viewport.addEventListener("touchmove", (e) => {
-    if (!isSwiping || !e.touches.length) return;
-    distX = e.touches[0].clientX - startX;
-    distY = e.touches[0].clientY - startY;
-  }, { passive: true });
-
-  viewport.addEventListener("touchend", () => {
-    if (!isSwiping) return;
-    isSwiping = false;
-    if (Math.abs(distX) > 40 && Math.abs(distX) > Math.abs(distY) * 1.2) {
-      if (distX < 0) {
-        navigateMobileReel(1);
-      } else {
-        navigateMobileReel(-1);
-      }
-    }
-  });
-
-  // Mouse drag support
-  let isMouseDown = false;
-  let mouseStartX = 0;
-  viewport.addEventListener("mousedown", (e) => {
-    if (e.target && e.target.tagName === 'VIDEO') return;
-    isMouseDown = true;
-    mouseStartX = e.clientX;
-  });
-  window.addEventListener("mouseup", (e) => {
-    if (!isMouseDown) return;
-    isMouseDown = false;
-    const diff = e.clientX - mouseStartX;
-    if (Math.abs(diff) > 50) {
-      if (diff < 0) {
-        navigateMobileReel(1);
-      } else {
-        navigateMobileReel(-1);
-      }
-    }
-  });
-
-  // Keyboard navigation when focused
-  viewport.addEventListener("keydown", (e) => {
-    if (e.key === "ArrowLeft") {
-      e.preventDefault();
-      navigateMobileReel(-1);
-    } else if (e.key === "ArrowRight") {
-      e.preventDefault();
-      navigateMobileReel(1);
-    }
-  });
+  initSupervisoryReelGestures(supervisoryVideos);
 }
 
 window.switchToTab = function(videoId) {
